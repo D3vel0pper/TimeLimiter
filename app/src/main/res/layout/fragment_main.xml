@@ -7,8 +7,8 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <TextView
+        android:id="@+id/dateText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:Text="Text" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

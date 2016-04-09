@@ -1,22 +1,22 @@
-package d3vel0pper.com.timelimiter;
+package d3vel0pper.com.timelimiter.activity;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import d3vel0pper.com.timelimiter.fragment.NavigationDrawerFragment;
+import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.common.MyCalendar;
 
 
 public class MainActivity extends ActionBarActivity
@@ -106,6 +106,8 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /*------------------------- Under here, description for Fragment_main------------------------------------------*/
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -135,6 +137,8 @@ public class MainActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            TextView testText = (TextView)rootView.findViewById(R.id.dateText);
+            testText.setText(MyCalendar.getTest());
             return rootView;
         }
 
