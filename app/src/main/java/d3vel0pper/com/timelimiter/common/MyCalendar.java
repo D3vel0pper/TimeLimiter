@@ -28,7 +28,9 @@ public class MyCalendar {
     private Integer hour = 0;
     private Integer min = 0;
     private Integer sec = 0;
-
+    //temporally String
+    private String sTemp = "";
+    private int iTemp = 0;
     //      methods
 
     /**
@@ -42,17 +44,87 @@ public class MyCalendar {
         return false;
     }
 
+    /**
+     *
+     * @return true if lastDay is 31
+     *         false other
+     */
+    private boolean isMonthsLastDay(){
+        if(this.month.equals(2)){
+            return false;
+        }
+        return true;
+    }
+
     //public members
-    public void setDateFromFormat(String formatedDate){
+
+    /**
+     *
+     * @param formatedDate
+     * @return true -> Data set correctly
+     */
+    public boolean setDateFromFormat(String formatedDate){
         /**
          * Format is "yyyy/MM/dd HH:mm:ss"
          */
-        formatedDate.substring(0,4);
-        
-        if(){
-
+        sTemp = formatedDate.substring(0,3);
+        try{
+            iTemp = Integer.parseInt(sTemp);
+        } catch(NumberFormatException e){
+            System.out.println("DataFormatError @ year");
+            return false;
+        }
+        if(iTemp > 9999 || iTemp < 0){
+            System.out.println("DataRangeError @ year");
+            return false;
+        } else {
+            this.year = iTemp;
         }
 
+        sTemp = formatedDate.substring(5,6);
+        try{
+            iTemp = Integer.parseInt(sTemp);
+        }catch(NumberFormatException e){
+            System.out.println("DataFormatError @ month");
+            return false;
+        }
+        if(iTemp > 12 || iTemp < 0){
+            System.out.println("DataFormatError @ month");
+            return false;
+        } else {
+            this.month = iTemp;
+        }
+
+        sTemp = formatedDate.substring(8,9);
+        try{
+            iTemp = Integer.parseInt(sTemp);
+        }catch(NumberFormatException e){
+            System.out.println("DataFormatError @ day");
+            return false;
+        }
+        if(iTemp < 1){
+            System.out.println("DataRangeError @ day");
+            return false;
+        }
+        if(this.month.equals(2)){
+            if (isLeapyear() &&  iTemp > 29) {
+                System.out.println("DataRangeError @ day");
+                return false;
+            } else if(iTemp > 28){
+                System.out.println("DataRangeError @ day");
+                return false;
+            }
+        } else if(this.month.equals(4) || this.month.equals(6) || this.month.equals(9) || this.month.equals(11)){
+            if(iTemp > 30){
+                System.out.println("DataRangeError @ day");
+                return false;
+            }
+        } else {
+            this.day = iTemp;
+        }
+
+
+        return true;
     }
 
     public void setDay_code(int day_code){
