@@ -46,14 +46,40 @@ public class MyCalendar {
 
     /**
      *
-     * @return true if lastDay is 31
-     *         false other
+     * @return Last day of that month
+     * if no match in the month, this will return 0
      */
-    private boolean isMonthsLastDay(){
-        if(this.month.equals(2)){
-            return false;
+    private int getLastDay(){
+        switch(this.month){
+            case 1:
+                return 31;
+            case 2:
+                if(isLeapyear()){
+                    return 29;
+                }
+                return 28;
+            case 3:
+                return 31;
+            case 4:
+                return 29;
+            case 5:
+                return 31;
+            case 6:
+                return 30;
+            case 7:
+                return 31;
+            case 8:
+                return 31;
+            case 9:
+                return 30;
+            case 10:
+                return 31;
+            case 11:
+                return 30;
+            case 12:
+                return 31;
         }
-        return true;
+        return 0;
     }
 
     //public members
@@ -106,23 +132,12 @@ public class MyCalendar {
             System.out.println("DataRangeError @ day");
             return false;
         }
-        if(this.month.equals(2)){
-            if (isLeapyear() &&  iTemp > 29) {
-                System.out.println("DataRangeError @ day");
-                return false;
-            } else if(iTemp > 28){
-                System.out.println("DataRangeError @ day");
-                return false;
-            }
-        } else if(this.month.equals(4) || this.month.equals(6) || this.month.equals(9) || this.month.equals(11)){
-            if(iTemp > 30){
-                System.out.println("DataRangeError @ day");
-                return false;
-            }
+        if(iTemp > getLastDay()){
+            System.out.println("DataRangeError @ day");
+            return false;
         } else {
             this.day = iTemp;
         }
-
 
         return true;
     }
