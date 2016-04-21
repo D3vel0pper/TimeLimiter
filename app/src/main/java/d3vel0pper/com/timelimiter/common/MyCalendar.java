@@ -1,5 +1,7 @@
 package d3vel0pper.com.timelimiter.common;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +15,7 @@ public class MyCalendar {
     //private members
     /**
      * day_code
-     *  Sun = 0, Mon = 1, Tue = 2, Wed = 3, Thr = 4, Fri = 5, Sat = 6
+     *  Mon = 0, Tue = 1, Wed = 2, Thr = 3, Fri = 4, Sat = 5, Sun = 6
      * year = year(0-INT_MAX)
      * month = month(1-12)
      * day = day(1-31)
@@ -86,27 +88,33 @@ public class MyCalendar {
 
     /**
      *
-     * @param formatedDate
+     * @param formatedDate is formated in "yyyy/MM/dd HH:mm:ss"
      * @return true -> Data set correctly
      */
     public boolean setDateFromFormat(String formatedDate){
+
         /**
-         * Format is "yyyy/MM/dd HH:mm:ss"
+         * set year
          */
         sTemp = formatedDate.substring(0,3);
         try{
             iTemp = Integer.parseInt(sTemp);
         } catch(NumberFormatException e){
             System.out.println("DataFormatError @ year");
+            Log.d("FormatError",e.toString());
             return false;
         }
         if(iTemp > 9999 || iTemp < 0){
             System.out.println("DataRangeError @ year");
+            Log.d("DataRangeError","DataRangeError @ year");
             return false;
         } else {
             this.year = iTemp;
         }
 
+        /**
+         * set month
+         */
         sTemp = formatedDate.substring(5,6);
         try{
             iTemp = Integer.parseInt(sTemp);
@@ -114,13 +122,16 @@ public class MyCalendar {
             System.out.println("DataFormatError @ month");
             return false;
         }
-        if(iTemp > 12 || iTemp < 0){
+        if(iTemp > 12 || iTemp < 1){
             System.out.println("DataFormatError @ month");
             return false;
         } else {
             this.month = iTemp;
         }
 
+        /**
+         * set day
+         */
         sTemp = formatedDate.substring(8,9);
         try{
             iTemp = Integer.parseInt(sTemp);
@@ -130,23 +141,46 @@ public class MyCalendar {
         }
         if(iTemp < 1){
             System.out.println("DataRangeError @ day");
+            Log.d("DataRangeError","DataRangeError @ day");
             return false;
         }
         if(iTemp > getLastDay()){
             System.out.println("DataRangeError @ day");
+            Log.d("DataRangeError","DataRangeError @ day");
             return false;
         } else {
             this.day = iTemp;
         }
 
+        /**
+         * set day_code
+         */
+        setDay_code();
+
         return true;
     }
 
-    public void setDay_code(int day_code){
+    public void setDay_code(){
+
         if(day_code < 0 || day_code > 6){
             this.day_code = 0;
         } else{
-            this.day_code = day_code;
+            /**
+             * get day_code
+             */
+            int yTemp = this.year;
+            int mTemp = this.month;
+
+            if(this.month == 1 || this.month == 2){
+                yTemp -= 1;
+                mTemp += 13;
+            } else {
+                mTemp += 1;
+            }
+
+            int temp = (int) (((yTemp * 365.25) + (mTemp * 30.6) + (yTemp / 400) + this.day) - (yTemp / 100) -429) ;
+            this.day_code = temp - ((temp/7) * 7);
+
         }
     }
 
