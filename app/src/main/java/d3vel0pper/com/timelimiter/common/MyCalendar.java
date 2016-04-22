@@ -1,6 +1,6 @@
 package d3vel0pper.com.timelimiter.common;
 
-import android.util.Log;
+//import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,7 +40,11 @@ public class MyCalendar {
      *         is leap year -> true
      */
     private boolean isLeapyear(){
-        if(this.year % 4 == 0){
+        if(this.year % 400 == 0){
+            return true;
+        } else if(this.year % 100 == 0){
+            return false;
+        } else if(this.year % 4 == 0){
             return true;
         }
         return false;
@@ -84,6 +88,30 @@ public class MyCalendar {
         return 0;
     }
 
+    private void setDay_code(){
+
+        if(day_code < 0 || day_code > 6){
+            this.day_code = 0;
+        } else{
+            /**
+             * generate day_code
+             */
+            int yTemp = this.year;
+            int mTemp = this.month;
+
+            if(this.month == 1 || this.month == 2){
+                yTemp -= 1;
+                mTemp += 13;
+            } else {
+                mTemp += 1;
+            }
+
+            int temp = (int) (((yTemp * 365.25) + (mTemp * 30.6) + (yTemp / 400) + this.day) - (yTemp / 100) -429) ;
+            this.day_code = temp - ((temp/7) * 7);
+
+        }
+    }
+
     //public members
 
     /**
@@ -101,12 +129,12 @@ public class MyCalendar {
             iTemp = Integer.parseInt(sTemp);
         } catch(NumberFormatException e){
             System.out.println("DataFormatError @ year");
-            Log.d("FormatError",e.toString());
+//            Log.d("FormatError",e.toString());
             return false;
         }
         if(iTemp > 9999 || iTemp < 0){
             System.out.println("DataRangeError @ year");
-            Log.d("DataRangeError","DataRangeError @ year");
+//            Log.d("DataRangeError","DataRangeError @ year");
             return false;
         } else {
             this.year = iTemp;
@@ -141,12 +169,12 @@ public class MyCalendar {
         }
         if(iTemp < 1){
             System.out.println("DataRangeError @ day");
-            Log.d("DataRangeError","DataRangeError @ day");
+//            Log.d("DataRangeError","DataRangeError @ day");
             return false;
         }
         if(iTemp > getLastDay()){
             System.out.println("DataRangeError @ day");
-            Log.d("DataRangeError","DataRangeError @ day");
+//            Log.d("DataRangeError","DataRangeError @ day");
             return false;
         } else {
             this.day = iTemp;
@@ -160,33 +188,42 @@ public class MyCalendar {
         return true;
     }
 
-    public void setDay_code(){
-
-        if(day_code < 0 || day_code > 6){
-            this.day_code = 0;
-        } else{
-            /**
-             * get day_code
-             */
-            int yTemp = this.year;
-            int mTemp = this.month;
-
-            if(this.month == 1 || this.month == 2){
-                yTemp -= 1;
-                mTemp += 13;
-            } else {
-                mTemp += 1;
-            }
-
-            int temp = (int) (((yTemp * 365.25) + (mTemp * 30.6) + (yTemp / 400) + this.day) - (yTemp / 100) -429) ;
-            this.day_code = temp - ((temp/7) * 7);
-
-        }
+    /**
+     * for testing
+     */
+    public void setYear(int year){
+        this.year = year;
     }
 
-    static public String getTest(){
-        final DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        final Date date = new Date(System.currentTimeMillis());
-        return df.format(date);
+    public int getYear(){
+        return this.year;
     }
+
+    public void setMonth(int month){
+        this.month = month;
+    }
+
+    public int getMonth(){
+        return this.month;
+    }
+
+    public void setDay(int day){
+        this.day = day;
+    }
+
+    public int getDay(){
+        return this.day;
+    }
+
+    public int getDay_Code(){
+        return this.day_code;
+    }
+
+
+
+//        static public String getTest(){
+//            final DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//            final Date date = new Date(System.currentTimeMillis());
+//            return df.format(date);
+//        }
 }

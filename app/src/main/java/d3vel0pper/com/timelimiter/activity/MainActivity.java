@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.fragment.NavigationDrawerFragment;
@@ -139,6 +140,7 @@ public class MainActivity extends ActionBarActivity
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView testText = (TextView)rootView.findViewById(R.id.dateText);
             testText.setText(MyCalendar.getTest());
+
             return rootView;
         }
 
