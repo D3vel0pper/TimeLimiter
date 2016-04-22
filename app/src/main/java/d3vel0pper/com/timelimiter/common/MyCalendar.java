@@ -31,7 +31,8 @@ public class MyCalendar {
     private Integer min = 0;
     private Integer sec = 0;
     //temporally String
-    private String sTemp = "";
+    private String sTemp[];
+    private String splited[];
     private int iTemp = 0;
     //      methods
 
@@ -121,12 +122,48 @@ public class MyCalendar {
      */
     public boolean setDateFromFormat(String formatedDate){
 
+        boolean flag = true;
         /**
          * set year
          */
-        sTemp = formatedDate.substring(0,3);
+        if(!(setYear(formatedDate))){
+            this.year = 1970;
+            flag = false;
+        }
+
+        /**
+         * set month
+         */
+        if(!(setMonth(formatedDate))){
+            this.month = 1;
+            flag = false;
+        }
+
+        /**
+         * set day
+         */
+        if(!(setDay(formatedDate))){
+            this.day = 1;
+            flag = false;
+        }
+        /**
+         * set day_code
+         */
+        setDay_code();
+
+        return flag;
+    }
+
+    private String[] temporary;
+    /**
+     * for testing
+     */
+    private boolean setYear(String formatedDate){
+
+        sTemp = formatedDate.split("/");
+
         try{
-            iTemp = Integer.parseInt(sTemp);
+            iTemp = Integer.parseInt(sTemp[0]);
         } catch(NumberFormatException e){
             System.out.println("DataFormatError @ year");
 //            Log.d("FormatError",e.toString());
@@ -139,13 +176,17 @@ public class MyCalendar {
         } else {
             this.year = iTemp;
         }
+        return true;
+    }
 
-        /**
-         * set month
-         */
-        sTemp = formatedDate.substring(5,6);
+    public int getYear(){
+        return this.year;
+    }
+
+    private boolean setMonth(String formatedDate){
+        //sTemp = formatedDate.substring(5,6);
         try{
-            iTemp = Integer.parseInt(sTemp);
+            iTemp = Integer.parseInt(sTemp[1]);
         }catch(NumberFormatException e){
             System.out.println("DataFormatError @ month");
             return false;
@@ -156,15 +197,20 @@ public class MyCalendar {
         } else {
             this.month = iTemp;
         }
+        return true;
+    }
 
-        /**
-         * set day
-         */
-        sTemp = formatedDate.substring(8,9);
+    public int getMonth(){
+        return this.month;
+    }
+
+    private boolean setDay(String formatedDate){
+
         try{
-            iTemp = Integer.parseInt(sTemp);
+            iTemp = Integer.parseInt(sTemp[2]);
         }catch(NumberFormatException e){
             System.out.println("DataFormatError @ day");
+//                Log.d("DataFormatError","DataFormatError @ day")
             return false;
         }
         if(iTemp < 1){
@@ -179,36 +225,8 @@ public class MyCalendar {
         } else {
             this.day = iTemp;
         }
-
-        /**
-         * set day_code
-         */
-        setDay_code();
-
         return true;
-    }
 
-    /**
-     * for testing
-     */
-    public void setYear(int year){
-        this.year = year;
-    }
-
-    public int getYear(){
-        return this.year;
-    }
-
-    public void setMonth(int month){
-        this.month = month;
-    }
-
-    public int getMonth(){
-        return this.month;
-    }
-
-    public void setDay(int day){
-        this.day = day;
     }
 
     public int getDay(){
