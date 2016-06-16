@@ -4,6 +4,10 @@ package d3vel0pper.com.timelimiter.common;
  * Created by D3vel0pper on 2016/06/16.
  */
 public class Limiter {
+
+    public Limiter(){
+    }
+
     private Integer id;
     /**
      * C = Created

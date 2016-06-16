@@ -1,6 +1,7 @@
 package d3vel0pper.com.timelimiter.activity;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,16 +13,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
+import d3vel0pper.com.timelimiter.CallBackToFragment;
+import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
 import d3vel0pper.com.timelimiter.fragment.NavigationDrawerFragment;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.MyCalendar;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,DatePickerDialog.OnDateSetListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -32,6 +37,9 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    public String dateData;
+    public PlaceholderFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +115,12 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDateSet(DatePicker datePicker,int year, int monthOfYear,int dayOfMonth){
+        dateData = String.valueOf(year) + "/" + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth);
+    }
+
+
     /*------------------------- Under here, description for Fragment_main------------------------------------------*/
 
     /**
@@ -134,12 +148,27 @@ public class MainActivity extends ActionBarActivity
         public PlaceholderFragment() {
         }
 
+        private MainActivity parent;
+        public TextView testText;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView testText = (TextView)rootView.findViewById(R.id.dateText);
+            parent = (MainActivity)getActivity();
+            parent.fragment = this;
+            testText = (TextView)rootView.findViewById(R.id.dateText);
             //testText.setText(MyCalendar.getTest());
+
+            Button testBtn = (Button)rootView.findViewById(R.id.testBtn);
+            testBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatePickerFragment dialog = new DatePickerFragment();
+                    dialog.show(getActivity().getSupportFragmentManager(),"datePicker");
+                }
+            });
+
 
             return rootView;
         }
@@ -151,5 +180,6 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
 
 }
