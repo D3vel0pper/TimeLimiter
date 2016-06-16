@@ -139,7 +139,7 @@ public class MainActivity extends ActionBarActivity
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView testText = (TextView)rootView.findViewById(R.id.dateText);
-            testText.setText(MyCalendar.getTest());
+            //testText.setText(MyCalendar.getTest());
 
             return rootView;
         }
