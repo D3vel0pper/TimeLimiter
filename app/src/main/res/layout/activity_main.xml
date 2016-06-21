@@ -13,6 +13,12 @@
         android:id="@+id/testBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="pushthis"/>
+        android:text="SetDate"/>
+
+    <Button
+        android:id="@+id/testBtn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SetTime"/>
 
 </LinearLayout>

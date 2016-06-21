@@ -24,30 +24,35 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     private DatePickerDialog dialog;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState){
+//        super.onCreate(savedInstanceState);
+//    }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+//        super.onCreateView(inflater,container,savedInstanceState);
+//
+//        View view = inflater.inflate(R.layout.fragment_date_picker,container,false);
+//        final Calendar c = Calendar.getInstance();
+//        int year = c.get(Calendar.YEAR);
+//        int month = c.get(Calendar.MONTH);
+//        int day = c.get(Calendar.DAY_OF_MONTH);
+//
+//        MainActivity parent = (MainActivity) getActivity();
+//
+//        dialog = new DatePickerDialog(getActivity(),parent,year,month,day);
+//
+//        return view;
+//    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        super.onCreateView(inflater,container,savedInstanceState);
-
-        View view = inflater.inflate(R.layout.fragment_date_picker,container,false);
+    public Dialog onCreateDialog(Bundle savedInstanceState){
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-
-        MainActivity parent = (MainActivity) getActivity();
-
-        dialog = new DatePickerDialog(getActivity(),parent,year,month,day);
-
-        return view;
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(),(MainActivity)getActivity(),year,month,day);
         return dialog;
     }
 
