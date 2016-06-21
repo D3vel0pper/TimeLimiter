@@ -4,21 +4,9 @@
     android:orientation="vertical"
     android:id="@+id/rootLinear">
 
-    <TextView
-        android:id="@+id/dateText"
-        android:layout_width="match_parent"
-        android:layout_height="64dp" />
-
     <Button
-        android:id="@+id/testBtn"
+        android:id="@+id/mvToDatePick"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SetDate"/>
-
-    <Button
-        android:id="@+id/testBtn2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SetTime"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

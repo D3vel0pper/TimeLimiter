@@ -8,10 +8,11 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 import d3vel0pper.com.timelimiter.activity.MainActivity;
 
 /**
- * Created by HotFlush on 2016/06/21.
+ * Created by D3vel0pper on 2016/06/21.
  */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
@@ -22,7 +23,9 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 //        Integer minute = calendar.get(Calendar.MINUTE);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        return new TimePickerDialog(getActivity(),(MainActivity)getActivity(),hour,minute,true);
+        TimePickerDialog dialog
+                = new TimePickerDialog(getActivity(),(DatePickActivity)getActivity(),hour,minute,true);
+        return dialog;
     }
 
     @Override

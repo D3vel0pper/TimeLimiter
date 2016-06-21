@@ -3,13 +3,36 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <DatePicker
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="match_parent"
+        android:layout_height="64dp" />
+
+    <Button
+        android:id="@+id/testBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:datePickerMode="calendar"></DatePicker>
+        android:text="SetDate"/>
 
-    <TimePicker
+    <Button
+        android:id="@+id/testBtn2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TimePicker>
+        android:layout_height="wrap_content"
+        android:text="SetTime"/>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/endBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="complete"/>
+    </LinearLayout>
 
 </LinearLayout>
