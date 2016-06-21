@@ -31,6 +31,12 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    public void onRestart(){
+        super.onRestart();
+        //Add here the code which reload the DB
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
     }
