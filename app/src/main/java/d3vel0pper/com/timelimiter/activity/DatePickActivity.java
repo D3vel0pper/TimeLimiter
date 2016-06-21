@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
 import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
 
@@ -37,6 +38,10 @@ public class DatePickActivity extends FragmentActivity
         testBtn.setOnClickListener(this);
         Button testBtn2 = (Button)findViewById(R.id.testBtn2);
         testBtn2.setOnClickListener(this);
+        Button endBtn = (Button)findViewById(R.id.endBtn);
+        endBtn.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -51,7 +56,8 @@ public class DatePickActivity extends FragmentActivity
                 tpf.show(getSupportFragmentManager(),"timePicker");
                 break;
             case R.id.endBtn:
-                finish();
+                CustomDialogFragment cdf = new CustomDialogFragment();
+                cdf.show(getSupportFragmentManager(),"register");
                 break;
         }
     }
