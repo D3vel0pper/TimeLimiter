@@ -88,4 +88,8 @@ public class DatePickActivity extends FragmentActivity
         testText.setText(dateData);
     }
 
+    public String getDateData(){
+        return this.dateData;
+    }
+
 }

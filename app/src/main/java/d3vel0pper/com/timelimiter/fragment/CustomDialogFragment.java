@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 
 /**
  * Created by D3vel0pper on 2016/06/21.
@@ -42,6 +43,7 @@ public class CustomDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        DatePickActivity parent = (DatePickActivity)getActivity();
         View view;
         switch(getTag()){
             case "register":
@@ -50,6 +52,7 @@ public class CustomDialogFragment extends DialogFragment {
                 if(dateString == null){
                     dateString = "";
                 }
+                dateString = parent.getDateData();
                 String confirmString = "Do U want to register the date below?\n" + dateString;
                 confirmText.setText(confirmString);
                 Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
