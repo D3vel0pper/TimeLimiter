@@ -29,7 +29,7 @@ public class Calculator {
      * @param formatedEnd: yyyy/mm/dd
      */
     public void calcDateGap(String formatedStart,String formatedEnd){
-        int gap = 0;
+        int gap = -1;
         String[] start = formatedStart.split("/",0);
         String[] end = formatedEnd.split("/",0);
         //Set the start date to calendar
@@ -41,9 +41,15 @@ public class Calculator {
             int temp = myCalendar.getLastDay() - myCalendar.getDay();
             myCalendar.addDays(temp);
             gap += temp;
+            if(myCalendar.isLastDay()){
+                myCalendar.incrementDay();
+                gap++;
+            }
         }
         if(myCalendar.getDay() != endDay){
-            myCalendar.addDays(myCalendar.getDay()-endDay);
+            int temp = endDay - myCalendar.getDay();
+            myCalendar.addDays(temp);
+            gap += temp;
         }
         this.day = gap;
 //        this.day = calcDayGap(start[1],start[2],end[1],end[2]);
