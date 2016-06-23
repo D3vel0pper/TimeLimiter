@@ -8,6 +8,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -22,8 +23,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     public DatePickerFragment(){
     }
-
-    private DatePickerDialog dialog;
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState){
@@ -49,6 +48,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
