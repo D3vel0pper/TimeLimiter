@@ -48,24 +48,7 @@ public class CustomDialogFragment extends DialogFragment {
         View view;
         switch(getTag()){
             case "register":
-                view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
-                TextView confirmText = (TextView)view.findViewById(R.id.confirmText);
-                if(dateString == null){
-                    dateString = "";
-                }
-                dateString = parent.getBothData();
-                String confirmString = "Do U want to register the date below?\n" + dateString;
-                confirmText.setText(confirmString);
-                Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
-                confirmBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getActivity().finish();
-                        RegisterInformer registerInformer = RegisterInformer.getInstance();
-                        registerInformer.setData(dateString);
-                        registerInformer.informToActivity();
-                    }
-                });
+                view = registerCase(inflater,container,savedInstanceState,parent);
                 break;
             default:
                 view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
@@ -83,8 +66,26 @@ public class CustomDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    public static void setDateString(String formatedDate){
-        dateString = formatedDate;
+    public View registerCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
+        View view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
+        TextView confirmText = (TextView)view.findViewById(R.id.confirmText);
+        if(dateString == null){
+            dateString = "";
+        }
+        dateString = parent.getBothData();
+        String confirmString = "Do U want to register the date below?\n" + dateString;
+        confirmText.setText(confirmString);
+        Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                RegisterInformer registerInformer = RegisterInformer.getInstance();
+                registerInformer.setData(dateString);
+                registerInformer.informToActivity();
+            }
+        });
+        return view;
     }
 
 }
