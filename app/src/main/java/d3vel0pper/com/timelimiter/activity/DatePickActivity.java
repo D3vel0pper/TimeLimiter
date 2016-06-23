@@ -27,14 +27,16 @@ public class DatePickActivity extends FragmentActivity
         ,TimePickerDialog.OnTimeSetListener,View.OnClickListener {
 
     TextView testText;
-    String dateData = "";
-    Boolean isDataSet = false;
-    Boolean isSecondTime = false;
+    String dateData,timeData,bothData;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_pick);
+
+        timeData = "";
+        dateData = "";
+
         testText = (TextView)findViewById(R.id.dateText);
 
         Button testBtn = (Button)findViewById(R.id.testBtn);
@@ -67,35 +69,25 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth){
-        Object temp = datePicker.getTag();
-        String temps = temp.toString();
-        Toast.makeText(this,temps,Toast.LENGTH_SHORT).show();
-        if (isDataSet) {
-            dateData = String.valueOf(year) + "/"
-                    + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth)
-                    + " " + dateData;
-            isDataSet = true;
-        } else {
-            dateData = String.valueOf(year) + "/" + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth);
-            isDataSet = true;
-        }
-        testText.setText(dateData);
+        dateData = String.valueOf(year) + "/"
+                    + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth);
+        bothData = dateData + " " + timeData;
+        testText.setText(bothData);
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute){
-        if (isDataSet){
-            dateData = dateData +  " " + String.valueOf(hour) + ":" + String.valueOf(minute);
-            isDataSet = true;
-        } else {
-            dateData = String.valueOf(hour) + ":" + String.valueOf(minute);
-            isDataSet = true;
+        if(minute < 10){
+            timeData = String.valueOf(hour) + ":" + "0" + String.valueOf(minute);
+        }else {
+            timeData = String.valueOf(hour) + ":" + String.valueOf(minute);
         }
-        testText.setText(dateData);
+        bothData = dateData + " " + timeData;
+        testText.setText(bothData);
     }
 
-    public String getDateData(){
-        return this.dateData;
+    public String getBothData(){
+        return this.bothData;
     }
 
 }

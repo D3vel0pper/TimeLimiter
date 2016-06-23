@@ -52,7 +52,7 @@ public class CustomDialogFragment extends DialogFragment {
                 if(dateString == null){
                     dateString = "";
                 }
-                dateString = parent.getDateData();
+                dateString = parent.getBothData();
                 String confirmString = "Do U want to register the date below?\n" + dateString;
                 confirmText.setText(confirmString);
                 Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
