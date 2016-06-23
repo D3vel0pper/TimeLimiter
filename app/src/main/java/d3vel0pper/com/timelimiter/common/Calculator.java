@@ -132,9 +132,6 @@ public class Calculator {
             gap += temp;
         }
         this.day = gap;
-//        this.day = calcDayGap(start[1],start[2],end[1],end[2]);
-//        this.month = calcMonthGap(start[1],end[1]);
-//        this.year = calcYearGap(start[0],end[0]);
     }
 
     private int calcYearGap(String startYear,String endYear) {
