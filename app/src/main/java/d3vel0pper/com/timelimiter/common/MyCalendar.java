@@ -51,44 +51,6 @@ public class MyCalendar {
         return false;
     }
 
-    /**
-     *
-     * @return Last day of that month
-     * if no match in the month, this will return 0
-     */
-    private int getLastDay(){
-        switch(this.month){
-            case 1:
-                return 31;
-            case 2:
-                if(isLeapyear()){
-                    return 29;
-                }
-                return 28;
-            case 3:
-                return 31;
-            case 4:
-                return 29;
-            case 5:
-                return 31;
-            case 6:
-                return 30;
-            case 7:
-                return 31;
-            case 8:
-                return 31;
-            case 9:
-                return 30;
-            case 10:
-                return 31;
-            case 11:
-                return 30;
-            case 12:
-                return 31;
-        }
-        return 0;
-    }
-
     private void setDay_code(){
 
         if(day_code < 0 || day_code > 6){
@@ -151,6 +113,39 @@ public class MyCalendar {
          */
         setDay_code();
 
+        return flag;
+    }
+
+    /**
+     * @param date is formated in "yyyy/MM/dd"
+     * @return true -> Data set correctly
+     */
+    public boolean setDateWithoutTime(String date){
+
+        boolean flag = true;
+        /**
+         * set year
+         */
+        if(!(setYear(date))){
+            this.year = 1970;
+            flag = false;
+        }
+
+        /**
+         * set month
+         */
+        if(!(setMonth(date))){
+            this.month = 1;
+            flag = false;
+        }
+
+        /**
+         * set day
+         */
+        if(!(setDay(date))){
+            this.day = 1;
+            flag = false;
+        }
         return flag;
     }
 
@@ -235,6 +230,144 @@ public class MyCalendar {
 
     public int getDay_Code(){
         return this.day_code;
+    }
+
+    /**
+     *
+     * @return Last day of that month
+     * if no match in the month, this will return 0
+     */
+    public int getLastDay(){
+        switch(this.month){
+            case 1:
+                return 31;
+            case 2:
+                if(isLeapyear()){
+                    return 29;
+                }
+                return 28;
+            case 3:
+                return 31;
+            case 4:
+                return 29;
+            case 5:
+                return 31;
+            case 6:
+                return 30;
+            case 7:
+                return 31;
+            case 8:
+                return 31;
+            case 9:
+                return 30;
+            case 10:
+                return 31;
+            case 11:
+                return 30;
+            case 12:
+                return 31;
+        }
+        return 0;
+    }
+
+
+    /**
+     * @return The Last Day of month
+     */
+    public int getLastDayOf(int month){
+        switch(this.month){
+            case 1:
+                return 31;
+            case 2:
+                if(isLeapyear()){
+                    return 29;
+                }
+                return 28;
+            case 3:
+                return 31;
+            case 4:
+                return 29;
+            case 5:
+                return 31;
+            case 6:
+                return 30;
+            case 7:
+                return 31;
+            case 8:
+                return 31;
+            case 9:
+                return 30;
+            case 10:
+                return 31;
+            case 11:
+                return 30;
+            case 12:
+                return 31;
+        }
+        return 0;
+    }
+
+    /**
+     * check the set date is last day or not
+     * @return true -> yes it is the last day of month
+     */
+    public boolean isLastDay(){
+        if(this.day == getLastDay()){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    /**
+     * Increment the day with confirm is LastDay.
+     */
+    public void incrementDay(){
+        if(isLastDay()){
+            this.day = 1;
+            this.month++;
+        }else {
+            this.month++;
+        }
+    }
+
+    public void addDays(int additionalDay){
+        for(;additionalDay > 0;incrementDay(),additionalDay--){
+            if((getLastDay() - additionalDay) > 0){
+                this.day += additionalDay;
+            } else {
+                //get gap to LastDay
+                int gap = getLastDay() - this.day;
+                additionalDay -= gap;
+                //add to day gap
+                this.day += gap;
+            }
+        }
+
+    }
+
+    public String getFormatedDate(){
+        String date;
+        if(getYear() < 10){
+            date = "000" + String.valueOf(this.year);
+        } else if(getYear() < 100){
+            date = "00" + String.valueOf(this.year);
+        } else if(getYear() < 1000){
+            date = "0" + String.valueOf(this.year);
+        } else {
+            date = String.valueOf(this.year);
+        }
+        if(getMonth() < 10){
+            date = date + "0" + String.valueOf(this.month);
+        } else {
+            date += String.valueOf((this.month));
+        }
+        if(getDay() < 10){
+            date = date + "0" + String.valueOf(this.day);
+        } else {
+            date += String.valueOf(this.day);
+        }
+        return date;
     }
 
 
