@@ -332,7 +332,7 @@ public class MyCalendar {
     }
 
     public void addDays(int additionalDay){
-        for(;additionalDay > 0;incrementDay(),additionalDay--){
+        while(additionalDay > 0){
             if((getLastDay() - additionalDay) > 0){
                 this.day += additionalDay;
             } else {
@@ -341,6 +341,8 @@ public class MyCalendar {
                 additionalDay -= gap;
                 //add to day gap
                 this.day += gap;
+                incrementDay();
+                additionalDay--;
             }
         }
 

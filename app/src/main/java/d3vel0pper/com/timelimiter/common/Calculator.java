@@ -34,15 +34,21 @@ public class Calculator {
         String[] end = formatedEnd.split("/",0);
         //Set the start date to calendar
         myCalendar.setDateWithoutTime(formatedStart);
-        int startMonth = Integer.parseInt(start[1]);
         int endMonth = Integer.parseInt(end[1]);
-        for(;(startMonth != endMonth) && (startMonth < endMonth);myCalendar.incrementDay()){
-            gap = myCalendar.getLastDay() - myCalendar.getDay();
-
+        int endDay = Integer.parseInt(end[2]);
+        //loop while myCalendar.month is same as endMonth
+        while((myCalendar.getMonth() != endMonth) && (myCalendar.getMonth() < endMonth)){
+            int temp = myCalendar.getLastDay() - myCalendar.getDay();
+            myCalendar.addDays(temp);
+            gap += temp;
         }
-        this.day = calcDayGap(start[1],start[2],end[1],end[2]);
-        this.month = calcMonthGap(start[1],end[1]);
-        this.year = calcYearGap(start[0],end[0]);
+        if(myCalendar.getDay() != endDay){
+            myCalendar.addDays(myCalendar.getDay()-endDay);
+        }
+        this.day = gap;
+//        this.day = calcDayGap(start[1],start[2],end[1],end[2]);
+//        this.month = calcMonthGap(start[1],end[1]);
+//        this.year = calcYearGap(start[0],end[0]);
     }
 
     private int calcYearGap(String startYear,String endYear) {
