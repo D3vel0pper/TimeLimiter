@@ -15,6 +15,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
+import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
 import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
@@ -24,10 +26,11 @@ import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
  */
 public class DatePickActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener
-        ,TimePickerDialog.OnTimeSetListener,View.OnClickListener {
+        ,TimePickerDialog.OnTimeSetListener,View.OnClickListener,ConfirmDialogListener {
 
-    TextView testText;
-    String dateData,timeData,bothData;
+    public TextView testText;
+    public String dateData,timeData,bothData,TAG;
+    private DialogTeller dialogTeller;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -50,7 +53,9 @@ public class DatePickActivity extends FragmentActivity
         Button endBtn = (Button)findViewById(R.id.endBtn);
         endBtn.setOnClickListener(this);
 
-
+        //Registering ConfirmDialogListener
+        dialogTeller = DialogTeller.getInstance();
+        dialogTeller.setListener(this);
 
     }
 
@@ -59,11 +64,11 @@ public class DatePickActivity extends FragmentActivity
         switch(v.getId()){
             case R.id.startDateBtn:
                 DatePickerFragment dpf = new DatePickerFragment();
-                dpf.show(getSupportFragmentManager(),"datePicker");
+                dpf.show(getSupportFragmentManager(),"startDatePicker");
                 break;
             case R.id.startTimeBtn:
                 TimePickerFragment tpf = new TimePickerFragment();
-                tpf.show(getSupportFragmentManager(),"timePicker");
+                tpf.show(getSupportFragmentManager(),"startTimePicker");
                 break;
             case R.id.endDateBtn:
                 DatePickerFragment pickerEndDate = new DatePickerFragment();
@@ -114,6 +119,10 @@ public class DatePickActivity extends FragmentActivity
 
     public String getBothData(){
         return this.bothData;
+    }
+
+    public void onConfirmDialog(String TAG){
+        this.TAG = TAG;
     }
 
 }

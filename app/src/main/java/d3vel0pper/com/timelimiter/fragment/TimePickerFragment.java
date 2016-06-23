@@ -10,6 +10,7 @@ import java.util.Calendar;
 
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 import d3vel0pper.com.timelimiter.activity.MainActivity;
+import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
 
 /**
  * Created by D3vel0pper on 2016/06/21.
@@ -18,6 +19,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+        DialogTeller dialogTeller = DialogTeller.getInstance();
+        dialogTeller.InformDialog(getTag());
         final Calendar calendar = Calendar.getInstance();
 //        Integer hour = calendar.get(Calendar.HOUR_OF_DAY);
 //        Integer minute = calendar.get(Calendar.MINUTE);

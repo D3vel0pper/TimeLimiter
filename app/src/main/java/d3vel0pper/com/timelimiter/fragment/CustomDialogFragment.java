@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
-import d3vel0pper.com.timelimiter.common.RegisterInformer;
+import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 
 /**
  * Created by D3vel0pper on 2016/06/21.

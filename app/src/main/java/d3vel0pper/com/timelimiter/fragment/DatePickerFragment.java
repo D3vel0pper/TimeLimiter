@@ -15,9 +15,10 @@ import java.util.Calendar;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 import d3vel0pper.com.timelimiter.activity.MainActivity;
+import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
 
 /**
- * Created by HotFlush on 2016/06/16.
+ * Created by D3velopper on 2016/06/16.
  */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
@@ -48,7 +49,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
+        DialogTeller dialogTeller = DialogTeller.getInstance();
+        dialogTeller.InformDialog(getTag());
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
