@@ -24,12 +24,92 @@ public class Calculator {
     }
 
     /**
+     * Return formated calculated Gap after calcGap is called
+     * @return String of formated Gap yyyy/MM/dd/ hh:mm
+     */
+    public String getFormatedGap(){
+        return String.valueOf(year) + "/" + String.valueOf(month)
+                + "/" + String.valueOf(day) + " "
+                + String.valueOf(hour) + ":" + String.valueOf(min);
+    }
+
+    /**
+     * Return formated calculate Gap that u given
+     * @param formatedDateStart: yyyy/MM/dd/ hh:mm
+     * @param formatedDateEnd yyyy/MM/dd/ hh:mm
+     * @return
+     */
+    public String getFormatedGap(String formatedDateStart,String formatedDateEnd){
+        calcGap(formatedDateStart,formatedDateEnd);
+        return String.valueOf(year) + "/" + String.valueOf(month)
+                + "/" + String.valueOf(day) + " "
+                + String.valueOf(hour) + ":" + String.valueOf(min);
+    }
+
+    /**
+     * Return DayCount Gap after calcGap or calcTimeGap is called
+     * @return Integer count of days
+     */
+    public Integer getDayCountGap(){
+        return this.day;
+    }
+
+    /**
+     * Return TimeCountGap that u given
+     * @param formatedDateStart
+     * @param formatedDateEnd
+     */
+    public String getTimeCountGap(String formatedDateStart,String formatedDateEnd){
+        calcGap(formatedDateStart,formatedDateEnd);
+        String[] rtn = {"",""};
+        int temp;
+        temp = this.hour + (this.day * 24);
+        if(temp < 10){
+            rtn[0] = "0" + String.valueOf(temp);
+        } else {
+            rtn[0] = String.valueOf(temp);
+        }
+        if(this.min < 10){
+            rtn[1] = "0" + String.valueOf(this.min);
+        } else {
+            rtn[1] = String.valueOf(this.min);
+        }
+        return rtn[0] + ":" + rtn[1];
+    }
+    /**
+     * Return TimeCountGap after calcGap is called
+     */
+    public String getTimeCountGap(){
+        String[] rtn = {"",""};
+        int temp;
+        temp = this.hour + (this.day * 24);
+        if(temp < 10){
+            rtn[0] = "0" + String.valueOf(temp);
+        } else {
+            rtn[0] = String.valueOf(temp);
+        }
+        if(this.min < 10){
+            rtn[1] = "0" + String.valueOf(this.min);
+        } else {
+            rtn[1] = String.valueOf(this.min);
+        }
+        return rtn[0] + ":" + rtn[1];
+    }
+
+    public void calcGap(String formatedDateStart,String formatedDateEnd){
+        String[] tempStart = formatedDateStart.split(" ");
+        String[] tempEnd = formatedDateEnd.split(" ");
+        calcTimeGap(tempStart[1],tempEnd[1]);
+        calcDateGap(tempStart[0],tempEnd[0]);
+    }
+
+    /**
      * set the gap of Start-End date
      * @param formatedStart: yyyy/mm/dd
      * @param formatedEnd: yyyy/mm/dd
      */
     public void calcDateGap(String formatedStart,String formatedEnd){
-        int gap = -1;
+        int gap = 0;
         String[] start = formatedStart.split("/",0);
         String[] end = formatedEnd.split("/",0);
         //Set the start date to calendar
@@ -52,6 +132,21 @@ public class Calculator {
             gap += temp;
         }
         this.day = gap;
+//        this.day = calcDayGap(start[1],start[2],end[1],end[2]);
+//        this.month = calcMonthGap(start[1],end[1]);
+//        this.year = calcYearGap(start[0],end[0]);
+    }
+
+    private int calcYearGap(String startYear,String endYear) {
+        return Integer.parseInt(endYear) - Integer.parseInt(startYear);
+    }
+    private int calcMonthGap(String startMonth,String endMonth){
+        int result = Integer.parseInt(endMonth) - Integer.parseInt(startMonth);
+        if(result <= 0){
+            this.year--;
+            result += 12;
+        }
+        return result;
     }
 
     /**
@@ -83,7 +178,6 @@ public class Calculator {
         }
         return result + this.min;
     }
-
 
 
 }
