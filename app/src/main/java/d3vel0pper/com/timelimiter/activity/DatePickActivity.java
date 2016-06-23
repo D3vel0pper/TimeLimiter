@@ -15,10 +15,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
-import d3vel0pper.com.timelimiter.common.InformToActivity;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
-import d3vel0pper.com.timelimiter.fragment.MyListener;
 import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
 
 /**
@@ -84,10 +82,18 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute){
-        if(minute < 10){
-            timeData = String.valueOf(hour) + ":" + "0" + String.valueOf(minute);
+        if(hour < 10){
+            if(minute < 10){
+                timeData = "0" + String.valueOf(hour) + ":" + "0" + String.valueOf(minute);
+            }else {
+                timeData = "0" + String.valueOf(hour) + ":" + String.valueOf(minute);
+            }
         }else {
-            timeData = String.valueOf(hour) + ":" + String.valueOf(minute);
+            if (minute < 10) {
+                timeData = String.valueOf(hour) + ":" + "0" + String.valueOf(minute);
+            } else {
+                timeData = String.valueOf(hour) + ":" + String.valueOf(minute);
+            }
         }
         bothData = dateData + " " + timeData;
         testText.setText(bothData);

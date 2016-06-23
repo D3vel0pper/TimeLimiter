@@ -11,21 +11,21 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
-import d3vel0pper.com.timelimiter.common.InformToActivity;
-import d3vel0pper.com.timelimiter.fragment.MyListener;
+import d3vel0pper.com.timelimiter.common.RegisterInformer;
+import d3vel0pper.com.timelimiter.common.RegisteredListener;
 
 
-public class MainActivity extends FragmentActivity implements MyListener {
+public class MainActivity extends FragmentActivity implements RegisteredListener {
 
-    InformToActivity informToActivity;
+    RegisterInformer registerInformer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        informToActivity = InformToActivity.getInstance();
-        informToActivity.setListener(this);
+        registerInformer = RegisterInformer.getInstance();
+        registerInformer.setListener(this);
 
         Button mvToDatePick = (Button)findViewById(R.id.mvToDatePick);
         mvToDatePick.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity implements MyListener {
     }
 
     @Override
-    public void passTheDate(String data){
+    public void onRegistered(String data){
         Toast.makeText(this,"The data = " + data,Toast.LENGTH_SHORT).show();
     }
 
