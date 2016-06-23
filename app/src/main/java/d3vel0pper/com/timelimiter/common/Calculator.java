@@ -52,26 +52,8 @@ public class Calculator {
             gap += temp;
         }
         this.day = gap;
-//        this.day = calcDayGap(start[1],start[2],end[1],end[2]);
-//        this.month = calcMonthGap(start[1],end[1]);
-//        this.year = calcYearGap(start[0],end[0]);
     }
 
-    private int calcYearGap(String startYear,String endYear) {
-        return Integer.parseInt(endYear) - Integer.parseInt(startYear);
-    }
-    private int calcMonthGap(String startMonth,String endMonth){
-        int result = Integer.parseInt(endMonth) - Integer.parseInt(startMonth);
-        if(result <= 0){
-            this.year--;
-            result += 12;
-        }
-        return result;
-    }
-    private int calcDayGap(String startMonth,String startDay,String endMonth,String endDay) {
-
-        return 0;
-    }
     /**
      * set the gap of Start-End time
      * @param formatedStart: hh:mm
@@ -91,7 +73,7 @@ public class Calculator {
             this.day--;
             result += 24;
         }
-        return result;
+        return result + this.hour;
     }
     private int calcMinGap(String startMin,String endMin){
         int result = Integer.parseInt(endMin) - Integer.parseInt(startMin);
@@ -99,7 +81,7 @@ public class Calculator {
             this.hour--;
             result += 60;
         }
-        return result;
+        return result + this.min;
     }
 
 
