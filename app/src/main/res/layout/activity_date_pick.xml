@@ -6,9 +6,44 @@
     <TextView
         android:id="@+id/allDataText"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="10dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="開始日時："
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/startText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="終了日時："
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/endText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/dateText"
@@ -19,7 +54,8 @@
         android:id="@+id/startDateBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SetStartDate"/>
+        android:text="SetStartDate"
+        android:layout_marginLeft="5dp"/>
 
     <Button
         android:id="@+id/startTimeBtn"
@@ -39,16 +75,28 @@
         android:layout_height="wrap_content"
         android:text="SetEndTime"/>
 
+    <EditText
+        android:id="@+id/placeText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:id="@+id/descriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textSize="25sp"/>
+
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/endBtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="complete"/>
     </LinearLayout>
