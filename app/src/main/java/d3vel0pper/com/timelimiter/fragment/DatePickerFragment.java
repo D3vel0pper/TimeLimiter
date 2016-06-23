@@ -23,6 +23,18 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     public DatePickerFragment(){
     }
+    private MyCallBack myCallBack;
+    private String TAG;
+
+    public interface MyCallBack {
+        //CallBackMethod
+        String getTag();
+    }
+
+    public void setMyCallBack(MyCallBack myCallBack, String TAG){
+        this.myCallBack = myCallBack;
+        this.TAG = TAG;
+    }
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState){
@@ -48,7 +60,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
+        getTag();
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);

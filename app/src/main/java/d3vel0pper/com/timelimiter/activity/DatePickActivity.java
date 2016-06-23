@@ -28,6 +28,7 @@ public class DatePickActivity extends FragmentActivity
 
     TextView testText;
     String dateData = "";
+    String TAG = "";
     Boolean isDataSet = false;
     Boolean isSecondTime = false;
 
