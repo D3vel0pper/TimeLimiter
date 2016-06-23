@@ -76,6 +76,7 @@ public class CustomDialogFragment extends DialogFragment {
         String confirmString = "Do U want to register the date below?\n" + dateString;
         confirmText.setText(confirmString);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
+        confirmBtn.setText("Yes !");
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

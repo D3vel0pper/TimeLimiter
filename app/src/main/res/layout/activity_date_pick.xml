@@ -16,6 +16,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/startGuide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="開始日時："
@@ -24,7 +25,9 @@
         <TextView
             android:id="@+id/startText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_marginLeft="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -33,6 +36,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/endGuide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="終了日時："
@@ -42,13 +46,16 @@
             android:id="@+id/endText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="25sp"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
+    <!-- Here is dateText -->
     <TextView
         android:id="@+id/dateText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <!-- -->
 
     <Button
         android:id="@+id/startDateBtn"
