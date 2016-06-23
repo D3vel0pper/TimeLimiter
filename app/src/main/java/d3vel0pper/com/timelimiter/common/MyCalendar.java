@@ -335,6 +335,7 @@ public class MyCalendar {
         while(additionalDay > 0){
             if((getLastDay() - additionalDay) > 0){
                 this.day += additionalDay;
+                additionalDay = 0;
             } else {
                 //get gap to LastDay
                 int gap = getLastDay() - this.day;
