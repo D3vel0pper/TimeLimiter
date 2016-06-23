@@ -3,6 +3,7 @@ package d3vel0pper.com.timelimiter.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
@@ -27,6 +29,7 @@ public class DatePickActivity extends FragmentActivity
     TextView testText;
     String dateData = "";
     Boolean isDataSet = false;
+    Boolean isSecondTime = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -64,6 +67,9 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth){
+        Object temp = datePicker.getTag();
+        String temps = temp.toString();
+        Toast.makeText(this,temps,Toast.LENGTH_SHORT).show();
         if (isDataSet) {
             dateData = String.valueOf(year) + "/"
                     + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth)
