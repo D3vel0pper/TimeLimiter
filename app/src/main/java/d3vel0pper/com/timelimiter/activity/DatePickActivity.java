@@ -15,8 +15,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.common.InformToActivity;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
+import d3vel0pper.com.timelimiter.fragment.MyListener;
 import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
 
 /**
@@ -65,6 +67,11 @@ public class DatePickActivity extends FragmentActivity
                 cdf.show(getSupportFragmentManager(),"register");
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
     }
 
     @Override

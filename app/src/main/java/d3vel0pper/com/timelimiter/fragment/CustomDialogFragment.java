@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
+import d3vel0pper.com.timelimiter.common.InformToActivity;
 
 /**
  * Created by D3vel0pper on 2016/06/21.
@@ -60,6 +61,9 @@ public class CustomDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         getActivity().finish();
+                        InformToActivity informToActivity = InformToActivity.getInstance();
+                        informToActivity.setData(dateString);
+                        informToActivity.informToActivity();
                     }
                 });
                 break;
