@@ -39,12 +39,17 @@ public class DatePickActivity extends FragmentActivity
 
         testText = (TextView)findViewById(R.id.dateText);
 
-        Button testBtn = (Button)findViewById(R.id.testBtn);
-        testBtn.setOnClickListener(this);
-        Button testBtn2 = (Button)findViewById(R.id.testBtn2);
-        testBtn2.setOnClickListener(this);
+        Button startDateBtn = (Button)findViewById(R.id.startDateBtn);
+        startDateBtn.setOnClickListener(this);
+        Button startTimeBtn = (Button)findViewById(R.id.startTimeBtn);
+        startTimeBtn.setOnClickListener(this);
+        Button endDateBtn = (Button)findViewById(R.id.endDateBtn);
+        endDateBtn.setOnClickListener(this);
+        Button endTimeBtn = (Button)findViewById(R.id.endTimeBtn);
+        endTimeBtn.setOnClickListener(this);
         Button endBtn = (Button)findViewById(R.id.endBtn);
         endBtn.setOnClickListener(this);
+
 
 
     }
@@ -52,13 +57,21 @@ public class DatePickActivity extends FragmentActivity
     @Override
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.testBtn:
+            case R.id.startDateBtn:
                 DatePickerFragment dpf = new DatePickerFragment();
                 dpf.show(getSupportFragmentManager(),"datePicker");
                 break;
-            case R.id.testBtn2:
+            case R.id.startTimeBtn:
                 TimePickerFragment tpf = new TimePickerFragment();
                 tpf.show(getSupportFragmentManager(),"timePicker");
+                break;
+            case R.id.endDateBtn:
+                DatePickerFragment pickerEndDate = new DatePickerFragment();
+                pickerEndDate.show(getSupportFragmentManager(),"endDatePicker");
+                break;
+            case R.id.endTimeBtn:
+                TimePickerFragment pickerEndTime = new TimePickerFragment();
+                pickerEndTime.show(getSupportFragmentManager(),"endTimePicker");
                 break;
             case R.id.endBtn:
                 CustomDialogFragment cdf = new CustomDialogFragment();

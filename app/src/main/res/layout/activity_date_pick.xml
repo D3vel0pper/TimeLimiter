@@ -3,23 +3,41 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/allDataText"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/dateText"
         android:layout_width="match_parent"
-        android:layout_height="64dp" />
+        android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/testBtn"
+        android:id="@+id/startDateBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SetDate"/>
+        android:text="SetStartDate"/>
 
     <Button
-        android:id="@+id/testBtn2"
+        android:id="@+id/startTimeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SetTime"/>
+        android:text="SetStartTime"/>
+
+    <Button
+        android:id="@+id/endDateBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SetEndDate"/>
+
+    <Button
+        android:id="@+id/endTimeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SetEndTime"/>
 
     <LinearLayout
         android:id="@+id/footer"
