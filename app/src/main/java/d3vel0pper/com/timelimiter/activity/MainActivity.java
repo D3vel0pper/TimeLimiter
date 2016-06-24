@@ -10,6 +10,8 @@ import android.widget.Toast;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends FragmentActivity implements RegisteredListener {
@@ -19,6 +21,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
         setContentView(R.layout.activity_main);
 
         registerInformer = RegisterInformer.getInstance();

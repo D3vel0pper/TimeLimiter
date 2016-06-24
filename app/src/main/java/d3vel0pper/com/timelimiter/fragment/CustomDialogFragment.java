@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
+import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
+import io.realm.Realm;
 
 /**
  * Created by D3vel0pper on 2016/06/21.
@@ -85,7 +87,29 @@ public class CustomDialogFragment extends DialogFragment {
                 registerInformer.setData(dataString);
                 registerInformer.informToActivity();
                 if(dataString != null){
+                    /**
+                     * data[]
+                     *      [0] -> title
+                     *      [1] -> startGuide -> this is not for need X
+                     *      [2] -> startDate (yyyy/MM/dd hh:mm)
+                     *      [3] -> endGuide -> this is not for need X
+                     *      [4] -> endDate (yyyy/MM/dd hh:mm)
+                     *      [5] -> place
+                     *      [6] -> description
+                     */
                     String[] data = dataString.split("\n");
+
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    DBData dbData = realm.createObject(DBData.class);
+                    dbData.setTitle(data[0]);
+                    //dbData.setCreatedAt();
+                    dbData.setStartDate(data[2]);
+                    dbData.setEndDate(data[4]);
+                    dbData.setPlace(data[5]);
+                    dbData.setDescription(data[6]);
+                    realm.commitTransaction();
+
                 }
             }
         });
