@@ -7,7 +7,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -27,17 +32,18 @@ import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
  */
 public class DatePickActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener
-        ,TimePickerDialog.OnTimeSetListener,View.OnClickListener,ConfirmDialogListener {
+        ,TimePickerDialog.OnTimeSetListener,View.OnClickListener,TextWatcher,ConfirmDialogListener {
 
     public TextView allDataText,startText,endText,startGuide,endGuide;
     public String startDateData,startTimeData,endDateData
             ,endTimeData,bothStartData,bothEndData,allData,TAG;
-    public EditText placeText,descriptionText;
+    public EditText titleText,placeText,descriptionText;
     private DialogTeller dialogTeller;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_date_pick);
 
         startTimeData = "";
@@ -45,14 +51,30 @@ public class DatePickActivity extends FragmentActivity
         endTimeData = "";
         endDateData = "";
 
-        allDataText = (TextView)findViewById(R.id.allDataText);
+        //allDataText = (TextView)findViewById(R.id.allDataText);
         startText = (TextView)findViewById(R.id.startText);
         endText = (TextView)findViewById(R.id.endText);
         startGuide = (TextView)findViewById(R.id.startGuide);
         endGuide = (TextView)findViewById(R.id.endGuide);
 
+        titleText = (EditText)findViewById(R.id.titleText);
+        titleText.addTextChangedListener(this);
         placeText = (EditText)findViewById(R.id.placeText);
+        placeText.addTextChangedListener(this);
         descriptionText = (EditText)findViewById(R.id.descriptionText);
+        descriptionText.addTextChangedListener(this);
+        descriptionText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN
+                        && keyCode == KeyEvent.KEYCODE_ENTER){
+                    // ここにエンターキーを押したときの動作を記述します。
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
 
         Button startDateBtn = (Button)findViewById(R.id.startDateBtn);
         startDateBtn.setOnClickListener(this);
@@ -98,6 +120,21 @@ public class DatePickActivity extends FragmentActivity
     }
 
     @Override
+    public void onTextChanged(CharSequence sequence,int start,int count,int after){
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence sequence,int start,int count,int after){
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable){
+        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
+                + endGuide.getText() + "\n" + endText.getText() + "\n"
+                + placeText.getText() + "\n" + descriptionText.getText();
+    }
+
+    @Override
     public void onDestroy(){
         super.onDestroy();
     }
@@ -118,8 +155,8 @@ public class DatePickActivity extends FragmentActivity
             endText.setText(bothEndData);
         }
         //Put All Data
-        allData = (String)startGuide.getText() + startText.getText() + "\n"
-                + endGuide.getText() + endText.getText() + "\n"
+        this.allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
+                + endGuide.getText() + "\n" + endText.getText() + "\n"
                 + placeText.getText() + "\n" + descriptionText.getText();
     }
 
@@ -159,12 +196,14 @@ public class DatePickActivity extends FragmentActivity
             endText.setText(bothEndData);
         }
         //Put All Data
-        allData = (String)startGuide.getText() + startText.getText() + "\n"
-                + endGuide.getText() + endText.getText() + "\n"
-                + placeText.getText() + descriptionText.getText();
+        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
+                + endGuide.getText() + "\n" + endText.getText() + "\n"
+                + placeText.getText() + "\n" + descriptionText.getText();
     }
 
-    public String getBothData(){
+
+
+    public String getAllData(){
         return this.allData;
     }
 

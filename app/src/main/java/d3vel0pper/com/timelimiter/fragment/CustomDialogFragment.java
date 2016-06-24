@@ -21,7 +21,7 @@ import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
  */
 public class CustomDialogFragment extends DialogFragment {
     public CustomDialogFragment(){}
-    static private String dateString;
+    static private String dataString;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -69,11 +69,11 @@ public class CustomDialogFragment extends DialogFragment {
     public View registerCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
         View view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
         TextView confirmText = (TextView)view.findViewById(R.id.confirmText);
-        if(dateString == null){
-            dateString = "";
+        if(dataString == null){
+            dataString = "";
         }
-        dateString = parent.getBothData();
-        String confirmString = "Do U want to register the date below?\n" + dateString;
+        dataString = parent.getAllData();
+        String confirmString = "Do U want to register the date below?\n" + dataString;
         confirmText.setText(confirmString);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
         confirmBtn.setText("Yes !");
@@ -82,8 +82,11 @@ public class CustomDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 getActivity().finish();
                 RegisterInformer registerInformer = RegisterInformer.getInstance();
-                registerInformer.setData(dateString);
+                registerInformer.setData(dataString);
                 registerInformer.informToActivity();
+                if(dataString != null){
+                    String[] data = dataString.split("\n");
+                }
             }
         });
         return view;
