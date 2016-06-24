@@ -5,13 +5,17 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 
 public class MainActivity extends FragmentActivity implements RegisteredListener {
@@ -35,6 +39,16 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 startActivity(intent);
             }
         });
+
+        String fromRealm = "";
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmResults<DBData> resultAll = query.findAll();
+        DBData dbData = resultAll.get(0);
+        fromRealm = dbData.getStartDate();
+
+        TextView testText = (TextView)findViewById(R.id.testText);
+        testText.setText(fromRealm);
 
     }
 
