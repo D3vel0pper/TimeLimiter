@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
@@ -20,12 +24,16 @@ import io.realm.RealmResults;
 
 public class MainActivity extends FragmentActivity implements RegisteredListener {
 
-    RegisterInformer registerInformer;
+    private RegisterInformer registerInformer;
+    private Realm realm;
+    private String fromRealm = "";
+    private TextView testText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
+        final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
         setContentView(R.layout.activity_main);
 
         registerInformer = RegisterInformer.getInstance();
@@ -40,15 +48,22 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             }
         });
 
-        String fromRealm = "";
-        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realm.where(DBData.class);
-        RealmResults<DBData> resultAll = query.findAll();
-        DBData dbData = resultAll.get(0);
-        fromRealm = dbData.getStartDate();
+//        ---------------------------Test Code---------------------------------------------------
 
-        TextView testText = (TextView)findViewById(R.id.testText);
-        testText.setText(fromRealm);
+        loadRealm();
+
+        Button deleteBtn = (Button)findViewById(R.id.deleteBtn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                realm.close();
+                Realm.deleteRealm(realmConfiguration);
+                realm.getInstance(realmConfiguration);
+                loadRealm();
+            }
+        });
+
+//        --------------------------Test Code End-------------------------------------------------
 
     }
 
@@ -56,11 +71,13 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public void onRestart(){
         super.onRestart();
         //Add here the code which reload the DB
+        loadRealm();
     }
 
     @Override
     public void onResume(){
         super.onResume();
+
     }
 
     @Override
@@ -71,6 +88,22 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     @Override
     public void onRegistered(String data){
         Toast.makeText(this,"The data = " + data,Toast.LENGTH_SHORT).show();
+    }
+
+    public void loadRealm(){
+        realm = Realm.getDefaultInstance();
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmResults<DBData> resultAll = query.findAll();
+        //if no data is exist
+        if (resultAll.size() != 0) {
+            DBData dbData = resultAll.get(0);
+            fromRealm = dbData.getStartDate();
+        } else{
+            fromRealm = "";
+        }
+        testText = (TextView)findViewById(R.id.testText);
+        testText.setText(fromRealm);
+        realm.close();
     }
 
 }

@@ -24,6 +24,7 @@ import io.realm.Realm;
 public class CustomDialogFragment extends DialogFragment {
     public CustomDialogFragment(){}
     static private String dataString;
+    private Realm realm;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -82,7 +83,6 @@ public class CustomDialogFragment extends DialogFragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
                 RegisterInformer registerInformer = RegisterInformer.getInstance();
                 registerInformer.setData(dataString);
                 registerInformer.informToActivity();
@@ -99,7 +99,7 @@ public class CustomDialogFragment extends DialogFragment {
                      */
                     String[] data = dataString.split("\n");
 
-                    Realm realm = Realm.getDefaultInstance();
+                    realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
                     DBData dbData = realm.createObject(DBData.class);
                     dbData.setTitle(data[0]);
@@ -109,11 +109,19 @@ public class CustomDialogFragment extends DialogFragment {
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
                     realm.commitTransaction();
-
+                    getActivity().finish();
                 }
             }
         });
         return view;
+    }
+
+    @Override
+    public void onDestroyView(){
+        if(realm != null) {
+            realm.close();
+        }
+        super.onDestroyView();
     }
 
 }

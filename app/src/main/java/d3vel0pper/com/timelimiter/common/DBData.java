@@ -16,7 +16,8 @@ public class DBData extends RealmObject {
     private String description;
     private boolean notifable;
     private boolean isRepeatable;
-    @PrimaryKey
+
+
     private int id;
 
     public void setId(int id){

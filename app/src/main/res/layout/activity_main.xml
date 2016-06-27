@@ -21,5 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="moveToDatePick"/>
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="deleteDB"/>
 
 </LinearLayout>

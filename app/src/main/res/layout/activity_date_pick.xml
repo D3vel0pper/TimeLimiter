@@ -38,6 +38,21 @@
             android:layout_marginLeft="5dp" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/startDateBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SetStartDate"
+        android:textSize="15sp"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/startTimeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SetStartTime"
+        android:textSize="15sp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,21 +72,6 @@
             android:textSize="20sp"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/startDateBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SetStartDate"
-        android:textSize="15sp"
-        android:layout_marginLeft="5dp"/>
-
-    <Button
-        android:id="@+id/startTimeBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SetStartTime"
-        android:textSize="15sp"/>
 
     <Button
         android:id="@+id/endDateBtn"

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
@@ -42,18 +47,28 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        //Set default time and date
+        String[] data;
+        String temp;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
+        temp = format.format(date);
+        data = temp.split(" ");
+
+        startTimeData = data[1];
+        startDateData = data[0];
+        endTimeData = data[1];
+        endDateData = data[0];
+
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_date_pick);
 
-        startTimeData = "";
-        startDateData = "";
-        endTimeData = "";
-        endDateData = "";
-
         //allDataText = (TextView)findViewById(R.id.allDataText);
         startText = (TextView)findViewById(R.id.startText);
+        startText.setText(data[0] + " " + data[1]);
         endText = (TextView)findViewById(R.id.endText);
+        endText.setText(data[0] + " " + data[1]);
         startGuide = (TextView)findViewById(R.id.startGuide);
         endGuide = (TextView)findViewById(R.id.endGuide);
 
@@ -113,6 +128,25 @@ public class DatePickActivity extends FragmentActivity
                 pickerEndTime.show(getSupportFragmentManager(),"endTimePicker");
                 break;
             case R.id.endBtn:
+                //Null Check
+                String temp;
+                temp = titleText.getText().toString();
+                if(temp.length() == 0){
+                    titleText.setText("-");
+                }
+                temp = placeText.getText().toString();
+                if(temp.length() == 0){
+                    placeText.setText("-");
+                }
+                temp = descriptionText.getText().toString();
+                if(temp.length() == 0){
+                    descriptionText.setText("-");
+                }
+                //Set All Data
+                allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
+                        + endGuide.getText() + "\n" + endText.getText() + "\n"
+                        + placeText.getText() + "\n" + descriptionText.getText();
+                //Create Dialog
                 CustomDialogFragment cdf = new CustomDialogFragment();
                 cdf.show(getSupportFragmentManager(),"register");
                 break;
@@ -201,7 +235,20 @@ public class DatePickActivity extends FragmentActivity
                 + placeText.getText() + "\n" + descriptionText.getText();
     }
 
-
+    /**
+     *
+     * @return: [0] -> date (yyyy/MM/dd)
+     *           [1] -> time (hh:mm)
+     */
+    public String[] getDateOfNow(){
+        String[] data;
+        String temp;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
+        temp = format.format(date);
+        data = temp.split(" ");
+        return data;
+    }
 
     public String getAllData(){
         return this.allData;
