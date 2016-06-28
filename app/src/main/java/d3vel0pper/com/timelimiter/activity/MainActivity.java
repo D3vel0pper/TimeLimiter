@@ -1,8 +1,11 @@
 package d3vel0pper.com.timelimiter.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -12,6 +15,9 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.RunnableFuture;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
@@ -32,10 +38,12 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     private TextView testText;
     private RealmResults<DBData> resultAll;
     private ListView listView;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getBaseContext();
         final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(realmConfiguration);
         setContentView(R.layout.activity_main);
@@ -60,9 +68,14 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(realm != null){
+                    realm.close();
+                }
+                realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                realm.deleteAll();
+                realm.commitTransaction();
                 realm.close();
-                Realm.deleteRealm(realmConfiguration);
-                realm.getInstance(realmConfiguration);
                 loadRealm();
             }
         });
@@ -96,13 +109,21 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     }
 
     public void loadRealm(){
-        realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realm.where(DBData.class);
-        resultAll = query.findAll();
-        RealmAdapter realmAdapter = new RealmAdapter(this);
-        realmAdapter.setRealmResults(resultAll);
-        listView.setAdapter(realmAdapter);
-
+//        realm = Realm.getDefaultInstance();
+//        RealmQuery<DBData> query = realm.where(DBData.class);
+//        resultAll = query.findAll();
+        //realmAdapter.setRealmResults();
+        android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RealmAdapter realmAdapter = new RealmAdapter(context);
+                listView.setAdapter(realmAdapter);
+            }
+        });
+        if(realm != null){
+            realm.close();
+        }
 //        realm = Realm.getDefaultInstance();
 //        RealmQuery<DBData> query = realm.where(DBData.class);
 //        resultAll = query.findAll();

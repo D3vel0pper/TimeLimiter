@@ -47,17 +47,7 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-        /**
-         *       [0] -> date (yyyy/MM/dd)
-         *       [1] -> time (hh:mm)
-         */
-        //Set default time and date
-        String[] data;
-        String temp;
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
-        temp = format.format(date);
-        data = temp.split(" ");
+        String[] data = getTimeNow();
 
         startTimeData = data[1];
         startDateData = data[0];
@@ -241,6 +231,21 @@ public class DatePickActivity extends FragmentActivity
 
     public String getAllData(){
         return this.allData;
+    }
+
+    public String[] getTimeNow(){
+        /**
+         *       [0] -> date (yyyy/MM/dd)
+         *       [1] -> time (hh:mm)
+         */
+        //Set default time and date
+        String[] data;
+        String temp;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
+        temp = format.format(date);
+        data = temp.split(" ");
+        return data;
     }
 
     public void onConfirmDialog(String TAG){

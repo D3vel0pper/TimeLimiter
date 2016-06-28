@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
+import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -29,6 +31,7 @@ public class RealmAdapter extends BaseAdapter {
 
     @Override
     public int getCount(){
+        loadRealm();
         return realmResults.size();
         //return dataArray.size();
     }
@@ -37,18 +40,22 @@ public class RealmAdapter extends BaseAdapter {
         dataArray = data;
     }
 
-    public void setRealmResults(RealmResults<DBData> realmResults){
-        this.realmResults = realmResults;
-    }
+//    public void setRealmResults(){
+//        Realm realm = Realm.getDefaultInstance();
+//        RealmQuery<DBData> query = realm.where(DBData.class);
+//        this.realmResults = query.findAll();
+//    }
 
     @Override
     public Object getItem(int position){
+        loadRealm();
         return realmResults.get(position);
         //return dataArray.get(position);
     }
 
     @Override
     public long getItemId(int position){
+        loadRealm();
         return realmResults.get(position).getId();
         //return dataArray.get(position).getId();
     }
@@ -64,6 +71,10 @@ public class RealmAdapter extends BaseAdapter {
 //        ((TextView)convertView.findViewById(R.id.placeText)).setText(dataArray.get(position).getPlace());
 //        ((TextView)convertView.findViewById(R.id.descriptionText)).setText(dataArray.get(position).getDescription());
 
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        this.realmResults = query.findAll();
+
         ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.startDateText)).setText(realmResults.get(position).getStartDate());
         ((TextView)convertView.findViewById(R.id.endDateText)).setText(realmResults.get(position).getEndDate());
@@ -72,6 +83,12 @@ public class RealmAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    private void loadRealm(){
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        this.realmResults = query.findAll();
     }
 
 }

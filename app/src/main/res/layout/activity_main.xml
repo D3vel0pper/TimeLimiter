@@ -42,15 +42,15 @@
         <!--android:text="moveToDatePick"/>-->
 
     <!-- For Test And Debug -->
-    <ListView
-        android:id="@+id/itemList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
-
     <Button
         android:id="@+id/deleteBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="deleteDB"/>
+
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 </LinearLayout>
