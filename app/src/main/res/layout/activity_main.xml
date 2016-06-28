@@ -4,23 +4,49 @@
     android:orientation="vertical"
     android:id="@+id/rootLinear">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center">
+        android:layout_height="55dp"
+        android:background="#00695C">
 
-        <TextView
-            android:id="@+id/testText"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/mvToDatePick"
+            <Button
+                android:id="@+id/mvToDatePick"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="5dp"
+                android:text="+"/>
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/testText"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height= "wrap_content"/>-->
+    <!--</LinearLayout>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/mvToDatePick"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:text="moveToDatePick"/>-->
+
+    <!-- For Test And Debug -->
+    <ListView
+        android:id="@+id/itemList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="moveToDatePick"/>
+        android:layout_height="match_parent"></ListView>
+
     <Button
         android:id="@+id/deleteBtn"
         android:layout_width="match_parent"

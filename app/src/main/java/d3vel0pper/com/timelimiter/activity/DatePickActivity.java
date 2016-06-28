@@ -47,6 +47,10 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        /**
+         *       [0] -> date (yyyy/MM/dd)
+         *       [1] -> time (hh:mm)
+         */
         //Set default time and date
         String[] data;
         String temp;
@@ -83,7 +87,7 @@ public class DatePickActivity extends FragmentActivity
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_DOWN
                         && keyCode == KeyEvent.KEYCODE_ENTER){
-                    // ここにエンターキーを押したときの動作を記述します。
+                    // Process when Enter Key Pressed
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
@@ -233,21 +237,6 @@ public class DatePickActivity extends FragmentActivity
         allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
                 + endGuide.getText() + "\n" + endText.getText() + "\n"
                 + placeText.getText() + "\n" + descriptionText.getText();
-    }
-
-    /**
-     *
-     * @return: [0] -> date (yyyy/MM/dd)
-     *           [1] -> time (hh:mm)
-     */
-    public String[] getDateOfNow(){
-        String[] data;
-        String temp;
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
-        temp = format.format(date);
-        data = temp.split(" ");
-        return data;
     }
 
     public String getAllData(){

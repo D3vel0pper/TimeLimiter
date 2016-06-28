@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
@@ -28,6 +30,8 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     private Realm realm;
     private String fromRealm = "";
     private TextView testText;
+    private RealmResults<DBData> resultAll;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         });
 
 //        --------------------------Test Code End-------------------------------------------------
+        listView = (ListView)findViewById(R.id.itemList);
 
     }
 
@@ -93,17 +98,30 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public void loadRealm(){
         realm = Realm.getDefaultInstance();
         RealmQuery<DBData> query = realm.where(DBData.class);
-        RealmResults<DBData> resultAll = query.findAll();
-        //if no data is exist
-        if (resultAll.size() != 0) {
-            DBData dbData = resultAll.get(0);
-            fromRealm = dbData.getStartDate();
-        } else{
-            fromRealm = "";
-        }
-        testText = (TextView)findViewById(R.id.testText);
-        testText.setText(fromRealm);
-        realm.close();
+        resultAll = query.findAll();
+        RealmAdapter realmAdapter = new RealmAdapter(this);
+        realmAdapter.setRealmResults(resultAll);
+        listView.setAdapter(realmAdapter);
+
+//        realm = Realm.getDefaultInstance();
+//        RealmQuery<DBData> query = realm.where(DBData.class);
+//        resultAll = query.findAll();
+//        String temp = "";
+//        //if no data is exist
+//        if (resultAll.size() != 0) {
+//            for(int i = 0;i<resultAll.size();i++){
+//                DBData dbData = resultAll.get(i);
+//                temp += "タイトル：" + dbData.getTitle() + "\n開始：" + dbData.getStartDate()
+//                    + "\n終了：" + dbData.getEndDate() + "\n場所：" + dbData.getPlace() + "\n詳細："
+//                    + dbData.getDescription() + "\n";
+//            }
+//            fromRealm += temp;
+//        } else{
+//        }
+//        testText = (TextView)findViewById(R.id.testText);
+//        testText.setText(fromRealm);
+//        realm.close();
+
     }
 
 }
