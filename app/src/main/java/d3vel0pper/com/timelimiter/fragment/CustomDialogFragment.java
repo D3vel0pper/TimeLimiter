@@ -108,7 +108,7 @@ public class CustomDialogFragment extends DialogFragment {
                     dbData.setEndDate(data[4]);
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
-                    //get Current Date
+                    //get Current Date for CreatedAt
                     DatePickActivity parent = (DatePickActivity)getActivity();
                     String[] timeNow = parent.getTimeNow();
                     dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);

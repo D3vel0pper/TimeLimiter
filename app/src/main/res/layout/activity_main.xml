@@ -23,25 +23,6 @@
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/testText"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height= "wrap_content"/>-->
-    <!--</LinearLayout>-->
-
-    <!--<Button-->
-        <!--android:id="@+id/mvToDatePick"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:text="moveToDatePick"/>-->
-
-    <!-- For Test And Debug -->
     <Button
         android:id="@+id/deleteBtn"
         android:layout_width="match_parent"

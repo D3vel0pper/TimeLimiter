@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,9 +35,6 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
     private RegisterInformer registerInformer;
     private Realm realm;
-    private String fromRealm = "";
-    private TextView testText;
-    private RealmResults<DBData> resultAll;
     private ListView listView;
     private Context context;
 
@@ -109,40 +107,25 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     }
 
     public void loadRealm(){
-//        realm = Realm.getDefaultInstance();
-//        RealmQuery<DBData> query = realm.where(DBData.class);
-//        resultAll = query.findAll();
-        //realmAdapter.setRealmResults();
+        //set RealmResult by using Handler to handle ResultData from UI thread
+        //if u don't use handler, it will be crushed By NPE
         android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             @Override
             public void run() {
                 RealmAdapter realmAdapter = new RealmAdapter(context);
                 listView.setAdapter(realmAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         if(realm != null){
             realm.close();
         }
-//        realm = Realm.getDefaultInstance();
-//        RealmQuery<DBData> query = realm.where(DBData.class);
-//        resultAll = query.findAll();
-//        String temp = "";
-//        //if no data is exist
-//        if (resultAll.size() != 0) {
-//            for(int i = 0;i<resultAll.size();i++){
-//                DBData dbData = resultAll.get(i);
-//                temp += "タイトル：" + dbData.getTitle() + "\n開始：" + dbData.getStartDate()
-//                    + "\n終了：" + dbData.getEndDate() + "\n場所：" + dbData.getPlace() + "\n詳細："
-//                    + dbData.getDescription() + "\n";
-//            }
-//            fromRealm += temp;
-//        } else{
-//        }
-//        testText = (TextView)findViewById(R.id.testText);
-//        testText.setText(fromRealm);
-//        realm.close();
-
     }
 
 }
