@@ -9,6 +9,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DatePickActivity"
+            android:launchMode="singleTask"
             android:label="TimeLimiter" >
         </activity>
         <receiver android:name=".common.NotificationReceiver"
