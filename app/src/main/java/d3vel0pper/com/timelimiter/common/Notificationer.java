@@ -25,6 +25,7 @@ public class Notificationer {
         //stand intent
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("MESSAGE", message);
+        intent.putExtra("ID",requestCode);
         PendingIntent sender = PendingIntent.getBroadcast(context,  requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //date has time shaped by mills
