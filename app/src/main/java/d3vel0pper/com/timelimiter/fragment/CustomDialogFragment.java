@@ -15,6 +15,7 @@ import android.widget.TextView;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import io.realm.Realm;
 
@@ -113,6 +114,9 @@ public class CustomDialogFragment extends DialogFragment {
                     String[] timeNow = parent.getTimeNow();
                     dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
                     realm.commitTransaction();
+                    Notificationer.setLocalNotification(
+                            getActivity(),dbData.getTitle(),dbData.getId(),dbData.getStartDate()
+                    );
                     getActivity().finish();
                 }
             }
