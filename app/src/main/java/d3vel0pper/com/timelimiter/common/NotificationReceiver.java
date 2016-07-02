@@ -1,5 +1,6 @@
 package d3vel0pper.com.timelimiter.common;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,6 +25,8 @@ public class NotificationReceiver extends BroadcastReceiver{
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle(message);
+        //set vibration sound, and light
+        builder.setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
         //set the action when notification tapped
         Intent targetctivity = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(

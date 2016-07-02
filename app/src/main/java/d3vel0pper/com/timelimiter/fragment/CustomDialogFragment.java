@@ -70,7 +70,7 @@ public class CustomDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    public View registerCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
+    private View registerCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
         View view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
         TextView confirmText = (TextView)view.findViewById(R.id.confirmText);
         if(dataString == null){
