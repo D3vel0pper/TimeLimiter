@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<ListPreference
+    android:key="maxHourPerDay"
+    android:defaultValue="@integer/default_IntMax" />
+<ListPreference
+    android:key="maxHourPerWeek"
+    android:defaultValue="@integer/default_IntMax"/>
+<ListPreference
+    android:key="maxHourPerMonth"
+    android:defaultValue="@integer/default_IntMax"/>
+<ListPreference
+    android:key="showingMode"
+    android:defaultValue="@integer/default_0"/>
+<ListPreference
+    android:key="notification"
+    android:defaultValue="@bool/pref_true"/>
+<ListPreference
+    android:key="deleteAuto"
+    android:defaultValue="@bool/pref_false"/>
+</PreferenceScreen>

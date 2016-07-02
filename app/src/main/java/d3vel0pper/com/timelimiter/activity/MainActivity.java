@@ -2,7 +2,9 @@ package d3vel0pper.com.timelimiter.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -37,15 +39,19 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     private Realm realm;
     private ListView listView;
     private Context context;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
+        PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
         final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(realmConfiguration);
         setContentView(R.layout.activity_main);
 
+        //Set Register Informer
         registerInformer = RegisterInformer.getInstance();
         registerInformer.setListener(this);
 
@@ -58,9 +64,17 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             }
         });
 
-//        ---------------------------Test Code---------------------------------------------------
-
         loadRealm();
+//        ---------------------------Test Code---------------------------------------------------
+        Button testBtn = (Button)findViewById(R.id.testBtn);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("maxHourPerDay",10);
+                editor.apply();
+            }
+        });
 
         Button deleteBtn = (Button)findViewById(R.id.deleteBtn);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +88,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 realm.deleteAll();
                 realm.commitTransaction();
                 realm.close();
+                //After delete, reload Realm
                 loadRealm();
             }
         });
@@ -101,6 +116,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         super.onDestroy();
     }
 
+    //Custom Listener of registration
     @Override
     public void onRegistered(String data){
         Toast.makeText(this,"The data = " + data,Toast.LENGTH_SHORT).show();
@@ -126,6 +142,13 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         if(realm != null){
             realm.close();
         }
+    }
+
+    /**
+     *
+     */
+    private void setPreferences(){
+
     }
 
 }
