@@ -53,7 +53,7 @@ public class RealmAdapter extends BaseAdapter {
         RealmQuery<DBData> query = realm.where(DBData.class);
         this.realmResults = query.findAll();
 
-        ((TextView)convertView.findViewById(R.id.hiddenData)).setText(realmResults.get(position).getId());
+//        ((TextView)convertView.findViewById(R.id.hiddenData)).setText(realmResults.get(position).getId());
         ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.startDateText)).setText(realmResults.get(position).getStartDate());
         ((TextView)convertView.findViewById(R.id.endDateText)).setText(realmResults.get(position).getEndDate());

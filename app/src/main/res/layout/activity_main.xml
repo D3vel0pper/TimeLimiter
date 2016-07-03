@@ -1,41 +1,57 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/rootLinear">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/rootLinear">
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="#00695C">
-
-        <FrameLayout
+        <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="55dp"
+            android:background="#00695C">
 
-            <Button
-                android:id="@+id/mvToDatePick"
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_margin="5dp"
-                android:text="+"/>
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/testBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/deleteBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="deleteDB"/>
+                <ImageButton
+                    android:id="@+id/settingBtn"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_info_details"
+                    android:layout_gravity="left"/>
 
-    <ListView
-        android:id="@+id/itemList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+                <ImageButton
+                    android:id="@+id/mvToDatePick"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_margin="5dp"
+                    android:src="@android:drawable/ic_menu_add"/>
+<!--
+                <Button
+                    android:id="@+id/mvToDatePick"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_margin="5dp"
+                    android:text="+"/>
+                    -->
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/testBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="deleteDB"/>
+
+        <ListView
+            android:id="@+id/itemList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+
+    </LinearLayout>

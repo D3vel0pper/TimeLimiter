@@ -8,9 +8,13 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +44,8 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     private ListView listView;
     private Context context;
     private SharedPreferences preferences;
+    public DrawerLayout drawerLayout;
+    public ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         registerInformer = RegisterInformer.getInstance();
         registerInformer.setListener(this);
 
-        Button mvToDatePick = (Button)findViewById(R.id.mvToDatePick);
+        ImageButton mvToDatePick = (ImageButton)findViewById(R.id.mvToDatePick);
         mvToDatePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,5 +156,4 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     private void setPreferences(){
 
     }
-
 }
