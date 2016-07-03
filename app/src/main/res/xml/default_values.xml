@@ -18,4 +18,7 @@
 <ListPreference
     android:key="deleteAuto"
     android:defaultValue="@bool/pref_false"/>
+<ListPreference
+    android:key="sleepTime"
+    android:defaultValue="@integer/default_0"/>
 </PreferenceScreen>

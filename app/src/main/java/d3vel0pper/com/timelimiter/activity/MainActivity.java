@@ -7,7 +7,15 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -33,23 +41,46 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
-public class MainActivity extends FragmentActivity implements RegisteredListener {
+public class MainActivity extends AppCompatActivity implements RegisteredListener,NavigationView.OnNavigationItemSelectedListener {
+
+    public static String TAG = "MainActivity";
 
     private RegisterInformer registerInformer;
     private Realm realm;
     private ListView listView;
     private Context context;
     private SharedPreferences preferences;
+    //Navigation Drawer
+    private DrawerLayout drawerLayout;
+    private String[] planetTitles;
+    private ListView drawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //setup toolbar
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //set up NavigationDrawer
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this,drawerLayout,toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+        //Register Navigation Listener
+        NavigationView navigationView = (NavigationView)findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
+
         preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
         PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
         final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(realmConfiguration);
-        setContentView(R.layout.activity_main);
 
         //Set Register Informer
         registerInformer = RegisterInformer.getInstance();
@@ -71,7 +102,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt("maxHourPerDay",10);
+                editor.clear();
                 editor.apply();
             }
         });
@@ -115,6 +146,48 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public void onDestroy(){
         super.onDestroy();
     }
+
+    //--------------For Navigation Drawer-----------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                Toast.makeText(this, "setting selected !", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.menu_item1:
+                Toast.makeText(MainActivity.this, "menu_item1 selected!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_item2:
+                Toast.makeText(MainActivity.this, "menu_item2 selected!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_item3:
+                Toast.makeText(MainActivity.this, "menu_item3 selected!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_item4:
+                Toast.makeText(MainActivity.this, "menu_item4 selected!", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    //-------------------------------------------------------------------------------------------
 
     //Custom Listener of registration
     @Override
