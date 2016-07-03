@@ -62,17 +62,6 @@ public class CustomDialogFragment extends DialogFragment {
         } else {
             view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
         }
-//        switch(getTag()){
-//            case "register":
-//                view = registerCase(inflater,container,savedInstanceState,(DatePickActivity)parent);
-//                break;
-//            case "setting":
-//                view = settingCase(inflater,container,savedInstanceState,parent);
-//                break;
-//            default:
-//                view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
-//                break;
-//        }
         return view;
     }
 

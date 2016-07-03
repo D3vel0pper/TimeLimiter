@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -83,12 +84,24 @@ public class SettingAdapter extends BaseAdapter {
                 inputedText.setVisibility(View.GONE);
                 itemSwitch.setVisibility(View.VISIBLE);
                 itemSwitch.setChecked(preferences.getBoolean("notification",true));
+                itemSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        preferences.edit().putBoolean("notification",isChecked).apply();
+                    }
+                });
                 break;
             case 5:
                 guide.setText("Toggle auto Delete");
                 inputedText.setVisibility(View.GONE);
                 itemSwitch.setVisibility(View.VISIBLE);
                 itemSwitch.setChecked(preferences.getBoolean("deleteAuto",false));
+                itemSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        preferences.edit().putBoolean("deleteAuto",isChecked).apply();
+                    }
+                });
                 break;
         }
 
