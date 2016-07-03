@@ -29,6 +29,7 @@ public class SettingActivity extends Activity {
             public void onClick(View v) {
                 SharedPreferences preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
                 preferences.edit().clear().apply();
+                //invalidate when data changed
                 adapter.notifyDataSetChanged();
             }
         });
