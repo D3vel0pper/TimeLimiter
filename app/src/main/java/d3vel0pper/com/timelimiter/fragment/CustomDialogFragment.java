@@ -1,6 +1,9 @@
 package d3vel0pper.com.timelimiter.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
@@ -10,10 +13,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
+import d3vel0pper.com.timelimiter.activity.SettingActivity;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
@@ -48,16 +53,26 @@ public class CustomDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        DatePickActivity parent = (DatePickActivity)getActivity();
+        Activity parent = getActivity();
         View view;
-        switch(getTag()){
-            case "register":
-                view = registerCase(inflater,container,savedInstanceState,parent);
-                break;
-            default:
-                view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
-                break;
+        if(getTag().equals("register")){
+            view = registerCase(inflater,container,savedInstanceState,(DatePickActivity)parent);
+        } else if(getTag().equals("setting0") || getTag().equals("setting1") || getTag().equals("setting2")){
+           view = settingCase(inflater,container,savedInstanceState,(SettingActivity) parent);
+        } else {
+            view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
         }
+//        switch(getTag()){
+//            case "register":
+//                view = registerCase(inflater,container,savedInstanceState,(DatePickActivity)parent);
+//                break;
+//            case "setting":
+//                view = settingCase(inflater,container,savedInstanceState,parent);
+//                break;
+//            default:
+//                view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
+//                break;
+//        }
         return view;
     }
 
@@ -121,6 +136,43 @@ public class CustomDialogFragment extends DialogFragment {
                 }
             }
         });
+        return view;
+    }
+
+    private View settingCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, final SettingActivity parent){
+        View view = inflater.inflate(R.layout.change_setting_dialog,container,false);
+        final EditText editText = (EditText)view.findViewById(R.id.settingText);
+        Button okBtn = (Button)view.findViewById(R.id.okBtn);
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = parent.getSharedPreferences("ConfigData", Context.MODE_PRIVATE);
+                switch (getTag()){
+                    case "setting0":
+                        preferences.edit().
+                                putInt("maxHourPerDay",Integer.parseInt(editText.getText().toString())).
+                                apply();
+                        parent.adapter.notifyDataSetChanged();
+                        break;
+                    case "setting1":
+                        preferences.edit().
+                                putInt("maxHourPerWeek",Integer.parseInt(editText.getText().toString())).
+                                apply();
+                        parent.adapter.notifyDataSetChanged();
+                        break;
+                    case "setting2":
+                        preferences.edit().
+                                putInt("maxHourPerMonth",Integer.parseInt(editText.getText().toString())).
+                                apply();
+                        parent.adapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
+                dismiss();
+            }
+        });
+
         return view;
     }
 
