@@ -70,6 +70,15 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             }
         });
 
+        ImageButton settingBtn = (ImageButton)findViewById(R.id.settingBtn);
+        settingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),DatePickActivity.class);
+                startActivity(intent);
+            }
+        });
+
         loadRealm();
 //        ---------------------------Test Code---------------------------------------------------
         Button testBtn = (Button)findViewById(R.id.testBtn);
