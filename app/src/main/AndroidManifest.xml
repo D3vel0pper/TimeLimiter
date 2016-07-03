@@ -21,6 +21,10 @@
             android:launchMode="singleTask"
             android:label="TimeLimiter" >
         </activity>
+        <activity android:name=".activity.SettingActivity"
+            android:launchMode="singleTask"
+            android:label="Setting">
+        </activity>
         <receiver android:name=".common.NotificationReceiver"
             android:process=":remote"/>
     </application>

@@ -74,7 +74,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),DatePickActivity.class);
+                Intent intent = new Intent(getApplicationContext(),SettingActivity.class);
                 startActivity(intent);
             }
         });
