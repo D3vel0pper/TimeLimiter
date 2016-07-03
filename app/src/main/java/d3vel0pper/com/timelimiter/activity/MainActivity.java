@@ -158,11 +158,5 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             realm.close();
         }
     }
-
-    /**
-     *
-     */
-    private void setPreferences(){
-
-    }
+    
 }

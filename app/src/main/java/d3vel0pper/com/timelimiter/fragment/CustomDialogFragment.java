@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
@@ -158,6 +159,7 @@ public class CustomDialogFragment extends DialogFragment {
                     default:
                         break;
                 }
+                Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
