@@ -96,6 +96,11 @@ public class Calculator {
         return rtn[0] + ":" + rtn[1];
     }
 
+    /**
+     * Calculating Gap of 2 date.
+     * @param formatedDateStart
+     * @param formatedDateEnd
+     */
     public void calcGap(String formatedDateStart,String formatedDateEnd){
         String[] tempStart = formatedDateStart.split(" ");
         String[] tempEnd = formatedDateEnd.split(" ");
@@ -131,6 +136,7 @@ public class Calculator {
             myCalendar.addDays(temp);
             gap += temp;
         }
+        //set Gap day
         this.day = gap;
     }
 
@@ -176,5 +182,17 @@ public class Calculator {
         return result + this.min;
     }
 
+    /**
+     * plz Call after calcGap()
+     * Return Gap Counted By hour.
+     * @return: calculated Gap counted by hour (min will be omitted)
+     */
+    public int getAllGapInHour(){
+        int hour = 0;
+        for(int i = 0;this.day > i;i++){
+            hour += 24;
+        }
+        return hour + this.hour;
+    }
 
 }

@@ -158,5 +158,9 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             realm.close();
         }
     }
+
+    public void setupCalc(){
+
+    }
     
 }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 import d3vel0pper.com.timelimiter.activity.SettingActivity;
+import d3vel0pper.com.timelimiter.common.Calculator;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
@@ -119,9 +120,13 @@ public class CustomDialogFragment extends DialogFragment {
                     String[] timeNow = parent.getTimeNow();
                     dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
                     realm.commitTransaction();
+                    //register Notification
                     Notificationer.setLocalNotification(
                             getActivity(),dbData.getTitle(),dbData.getId(),dbData.getStartDate()
                     );
+                    //Calculating and Registering sum of scheduled plans
+                    Calculator calc = new Calculator();
+                    calc.getTimeCountGap(dbData.getStartDate(),dbData.getEndDate());
                     getActivity().finish();
                 }
             }
