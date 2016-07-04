@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.adapter.SettingAdapter;
@@ -24,6 +25,8 @@ public class SettingActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        TextView textView = (TextView)findViewById(R.id.percentage);
+        textView.setText(String.valueOf(getSharedPreferences("ConfigData",MODE_PRIVATE).getInt("nowRegistered",0)));
         ListView listView = (ListView)findViewById(R.id.settingList);
         adapter = new SettingAdapter(this);
         listView.setAdapter(adapter);

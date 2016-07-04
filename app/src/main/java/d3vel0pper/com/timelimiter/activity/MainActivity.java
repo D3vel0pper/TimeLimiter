@@ -31,6 +31,7 @@ import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
+import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
@@ -46,6 +47,9 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     private SharedPreferences preferences;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle toggle;
+    public int itemId;
+    public int itemPosition;
+    public RealmAdapter realmAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 realm.deleteAll();
                 realm.commitTransaction();
                 realm.close();
+                preferences.edit().putInt("nowRegistered",0).apply();
                 //After delete, reload Realm
                 loadRealm();
             }
@@ -144,12 +149,24 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         handler.post(new Runnable() {
             @Override
             public void run() {
-                RealmAdapter realmAdapter = new RealmAdapter(context);
+                realmAdapter = new RealmAdapter(context);
                 listView.setAdapter(realmAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                        View rtnView = realmAdapter.getView(position,null,null);
+//                        itemId = Integer.parseInt(((TextView)rtnView.findViewById(R.id.hiddenData)).getText().toString());
+                        itemPosition = position;
+                        CustomDialogFragment cdf = new CustomDialogFragment();
+                        cdf.show(getSupportFragmentManager(),"list");
+                        realmAdapter.notifyDataSetChanged();
+                        return true;
                     }
                 });
             }

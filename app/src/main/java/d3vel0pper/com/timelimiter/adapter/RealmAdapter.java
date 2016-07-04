@@ -14,7 +14,7 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
- * Created by HotFlush on 2016/06/28.
+ * Created by D3vel0pper on 2016/06/28.
  */
 public class RealmAdapter extends BaseAdapter {
     private Context context;
@@ -36,7 +36,6 @@ public class RealmAdapter extends BaseAdapter {
     public Object getItem(int position){
         loadRealm();
         return realmResults.get(position);
-        //return dataArray.get(position);
     }
 
     @Override
@@ -51,9 +50,12 @@ public class RealmAdapter extends BaseAdapter {
 
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<DBData> query = realm.where(DBData.class);
+        this.realmResults.sort("id");
         this.realmResults = query.findAll();
 
-//        ((TextView)convertView.findViewById(R.id.hiddenData)).setText(realmResults.get(position).getId());
+        TextView hiddenId = (TextView)convertView.findViewById(R.id.hiddenData);
+        hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
+//        hiddenId.setVisibility(View.GONE);
         ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.startDateText)).setText(realmResults.get(position).getStartDate());
         ((TextView)convertView.findViewById(R.id.endDateText)).setText(realmResults.get(position).getEndDate());

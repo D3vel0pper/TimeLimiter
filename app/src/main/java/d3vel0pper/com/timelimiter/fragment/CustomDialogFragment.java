@@ -12,19 +12,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
+import d3vel0pper.com.timelimiter.activity.MainActivity;
 import d3vel0pper.com.timelimiter.activity.SettingActivity;
 import d3vel0pper.com.timelimiter.common.Calculator;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Created by D3vel0pper on 2016/06/21.
@@ -62,7 +70,7 @@ public class CustomDialogFragment extends DialogFragment {
         } else if(getTag().equals("setting0") || getTag().equals("setting1") || getTag().equals("setting2")){
            view = settingCase(inflater,container,savedInstanceState,(SettingActivity) parent);
         } else {
-            view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
+            view = defaultCase(inflater,container,savedInstanceState,(MainActivity)parent);
         }
         return view;
     }
@@ -74,6 +82,41 @@ public class CustomDialogFragment extends DialogFragment {
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 
         return dialog;
+    }
+
+    private View defaultCase(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState,MainActivity parent){
+        View view = inflater.inflate(R.layout.fragment_list_dialog,container,false);
+        String[] listData = {"edit","delete","complete"};
+        final int parentItemPosition = parent.itemPosition;
+        final MainActivity passParent = parent;
+        ListView listView = (ListView)view.findViewById(R.id.listView);
+        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(parent,R.layout.default_list_item_layout,listData);
+        listView.setAdapter(listAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                switch(position){
+                    case 0:
+                        break;
+                    case 1:
+                        Realm realm = Realm.getDefaultInstance();
+                        final RealmResults<DBData> results;
+                        RealmQuery<DBData> query = realm.where(DBData.class);
+                        results = query.findAll();
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                results.get(parentItemPosition).deleteFromRealm();
+                            }
+                        });
+                        break;
+                    case 2:
+                        break;
+                }
+                dismiss();
+            }
+        });
+        return view;
     }
 
     private View registerCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
@@ -107,8 +150,20 @@ public class CustomDialogFragment extends DialogFragment {
                     String[] data = dataString.split("\n");
 
                     realm = Realm.getDefaultInstance();
+                    //for check is empty
+                    RealmResults<DBData> results;
+                    RealmQuery<DBData> query = realm.where(DBData.class);
+                    results = query.findAll();
+                    //start transaction and register
                     realm.beginTransaction();
                     DBData dbData = realm.createObject(DBData.class);
+                    if(results.isEmpty()){
+                        dbData.setId(0);
+                    } else {
+                        //because size() counted null Object in Last
+                        //dbData.setId(results.size());
+                        dbData.setId(results.last().getId() + 1);
+                    }
                     dbData.setTitle(data[0]);
                     //dbData.setCreatedAt();
                     dbData.setStartDate(data[2]);
@@ -121,12 +176,18 @@ public class CustomDialogFragment extends DialogFragment {
                     dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
                     realm.commitTransaction();
                     //register Notification
-                    Notificationer.setLocalNotification(
-                            getActivity(),dbData.getTitle(),dbData.getId(),dbData.getStartDate()
-                    );
+                    SharedPreferences preferences
+                            = parent.getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
+                    if(preferences.getBoolean("notification",true)){
+                        Notificationer.setLocalNotification(
+                                getActivity(),dbData.getTitle(),dbData.getId(),dbData.getStartDate()
+                        );
+                    }
                     //Calculating and Registering sum of scheduled plans
                     Calculator calc = new Calculator();
-                    calc.getTimeCountGap(dbData.getStartDate(),dbData.getEndDate());
+                    calc.calcGap(dbData.getStartDate(),dbData.getEndDate());
+
+                    preferences.edit().putInt("nowRegistered",calc.getAllGapInHour()).apply();
                     getActivity().finish();
                 }
             }
