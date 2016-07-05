@@ -12,6 +12,7 @@ import d3vel0pper.com.timelimiter.common.DBData;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by D3vel0pper on 2016/06/28.
@@ -50,8 +51,8 @@ public class RealmAdapter extends BaseAdapter {
 
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<DBData> query = realm.where(DBData.class);
-        this.realmResults.sort("id");
-        this.realmResults = query.findAll();
+        //if sort() is not called, order will be not in correct position after delete Object
+        this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
 
         TextView hiddenId = (TextView)convertView.findViewById(R.id.hiddenData);
         hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
