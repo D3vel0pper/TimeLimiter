@@ -33,6 +33,7 @@ import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by D3vel0pper on 2016/06/21.
@@ -153,7 +154,7 @@ public class CustomDialogFragment extends DialogFragment {
                     //for check is empty
                     RealmResults<DBData> results;
                     RealmQuery<DBData> query = realm.where(DBData.class);
-                    results = query.findAll();
+                    results = query.findAll().sort("id", Sort.ASCENDING);
                     //start transaction and register
                     realm.beginTransaction();
                     DBData dbData = realm.createObject(DBData.class);
