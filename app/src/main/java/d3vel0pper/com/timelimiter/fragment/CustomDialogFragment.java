@@ -136,7 +136,6 @@ public class CustomDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 RegisterInformer registerInformer = RegisterInformer.getInstance();
                 registerInformer.setData(dataString);
-                registerInformer.informToActivity();
                 if(dataString != null){
                     /**
                      * data[]
@@ -149,7 +148,8 @@ public class CustomDialogFragment extends DialogFragment {
                      *      [6] -> description
                      */
                     String[] data = dataString.split("\n");
-
+                    SharedPreferences preferences
+                            = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
                     realm = Realm.getDefaultInstance();
                     //for check is empty
                     RealmResults<DBData> results;
@@ -175,25 +175,40 @@ public class CustomDialogFragment extends DialogFragment {
                     DatePickActivity parent = (DatePickActivity)getActivity();
                     String[] timeNow = parent.getTimeNow();
                     dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
-                    realm.commitTransaction();
-                    //register Notification
-                    SharedPreferences preferences
-                            = parent.getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
-                    if(preferences.getBoolean("notification",true)){
-                        Notificationer.setLocalNotification(
-                                getActivity(),dbData.getTitle(),dbData.getId(),dbData.getStartDate()
-                        );
-                    }
                     //Calculating and Registering sum of scheduled plans
                     Calculator calc = new Calculator();
                     calc.calcGap(dbData.getStartDate(),dbData.getEndDate());
+                    if(isRegistable(preferences,calc)) {
+                        realm.commitTransaction();
+                        //register Notification
+                        if (preferences.getBoolean("notification", true)) {
+                            Notificationer.setLocalNotification(
+                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+                            );
+                        }
 
-                    preferences.edit().putInt("nowRegistered",calc.getAllGapInHour()).apply();
-                    getActivity().finish();
+                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
+                        registerInformer.informToActivity();
+                        getActivity().finish();
+                    }else{
+                        realm.cancelTransaction();
+                        Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    }
+
                 }
             }
         });
         return view;
+    }
+
+    private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc){
+        if(((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
+            && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
+            && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE))){
+            return true;
+        }
+        return false;
     }
 
     private View settingCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, final SettingActivity parent){
@@ -206,27 +221,41 @@ public class CustomDialogFragment extends DialogFragment {
                 SharedPreferences preferences = parent.getSharedPreferences("ConfigData", Context.MODE_PRIVATE);
                 switch (getTag()){
                     case "setting0":
-                        preferences.edit().
-                                putInt("maxHourPerDay",Integer.parseInt(editText.getText().toString())).
-                                apply();
-                        parent.adapter.notifyDataSetChanged();
+                        if(!editText.getText().toString().isEmpty()) {
+                            preferences.edit().
+                                    putInt("maxHourPerDay", Integer.parseInt(editText.getText().toString())).
+                                    apply();
+                            parent.adapter.notifyDataSetChanged();
+                            Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
+                        } else{
+                            Toast.makeText(getActivity(), "please input number", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case "setting1":
-                        preferences.edit().
-                                putInt("maxHourPerWeek",Integer.parseInt(editText.getText().toString())).
-                                apply();
-                        parent.adapter.notifyDataSetChanged();
+                        if(!editText.getText().toString().isEmpty()) {
+                            preferences.edit().
+                                    putInt("maxHourPerWeek", Integer.parseInt(editText.getText().toString())).
+                                    apply();
+                            parent.adapter.notifyDataSetChanged();
+                            Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
+                        } else{
+                            Toast.makeText(getActivity(), "please input number", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case "setting2":
-                        preferences.edit().
-                                putInt("maxHourPerMonth",Integer.parseInt(editText.getText().toString())).
-                                apply();
-                        parent.adapter.notifyDataSetChanged();
+                        if(!editText.getText().toString().isEmpty()) {
+                            preferences.edit().
+                                    putInt("maxHourPerMonth", Integer.parseInt(editText.getText().toString())).
+                                    apply();
+                            parent.adapter.notifyDataSetChanged();
+                            Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
+                        } else{
+                            Toast.makeText(getActivity(), "please input number", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         break;
                 }
-                Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
