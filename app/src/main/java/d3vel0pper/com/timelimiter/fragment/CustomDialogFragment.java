@@ -161,14 +161,14 @@ public class CustomDialogFragment extends DialogFragment {
                     if(results.isEmpty()){
                         dbData.setId(0);
                     } else {
-                        //because size() counted null Object in Last
-                        //dbData.setId(results.size());
                         dbData.setId(results.last().getId() + 1);
                     }
+                    //set data
                     dbData.setTitle(data[0]);
-                    //dbData.setCreatedAt();
                     dbData.setStartDate(data[2]);
+                    //dbData.setStartDay(data[2].split(" ")[0]);
                     dbData.setEndDate(data[4]);
+                    //dbData.setEndDay(data[4].split(" ")[0]);
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
                     //get Current Date for CreatedAt
