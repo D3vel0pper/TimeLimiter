@@ -60,19 +60,19 @@ public class DBData extends RealmObject {
         return this.endDate;
     }
 
-//    public void setStartDay(String startDay){
-//        this.startDay = startDay;
-//    }
-//    public String getStartDay(){
-//        return this.startDay;
-//    }
-//
-//    public void setEndDay(String endDay){
-//        this.endDay = endDay;
-//    }
-//    public String getEndDay(){
-//        return this.endDay;
-//    }
+    public void setStartDay(String startDay){
+        this.startDay = startDay;
+    }
+    public String getStartDay(){
+        return this.startDay;
+    }
+
+    public void setEndDay(String endDay){
+        this.endDay = endDay;
+    }
+    public String getEndDay(){
+        return this.endDay;
+    }
 
     public void setTitle(String title){
         this.title = title;

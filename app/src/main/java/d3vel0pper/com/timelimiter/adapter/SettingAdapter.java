@@ -66,15 +66,18 @@ public class SettingAdapter extends BaseAdapter {
         switch (position){
             case 0:
                 guide.setText("h/Day");
-                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerDay",Integer.MAX_VALUE)));
+//                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerDay",Integer.MAX_VALUE)));
+                inputedText.setText(preferences.getString("maxHourPerDay",String.valueOf(Integer.MAX_VALUE)));
                 break;
             case 1:
                 guide.setText("h/Week");
-                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE)));
+//                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE)));
+                inputedText.setText(preferences.getString("maxHourPerWeek",String.valueOf(Integer.MAX_VALUE)));
                 break;
             case 2:
                 guide.setText("h/Month");
-                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE)));
+//                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE)));
+                inputedText.setText(preferences.getString("maxHourPerMonth",String.valueOf(Integer.MAX_VALUE)));
                 break;
             case 3:
                 inputedText.setText("showingMode");
@@ -83,11 +86,13 @@ public class SettingAdapter extends BaseAdapter {
                 guide.setText("Toggle Notification");
                 inputedText.setVisibility(View.GONE);
                 itemSwitch.setVisibility(View.VISIBLE);
-                itemSwitch.setChecked(preferences.getBoolean("notification",true));
+//                itemSwitch.setChecked(preferences.getBoolean("notification",true));
+                itemSwitch.setChecked(Boolean.valueOf(preferences.getString("notification","true")));
                 itemSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        preferences.edit().putBoolean("notification",isChecked).apply();
+//                        preferences.edit().putBoolean("notification",isChecked).apply();
+                        preferences.edit().putString("notification",String.valueOf(isChecked)).apply();
                     }
                 });
                 break;
@@ -95,11 +100,13 @@ public class SettingAdapter extends BaseAdapter {
                 guide.setText("Toggle auto Delete");
                 inputedText.setVisibility(View.GONE);
                 itemSwitch.setVisibility(View.VISIBLE);
-                itemSwitch.setChecked(preferences.getBoolean("deleteAuto",false));
+//                itemSwitch.setChecked(preferences.getBoolean("deleteAuto",false));
+                itemSwitch.setChecked(Boolean.valueOf(preferences.getString("deleteAuto","false")));
                 itemSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        preferences.edit().putBoolean("deleteAuto",isChecked).apply();
+//                        preferences.edit().putBoolean("deleteAuto",isChecked).apply();
+                        preferences.edit().putString("deleteAuto",String.valueOf(isChecked)).apply();
                     }
                 });
                 break;

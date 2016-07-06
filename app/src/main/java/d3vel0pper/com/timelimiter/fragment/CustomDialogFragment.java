@@ -166,9 +166,9 @@ public class CustomDialogFragment extends DialogFragment {
                     //set data
                     dbData.setTitle(data[0]);
                     dbData.setStartDate(data[2]);
-                    //dbData.setStartDay(data[2].split(" ")[0]);
+                    dbData.setStartDay(data[2].split(" ")[0]);
                     dbData.setEndDate(data[4]);
-                    //dbData.setEndDay(data[4].split(" ")[0]);
+                    dbData.setEndDay(data[4].split(" ")[0]);
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
                     //get Current Date for CreatedAt
@@ -181,13 +181,19 @@ public class CustomDialogFragment extends DialogFragment {
                     if(isRegistable(preferences,calc)) {
                         realm.commitTransaction();
                         //register Notification
-                        if (preferences.getBoolean("notification", true)) {
+//                        if (preferences.getBoolean("notification", true)) {
+//                            Notificationer.setLocalNotification(
+//                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+//                            );
+//                        }
+                        if (Boolean.valueOf(preferences.getString("notification", "true"))) {
                             Notificationer.setLocalNotification(
                                     getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
                             );
                         }
 
-                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
+//                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
+                        preferences.edit().putString("nowRegistered", String.valueOf(calc.getAllGapInHour())).apply();
                         registerInformer.informToActivity();
                         getActivity().finish();
                     }else{
@@ -203,9 +209,30 @@ public class CustomDialogFragment extends DialogFragment {
     }
 
     private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc){
-        if(((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
-            && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
-            && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE))){
+//        try{
+//            if(((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
+//                && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
+//                && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE))){
+//                return true;
+//            }
+//
+//        } catch(ClassCastException e){
+//            if(((Integer.parseInt(preferences.getString("nowRegistered","0"))
+//                    + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
+//                    && ((Integer.parseInt(preferences.getString("nowRegistered","0"))
+//                    + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
+//                    && ((Integer.parseInt(preferences.getString("nowRegistered","0")
+//                    + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE)))){
+//                return true;
+//            }
+//        }
+        //
+        if(((Integer.parseInt(preferences.getString("nowRegistered","0")) + calcedCalc.getAllGapInHour())
+                < Integer.parseInt(preferences.getString("maxHourPerDay",String.valueOf(Integer.MAX_VALUE))))
+                && ((Integer.parseInt(preferences.getString("nowRegistered","0")) + calcedCalc.getAllGapInHour())
+                < Integer.parseInt(preferences.getString("maxHourPerWeek",String.valueOf(Integer.MAX_VALUE))))
+                && ((Integer.parseInt(preferences.getString("nowRegistered","0") + calcedCalc.getAllGapInHour())
+                < Integer.parseInt(preferences.getString("maxHourPerMonth",String.valueOf(Integer.MAX_VALUE)))))){
             return true;
         }
         return false;
@@ -222,8 +249,11 @@ public class CustomDialogFragment extends DialogFragment {
                 switch (getTag()){
                     case "setting0":
                         if(!editText.getText().toString().isEmpty()) {
+//                            preferences.edit().
+//                                    putInt("maxHourPerDay", Integer.parseInt(editText.getText().toString())).
+//                                    apply();
                             preferences.edit().
-                                    putInt("maxHourPerDay", Integer.parseInt(editText.getText().toString())).
+                                    putString("maxHourPerDay", editText.getText().toString()).
                                     apply();
                             parent.adapter.notifyDataSetChanged();
                             Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
@@ -233,8 +263,11 @@ public class CustomDialogFragment extends DialogFragment {
                         break;
                     case "setting1":
                         if(!editText.getText().toString().isEmpty()) {
+//                            preferences.edit().
+//                                    putInt("maxHourPerWeek", Integer.parseInt(editText.getText().toString())).
+//                                    apply();
                             preferences.edit().
-                                    putInt("maxHourPerWeek", Integer.parseInt(editText.getText().toString())).
+                                    putString("maxHourPerWeek", editText.getText().toString()).
                                     apply();
                             parent.adapter.notifyDataSetChanged();
                             Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
@@ -244,8 +277,11 @@ public class CustomDialogFragment extends DialogFragment {
                         break;
                     case "setting2":
                         if(!editText.getText().toString().isEmpty()) {
+//                            preferences.edit().
+//                                    putInt("maxHourPerMonth", Integer.parseInt(editText.getText().toString())).
+//                                    apply();
                             preferences.edit().
-                                    putInt("maxHourPerMonth", Integer.parseInt(editText.getText().toString())).
+                                    putString("maxHourPerMonth", editText.getText().toString()).
                                     apply();
                             parent.adapter.notifyDataSetChanged();
                             Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();

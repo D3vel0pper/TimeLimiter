@@ -26,7 +26,8 @@ public class SettingActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         TextView textView = (TextView)findViewById(R.id.percentage);
-        textView.setText(String.valueOf(getSharedPreferences("ConfigData",MODE_PRIVATE).getInt("nowRegistered",0)));
+//        textView.setText(String.valueOf(getSharedPreferences("ConfigData",MODE_PRIVATE).getInt("nowRegistered",0)));
+        textView.setText(String.valueOf(getSharedPreferences("ConfigData",MODE_PRIVATE).getString("nowRegistered","0")));
         ListView listView = (ListView)findViewById(R.id.settingList);
         adapter = new SettingAdapter(this);
         listView.setAdapter(adapter);

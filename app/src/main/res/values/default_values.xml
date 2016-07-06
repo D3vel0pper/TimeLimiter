@@ -2,6 +2,10 @@
 <resources>
     <integer name="default_IntMax">2147483647</integer>
     <integer name="default_0">0</integer>
+    <string name="default_IntMax_String">2147483647</string>
+    <string name="default_0_String">0</string>
     <bool name="pref_true">true</bool>
     <bool name="pref_false">false</bool>
+    <string name="pref_true_String">true</string>
+    <string name="pref_false_String">false</string>
 </resources>
