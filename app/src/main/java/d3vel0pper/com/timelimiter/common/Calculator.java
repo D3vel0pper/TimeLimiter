@@ -137,7 +137,7 @@ public class Calculator {
             gap += temp;
         }
         //set Gap day
-        this.day = gap;
+        this.day += gap;
     }
 
     private int calcYearGap(String startYear,String endYear) {

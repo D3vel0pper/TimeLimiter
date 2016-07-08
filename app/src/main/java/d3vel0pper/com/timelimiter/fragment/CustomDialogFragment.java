@@ -192,7 +192,7 @@ public class CustomDialogFragment extends DialogFragment {
                     Calculator calc = new Calculator();
                     dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
                     int weekTotal = 0;
-                    weekTotal += dayCalc.getAllGapInHour();
+//                    weekTotal += dayCalc.getAllGapInHour();
 
                     MyCalendar myCalendar = new MyCalendar();
                     myCalendar.setDateFromFormat(dbData.getStartDate());
