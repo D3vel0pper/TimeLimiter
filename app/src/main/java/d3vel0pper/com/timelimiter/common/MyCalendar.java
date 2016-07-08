@@ -328,18 +328,6 @@ public class MyCalendar {
         }
     }
 
-    /**
-     * Increment the day with confirm is LastDay.
-     */
-    public void incrementDay(){
-        if(isLastDay()){
-            incrementMonth();
-            this.day = 1;
-        }else {
-            this.day++;
-        }
-    }
-
     public void incrementYear(){
         this.year++;
     }
@@ -350,6 +338,17 @@ public class MyCalendar {
             this.month = 1;
         } else {
             this.month++;
+        }
+    }
+    /**
+     * Increment the day with confirm is LastDay.
+     */
+    public void incrementDay(){
+        if(isLastDay()){
+            incrementMonth();
+            this.day = 1;
+        }else {
+            this.day++;
         }
     }
 
