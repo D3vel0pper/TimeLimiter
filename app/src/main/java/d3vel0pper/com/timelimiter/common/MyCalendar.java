@@ -376,19 +376,19 @@ public class MyCalendar {
         }
     }
 
-    public void addDays(int additionalDay){
-        while(additionalDay > 0){
+    public void addDays(int additionalDays){
+        while(additionalDays > 0){
             if(isLastDay()){
                 incrementDay();
-                additionalDay--;
+                additionalDays--;
             }
-            if((getLastDay() - (additionalDay + this.day)) > 0){
-                this.day += additionalDay;
-                additionalDay = 0;
+            if((getLastDay() - (additionalDays + this.day)) > 0){
+                this.day += additionalDays;
+                additionalDays = 0;
             } else {
                 //get gap to LastDay
                 int gap = getLastDay() - this.day;
-                additionalDay -= gap;
+                additionalDays -= gap;
                 //add to day gap
                 this.day += gap;
             }
