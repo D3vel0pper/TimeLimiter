@@ -4,7 +4,9 @@ package d3vel0pper.com.timelimiter.common;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by taka-dhu on 2016/04/09.
@@ -391,7 +393,23 @@ public class MyCalendar {
                 this.day += gap;
             }
         }
+    }
 
+    public void subDays(int substractionalDays){
+        while(substractionalDays > 0){
+            if(this.day == 1){
+                decrementDay();
+                substractionalDays--;
+            }
+            if((this.day - substractionalDays) > 0){
+                this.day -= substractionalDays;
+                substractionalDays = 0;
+            } else {
+                int gap = this.day - 1;
+                this.day -= gap;
+                substractionalDays -= gap;
+            }
+        }
     }
 
     public String getFormatedDate(){
@@ -420,6 +438,73 @@ public class MyCalendar {
         return date;
     }
 
+    /**
+     * getting the List Of Days that exists in the same week of this Class has
+     * @return: the List of Days that exist in the same week of this Class has
+     */
+    public List<String> getDaysInWeek() {
+        List<String> daysinWeek = new ArrayList<String>(7);
+        boolean hasDayBefore = false;
+        int i = 0;
+        switch (getDay_Code()) {
+            case MONDAY:
+                for (; i < 7; i++) {
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                subDays(6);
+                return daysinWeek;
+            case TUESDAY:
+                decrementDay();
+                for (; i < 7; i++) {
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                subDays(5);
+                return daysinWeek;
+            case WEDNESDAY:
+                subDays(2);
+                for (; i < 7; i++) {
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                subDays(4);
+                return daysinWeek;
+            case THURSDAY:
+                subDays(3);
+                for(;i < 7;i++){
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                subDays(3);
+                return daysinWeek;
+            case FRIDAY:
+                subDays(4);
+                for(;i < 7;i++){
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                subDays(2);
+                return daysinWeek;
+            case SATURDAY:
+                subDays(5);
+                for(;i < 7;i++){
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                decrementDay();
+                return daysinWeek;
+            case SUNDAY:
+                subDays(6);
+                for(;i < 7;i++){
+                    daysinWeek.add(getFormatedDate());
+                    incrementDay();
+                }
+                return daysinWeek;
+            default:
+                return null;
+        }
+    }
 
 
 //        static public String getTest(){
