@@ -13,6 +13,7 @@ public class DBData extends RealmObject {
     private String endDate;
     private String startDay;
     private String endDay;
+    private String startWeekOfMonth;
     private String title;
     private String place;
     private String description;
@@ -72,6 +73,13 @@ public class DBData extends RealmObject {
     }
     public String getEndDay(){
         return this.endDay;
+    }
+
+    public void setStartWeekOfMonth(String startWeekOfMonth){
+        this.startWeekOfMonth = startWeekOfMonth;
+    }
+    public String getStartWeekOfMonth(){
+        return this.startWeekOfMonth;
     }
 
     public void setTitle(String title){
