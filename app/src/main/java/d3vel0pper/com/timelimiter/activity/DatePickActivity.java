@@ -172,13 +172,13 @@ public class DatePickActivity extends FragmentActivity
 
         if(TAG.equals("startDatePicker")){
             startDateData = String.valueOf(year) + "/"
-                    + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth);
+                    + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(dayOfMonth);
             bothStartData = startDateData + " " + startTimeData;
             startText.setText(bothStartData);
 
         } else if(TAG.equals("endDatePicker")){
             endDateData = String.valueOf(year) + "/"
-                    + String.valueOf(monthOfYear) + "/" + String.valueOf(dayOfMonth);
+                    + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(dayOfMonth);
             bothEndData = endDateData + " " + endTimeData;
             endText.setText(bothEndData);
         }
