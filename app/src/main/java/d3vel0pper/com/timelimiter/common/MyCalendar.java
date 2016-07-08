@@ -34,6 +34,15 @@ public class MyCalendar {
     private String sTemp[];
     private String splited[];
     private int iTemp = 0;
+    //day codes
+    public static int MONDAY = 0;
+    public static int TUESDAY = 1;
+    public static int WEDNESDAY = 2;
+    public static int THURSDAY = 3;
+    public static int FRIDAY = 4;
+    public static int SUTURDAY = 5;
+    public static int SUNDAY = 6;
+
     //      methods
 
     /**
