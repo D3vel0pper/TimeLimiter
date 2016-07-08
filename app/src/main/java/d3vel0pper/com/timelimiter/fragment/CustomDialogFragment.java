@@ -31,6 +31,7 @@ import d3vel0pper.com.timelimiter.activity.MainActivity;
 import d3vel0pper.com.timelimiter.activity.SettingActivity;
 import d3vel0pper.com.timelimiter.common.Calculator;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import io.realm.Realm;
@@ -137,8 +138,10 @@ public class CustomDialogFragment extends DialogFragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 RegisterInformer registerInformer = RegisterInformer.getInstance();
                 registerInformer.setData(dataString);
+
                 if(dataString != null){
                     /**
                      * data[]
@@ -154,10 +157,12 @@ public class CustomDialogFragment extends DialogFragment {
                     SharedPreferences preferences
                             = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
                     realm = Realm.getDefaultInstance();
+
                     //for check is empty
                     RealmResults<DBData> results;
                     RealmQuery<DBData> query = realm.where(DBData.class);
                     results = query.findAll().sort("id", Sort.ASCENDING);
+
                     //start transaction and register
                     realm.beginTransaction();
                     DBData dbData = realm.createObject(DBData.class);
@@ -166,6 +171,7 @@ public class CustomDialogFragment extends DialogFragment {
                     } else {
                         dbData.setId(results.last().getId() + 1);
                     }
+
                     //set data
                     dbData.setTitle(data[0]);
                     dbData.setStartDate(data[2]);
@@ -175,14 +181,46 @@ public class CustomDialogFragment extends DialogFragment {
                     dbData.setMonth(dbData.getStartDate().split("/")[1]);
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
+
                     //get Current Date for CreatedAt
                     DatePickActivity parent = (DatePickActivity)getActivity();
                     String[] timeNow = parent.getTimeNow();
                     dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
+
                     //Calculating and Registering sum of scheduled plans
+                    Calculator dayCalc = new Calculator();
                     Calculator calc = new Calculator();
-                    calc.calcGap(dbData.getStartDate(),dbData.getEndDate());
-                    if(isRegistable(preferences,calc)) {
+                    dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
+                    int weekTotal = 0;
+                    weekTotal += dayCalc.getAllGapInHour();
+
+                    MyCalendar myCalendar = new MyCalendar();
+                    myCalendar.setDateFromFormat(dbData.getStartDate());
+                    List<String> daysInWeek = myCalendar.getDaysInWeek();
+                    results = query.equalTo("startDay",daysInWeek.get(0))
+                            .or().equalTo("startDay",daysInWeek.get(1))
+                            .or().equalTo("startDay",daysInWeek.get(2))
+                            .or().equalTo("startDay",daysInWeek.get(3))
+                            .or().equalTo("startDay",daysInWeek.get(4))
+                            .or().equalTo("startDay",daysInWeek.get(5))
+                            .or().equalTo("startDay",daysInWeek.get(6))
+                            .findAll();
+
+                    for(int i = 0;i < results.size();i++){
+                        calc.calcGap(results.get(i).getStartDate()
+                                ,results.get(i).getEndDate());
+                        weekTotal += calc.getAllGapInHour();
+                    }
+
+                    int monthTotal = weekTotal;
+                    results = query.equalTo("month",dbData.getMonth()).findAll();
+                    for(int i = 0;i < results.size();i++){
+                        calc.calcGap(results.get(i).getStartDate()
+                                ,results.get(i).getEndDate());
+                        monthTotal += calc.getAllGapInHour();
+                    }
+
+                    if(isRegistable(preferences,dayCalc,weekTotal,monthTotal)) {
                         realm.commitTransaction();
                         //register Notification
 //                        if (preferences.getBoolean("notification", true)) {
@@ -197,7 +235,7 @@ public class CustomDialogFragment extends DialogFragment {
                         }
 
 //                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
-                        preferences.edit().putString("nowRegistered", String.valueOf(calc.getAllGapInHour())).apply();
+                        preferences.edit().putString("nowRegistered", String.valueOf(dayCalc.getAllGapInHour())).apply();
                         registerInformer.informToActivity();
                         getActivity().finish();
                     }else{
@@ -212,7 +250,7 @@ public class CustomDialogFragment extends DialogFragment {
         return view;
     }
 
-    private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc){
+    private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc,int weekTotal,int monthTotal){
 //        try{
 //            if(((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
 //                && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
@@ -230,13 +268,12 @@ public class CustomDialogFragment extends DialogFragment {
 //                return true;
 //            }
 //        }
-        //
-        if(((Integer.parseInt(preferences.getString("nowRegistered","0")) + calcedCalc.getAllGapInHour())
+        if(((Integer.parseInt(preferences.getString("(nowRegistered","0")) + calcedCalc.getAllGapInHour())
                 < Integer.parseInt(preferences.getString("maxHourPerDay",String.valueOf(Integer.MAX_VALUE))))
-                && ((Integer.parseInt(preferences.getString("nowRegistered","0")) + calcedCalc.getAllGapInHour())
+                && ((weekTotal + calcedCalc.getAllGapInHour())
                 < Integer.parseInt(preferences.getString("maxHourPerWeek",String.valueOf(Integer.MAX_VALUE))))
-                && ((Integer.parseInt(preferences.getString("nowRegistered","0") + calcedCalc.getAllGapInHour())
-                < Integer.parseInt(preferences.getString("maxHourPerMonth",String.valueOf(Integer.MAX_VALUE)))))){
+                && ((monthTotal + calcedCalc.getAllGapInHour())
+                < Integer.parseInt(preferences.getString("maxHourPerMonth",String.valueOf(Integer.MAX_VALUE))))){
             return true;
         }
         return false;
