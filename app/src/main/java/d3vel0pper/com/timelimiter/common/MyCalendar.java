@@ -397,11 +397,13 @@ public class MyCalendar {
         } else {
             date = String.valueOf(this.year);
         }
+        date += "/";
         if(getMonth() < 10){
             date = date + "0" + String.valueOf(this.month);
         } else {
             date += String.valueOf((this.month));
         }
+        date += "/";
         if(getDay() < 10){
             date = date + "0" + String.valueOf(this.day);
         } else {
