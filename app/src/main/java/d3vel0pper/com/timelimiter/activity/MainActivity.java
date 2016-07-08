@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt("maxHourPerDay",10);
+                editor.putString("maxHourPerDay","10");
                 editor.apply();
             }
         });
@@ -107,7 +107,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 realm.deleteAll();
                 realm.commitTransaction();
                 realm.close();
-                preferences.edit().putInt("nowRegistered",0).apply();
+                preferences.edit().putString("nowRegistered","0").apply();
                 //After delete, reload Realm
                 loadRealm();
             }
