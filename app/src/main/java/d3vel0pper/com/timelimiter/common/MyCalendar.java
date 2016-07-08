@@ -324,10 +324,45 @@ public class MyCalendar {
      */
     public void incrementDay(){
         if(isLastDay()){
+            incrementMonth();
             this.day = 1;
-            this.month++;
         }else {
+            this.day++;
+        }
+    }
+
+    public void incrementYear(){
+        this.year++;
+    }
+
+    public void incrementMonth(){
+        if(this.month == 12){
+            incrementYear();
+            this.month = 1;
+        } else {
             this.month++;
+        }
+    }
+
+    public void decrementYear(){
+        this.year--;
+    }
+
+    public void decrementMonth(){
+        if(this.month == 1){
+            decrementYear();
+            this.month = 12;
+        } else {
+            this.month--;
+        }
+    }
+
+    public void decrementDay(){
+        if(this.day == 1){
+            decrementMonth();
+            this.day = getLastDay();
+        } else {
+            this.day--;
         }
     }
 
