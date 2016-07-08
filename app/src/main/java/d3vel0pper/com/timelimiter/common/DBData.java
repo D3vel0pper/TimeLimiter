@@ -13,12 +13,13 @@ public class DBData extends RealmObject {
     private String endDate;
     private String startDay;
     private String endDay;
-    private String startWeekOfMonth;
+    //private String startWeekOfMonth;
     private String title;
     private String place;
     private String description;
     private boolean notifable;
     private boolean isRepeatable;
+    private String month;
 
 
     private int id;
@@ -75,11 +76,18 @@ public class DBData extends RealmObject {
         return this.endDay;
     }
 
-    public void setStartWeekOfMonth(String startWeekOfMonth){
-        this.startWeekOfMonth = startWeekOfMonth;
+//    public void setStartWeekOfMonth(String startWeekOfMonth){
+//        this.startWeekOfMonth = startWeekOfMonth;
+//    }
+//    public String getStartWeekOfMonth(){
+//        return this.startWeekOfMonth;
+//    }
+
+    public void setMonth(String month){
+        this.month = month;
     }
-    public String getStartWeekOfMonth(){
-        return this.startWeekOfMonth;
+    public String getMonth(){
+        return this.month;
     }
 
     public void setTitle(String title){

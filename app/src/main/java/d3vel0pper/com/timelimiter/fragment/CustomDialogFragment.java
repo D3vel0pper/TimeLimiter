@@ -172,7 +172,7 @@ public class CustomDialogFragment extends DialogFragment {
                     dbData.setStartDay(data[2].split(" ")[0]);
                     dbData.setEndDate(data[4]);
                     dbData.setEndDay(data[4].split(" ")[0]);
-                    setWeekOfMonth(dbData,dbData.getStartDay());
+                    dbData.setMonth(dbData.getStartDate().split("/")[1]);
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
                     //get Current Date for CreatedAt
@@ -210,14 +210,6 @@ public class CustomDialogFragment extends DialogFragment {
             }
         });
         return view;
-    }
-
-    private void setWeekOfMonth(DBData dbData,String startDay){
-        Calendar calendar = Calendar.getInstance();
-        String[] buffer = startDay.split("/");
-        calendar.set(Integer.parseInt(buffer[0]),Integer.parseInt(buffer[1]),Integer.parseInt(buffer[2]));
-        //if u don't use get, WEEK_OF_MONTH will return how many weeks are in month
-        dbData.setStartWeekOfMonth(String.valueOf(calendar.get(calendar.WEEK_OF_MONTH)));
     }
 
     private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc){
