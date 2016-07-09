@@ -195,4 +195,15 @@ public class Calculator {
         return hour + this.hour;
     }
 
+    /**
+     * reset settle gap now
+     */
+    public void reset(){
+        this.year = 0;
+        this.month = 0;
+        this.day = 0;
+        this.hour = 0;
+        this.min = 0;
+    }
+
 }

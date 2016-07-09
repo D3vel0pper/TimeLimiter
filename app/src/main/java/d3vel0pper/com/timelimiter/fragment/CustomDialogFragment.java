@@ -114,6 +114,7 @@ public class CustomDialogFragment extends DialogFragment {
                                 results.get(parentItemPosition).deleteFromRealm();
                             }
                         });
+                        passParent.realmAdapter.notifyDataSetChanged();
                         break;
                     case 2:
                         break;
@@ -197,9 +198,12 @@ public class CustomDialogFragment extends DialogFragment {
                     int dayTotal = 0;
                     results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
                     for(int i = 0;i <  results.size();i++){
-                        calc.calcGap(results.get(i).getStartDate()
-                                ,results.get(i).getEndDate());
-                        dayTotal += calc.getAllGapInHour();
+                        if(results.get(i).getId() != putId) {
+                            calc.calcGap(results.get(i).getStartDate()
+                                    , results.get(i).getEndDate());
+                            dayTotal += calc.getAllGapInHour();
+                            calc.reset();
+                        }
                     }
 
                     MyCalendar myCalendar = new MyCalendar();
@@ -216,17 +220,23 @@ public class CustomDialogFragment extends DialogFragment {
 
                     int weekTotal = 0;
                     for(int i = 0;i < results.size();i++){
-                        calc.calcGap(results.get(i).getStartDate()
-                                ,results.get(i).getEndDate());
-                        weekTotal += calc.getAllGapInHour();
+                        if(results.get(i).getId() != putId) {
+                            calc.calcGap(results.get(i).getStartDate()
+                                    , results.get(i).getEndDate());
+                            weekTotal += calc.getAllGapInHour();
+                            calc.reset();
+                        }
                     }
 
-                    int monthTotal = weekTotal;
+                    int monthTotal = 0;
                     results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
                     for(int i = 0;i < results.size();i++){
-                        calc.calcGap(results.get(i).getStartDate()
-                                ,results.get(i).getEndDate());
-                        monthTotal += calc.getAllGapInHour();
+                        if(results.get(i).getId() != putId) {
+                            calc.calcGap(results.get(i).getStartDate()
+                                    , results.get(i).getEndDate());
+                            monthTotal += calc.getAllGapInHour();
+                            calc.reset();
+                        }
                     }
 
                     if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {

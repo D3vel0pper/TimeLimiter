@@ -165,7 +165,6 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                         itemPosition = position;
                         CustomDialogFragment cdf = new CustomDialogFragment();
                         cdf.show(getSupportFragmentManager(),"list");
-                        realmAdapter.notifyDataSetChanged();
                         return true;
                     }
                 });
