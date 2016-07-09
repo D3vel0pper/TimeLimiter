@@ -166,10 +166,12 @@ public class CustomDialogFragment extends DialogFragment {
                     //start transaction and register
                     realm.beginTransaction();
                     DBData dbData = realm.createObject(DBData.class);
+                    int putId = 0;
                     if(results.isEmpty()){
                         dbData.setId(0);
                     } else {
-                        dbData.setId(results.last().getId() + 1);
+                        putId = results.last().getId() + 1;
+                        dbData.setId(putId);
                     }
 
                     //set data
@@ -178,7 +180,7 @@ public class CustomDialogFragment extends DialogFragment {
                     dbData.setStartDay(data[2].split(" ")[0]);
                     dbData.setEndDate(data[4]);
                     dbData.setEndDay(data[4].split(" ")[0]);
-                    dbData.setMonth(dbData.getStartDate().split("/")[1]);
+                    dbData.setMonth(data[2].split(" ")[0].split("/")[1]);
                     dbData.setPlace(data[5]);
                     dbData.setDescription(data[6]);
 
@@ -193,7 +195,7 @@ public class CustomDialogFragment extends DialogFragment {
                     dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
 
                     int dayTotal = 0;
-                    results = query.equalTo("startDay",dbData.getStartDay()).notEqualTo("id",dbData.getId()).findAll();
+                    results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
                     for(int i = 0;i <  results.size();i++){
                         calc.calcGap(results.get(i).getStartDate()
                                 ,results.get(i).getEndDate());
@@ -201,7 +203,7 @@ public class CustomDialogFragment extends DialogFragment {
                     }
 
                     MyCalendar myCalendar = new MyCalendar();
-                    myCalendar.setDateFromFormat(dbData.getStartDate());
+                    myCalendar.setDateFromFormat(data[2].split(" ")[0]);
                     List<String> daysInWeek = myCalendar.getDaysInWeek();
                     results = query.equalTo("startDay",daysInWeek.get(0))
                             .or().equalTo("startDay",daysInWeek.get(1))
@@ -220,7 +222,7 @@ public class CustomDialogFragment extends DialogFragment {
                     }
 
                     int monthTotal = weekTotal;
-                    results = query.equalTo("month",dbData.getMonth()).findAll();
+                    results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
                     for(int i = 0;i < results.size();i++){
                         calc.calcGap(results.get(i).getStartDate()
                                 ,results.get(i).getEndDate());
