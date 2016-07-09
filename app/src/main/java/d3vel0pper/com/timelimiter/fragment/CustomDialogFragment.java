@@ -191,8 +191,14 @@ public class CustomDialogFragment extends DialogFragment {
                     Calculator dayCalc = new Calculator();
                     Calculator calc = new Calculator();
                     dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
-                    int weekTotal = 0;
-//                    weekTotal += dayCalc.getAllGapInHour();
+
+                    int dayTotal = 0;
+                    results = query.equalTo("startDay",dbData.getStartDay()).notEqualTo("id",dbData.getId()).findAll();
+                    for(int i = 0;i <  results.size();i++){
+                        calc.calcGap(results.get(i).getStartDate()
+                                ,results.get(i).getEndDate());
+                        dayTotal += calc.getAllGapInHour();
+                    }
 
                     MyCalendar myCalendar = new MyCalendar();
                     myCalendar.setDateFromFormat(dbData.getStartDate());
@@ -206,6 +212,7 @@ public class CustomDialogFragment extends DialogFragment {
                             .or().equalTo("startDay",daysInWeek.get(6))
                             .findAll();
 
+                    int weekTotal = 0;
                     for(int i = 0;i < results.size();i++){
                         calc.calcGap(results.get(i).getStartDate()
                                 ,results.get(i).getEndDate());
@@ -220,7 +227,7 @@ public class CustomDialogFragment extends DialogFragment {
                         monthTotal += calc.getAllGapInHour();
                     }
 
-                    if(isRegistable(preferences,dayCalc,weekTotal,monthTotal)) {
+                    if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {
                         realm.commitTransaction();
                         //register Notification
 //                        if (preferences.getBoolean("notification", true)) {
@@ -250,7 +257,7 @@ public class CustomDialogFragment extends DialogFragment {
         return view;
     }
 
-    private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc,int weekTotal,int monthTotal){
+    private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc,int dayTotal,int weekTotal,int monthTotal){
 //        try{
 //            if(((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
 //                && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
@@ -268,7 +275,7 @@ public class CustomDialogFragment extends DialogFragment {
 //                return true;
 //            }
 //        }
-        if(((Integer.parseInt(preferences.getString("(nowRegistered","0")) + calcedCalc.getAllGapInHour())
+        if(((dayTotal + calcedCalc.getAllGapInHour())
                 < Integer.parseInt(preferences.getString("maxHourPerDay",String.valueOf(Integer.MAX_VALUE))))
                 && ((weekTotal + calcedCalc.getAllGapInHour())
                 < Integer.parseInt(preferences.getString("maxHourPerWeek",String.valueOf(Integer.MAX_VALUE))))
