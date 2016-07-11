@@ -3,6 +3,7 @@ package d3vel0pper.com.timelimiter.fragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -21,9 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
@@ -100,13 +103,34 @@ public class CustomDialogFragment extends DialogFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                Realm realm;
+                RealmQuery<DBData> query;
                 switch(position){
                     case 0:
+                        realm = Realm.getDefaultInstance();
+                        RealmResults<DBData> res;
+                        query = realm.where(DBData.class);
+                        res = query.findAll();
+                        List<String> scheduleData = new ArrayList<String>();
+                        /**
+                         * add data to List
+                         * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
+                         * [5] -> place  [6] -> description
+                         */
+                        scheduleData.add(String.valueOf(res.get(parentItemPosition).getId()));
+                        scheduleData.add(res.get(parentItemPosition).getCreatedAt());
+                        scheduleData.add(res.get(parentItemPosition).getTitle());
+                        scheduleData.add(res.get(parentItemPosition).getStartDate());
+                        scheduleData.add(res.get(parentItemPosition).getEndDate());
+                        scheduleData.add(res.get(parentItemPosition).getPlace());
+                        scheduleData.add(res.get(parentItemPosition).getDescription());
+//                        Intent intent = new Intent(getActivity().getApplicationContext(),DatePickActivity.class);
+//                        startActivity(intent);
                         break;
                     case 1:
-                        Realm realm = Realm.getDefaultInstance();
+                        realm = Realm.getDefaultInstance();
                         final RealmResults<DBData> results;
-                        RealmQuery<DBData> query = realm.where(DBData.class);
+                        query = realm.where(DBData.class);
                         results = query.findAll();
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override

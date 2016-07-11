@@ -39,7 +39,7 @@ public class DatePickActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener
         ,TimePickerDialog.OnTimeSetListener,View.OnClickListener,TextWatcher,ConfirmDialogListener {
 
-    public TextView allDataText,startText,endText,startGuide,endGuide;
+    public TextView startText,endText,startGuide,endGuide;
     public String startDateData,startTimeData,endDateData
             ,endTimeData,bothStartData,bothEndData,allData,TAG;
     public EditText titleText,placeText,descriptionText;
