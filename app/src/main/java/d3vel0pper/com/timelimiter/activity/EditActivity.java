@@ -8,10 +8,10 @@ import android.os.Bundle;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.fragment.EditFragment;
 
-public class EditActivity extends FragmentActivity {
+public class EditActivity extends DatePickActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         getSupportFragmentManager().beginTransaction().add(R.id.container,EditFragment.getInstance(),"EditFragment").commit();

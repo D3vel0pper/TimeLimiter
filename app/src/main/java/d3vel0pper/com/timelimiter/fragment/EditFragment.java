@@ -15,11 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import d3vel0pper.com.timelimiter.R;
+import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
+import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
 
 /**
  * Created by HotFlush on 2016/07/12.
  */
-public class EditFragment extends Fragment implements View.OnClickListener{
+public class EditFragment extends Fragment
+        implements View.OnClickListener,ConfirmDialogListener{
     /**
      * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
      * [5] -> place  [6] -> description
@@ -28,6 +31,8 @@ public class EditFragment extends Fragment implements View.OnClickListener{
     private TextView startDateText,endDateText;
     private EditText titleText,placeText,descriptionText;
     private Button startDateBtn,startTimeBtn,endDateBtn,endTimeBtn,endBtn;
+    private String TAG;
+    private DialogTeller dialogTeller;
 
     private static EditFragment instance;
 
@@ -45,6 +50,8 @@ public class EditFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        dialogTeller = DialogTeller.getInstance();
+        dialogTeller.setListener(this);
     }
 
     @Override
@@ -96,6 +103,7 @@ public class EditFragment extends Fragment implements View.OnClickListener{
             case R.id.endBtn:
                 Toast.makeText(getActivity(), "ended correctly", Toast.LENGTH_SHORT).show();
                 getFragmentManager().beginTransaction().remove(this).commit();
+                getActivity().finish();
                 break;
         }
     }
@@ -103,6 +111,11 @@ public class EditFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDestroyView(){
         super.onDestroyView();
+    }
+
+    @Override
+    public void onConfirmDialog(String TAG){
+        this.TAG = TAG;
     }
 
 }
