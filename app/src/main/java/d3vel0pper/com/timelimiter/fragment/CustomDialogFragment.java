@@ -112,22 +112,24 @@ public class CustomDialogFragment extends DialogFragment {
                         RealmResults<DBData> res;
                         query = realm.where(DBData.class);
                         res = query.findAll();
-                        List<String> scheduleData = new ArrayList<String>();
-                        /**
-                         * add data to List
-                         * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
-                         * [5] -> place  [6] -> description
-                         */
-                        scheduleData.add(String.valueOf(res.get(parentItemPosition).getId()));
-                        scheduleData.add(res.get(parentItemPosition).getCreatedAt());
-                        scheduleData.add(res.get(parentItemPosition).getTitle());
-                        scheduleData.add(res.get(parentItemPosition).getStartDate());
-                        scheduleData.add(res.get(parentItemPosition).getEndDate());
-                        scheduleData.add(res.get(parentItemPosition).getPlace());
-                        scheduleData.add(res.get(parentItemPosition).getDescription());
-                        EditFragment editFragment = EditFragment.getInstance();
-                        editFragment.setDataList(scheduleData);
+//                        List<String> scheduleData = new ArrayList<String>();
+//                        /**
+//                         * add data to List
+//                         * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
+//                         * [5] -> place  [6] -> description
+//                         */
+//                        scheduleData.add(String.valueOf(res.get(parentItemPosition).getId()));
+//                        scheduleData.add(res.get(parentItemPosition).getCreatedAt());
+//                        scheduleData.add(res.get(parentItemPosition).getTitle());
+//                        scheduleData.add(res.get(parentItemPosition).getStartDate());
+//                        scheduleData.add(res.get(parentItemPosition).getEndDate());
+//                        scheduleData.add(res.get(parentItemPosition).getPlace());
+//                        scheduleData.add(res.get(parentItemPosition).getDescription());
+//                        EditFragment editFragment = EditFragment.getInstance();
+//                        editFragment.setDataList(scheduleData);
                         Intent intent = new Intent(getActivity().getApplicationContext(),EditActivity.class);
+                        intent.putExtra("id",res.get(parentItemPosition).getId());
+                        realm.close();
                         startActivity(intent);
                         break;
                     case 1:
