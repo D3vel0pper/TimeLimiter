@@ -1,7 +1,7 @@
 package d3vel0pper.com.timelimiter.common.listener;
 
 /**
- * Created by HotFlush on 2016/06/24.
+ * Created by D3vel0pper on 2016/06/24.
  */
 public class DialogTeller {
     private DialogTeller(){}

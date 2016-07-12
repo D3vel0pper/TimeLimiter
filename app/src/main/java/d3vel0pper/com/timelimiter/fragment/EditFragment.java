@@ -29,6 +29,15 @@ public class EditFragment extends Fragment implements View.OnClickListener{
     private EditText titleText,placeText,descriptionText;
     private Button startDateBtn,startTimeBtn,endDateBtn,endTimeBtn,endBtn;
 
+    private static EditFragment instance;
+
+    public static EditFragment getInstance(){
+        if(instance == null){
+            instance = new EditFragment();
+        }
+        return instance;
+    }
+
     public void setDataList(List<String> list){
         this.dataList = list;
     }

@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
+import d3vel0pper.com.timelimiter.activity.EditActivity;
 import d3vel0pper.com.timelimiter.activity.MainActivity;
 import d3vel0pper.com.timelimiter.activity.SettingActivity;
 import d3vel0pper.com.timelimiter.common.Calculator;
@@ -124,8 +125,10 @@ public class CustomDialogFragment extends DialogFragment {
                         scheduleData.add(res.get(parentItemPosition).getEndDate());
                         scheduleData.add(res.get(parentItemPosition).getPlace());
                         scheduleData.add(res.get(parentItemPosition).getDescription());
-//                        Intent intent = new Intent(getActivity().getApplicationContext(),DatePickActivity.class);
-//                        startActivity(intent);
+                        EditFragment editFragment = EditFragment.getInstance();
+                        editFragment.setDataList(scheduleData);
+                        Intent intent = new Intent(getActivity().getApplicationContext(),EditActivity.class);
+                        startActivity(intent);
                         break;
                     case 1:
                         realm = Realm.getDefaultInstance();
