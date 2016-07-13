@@ -130,8 +130,8 @@ public class EditActivity extends DatePickActivity
                     descriptionText.setText("-");
                 }
                 //Set All Data
-                allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
-                        + endGuide.getText() + "\n" + endText.getText() + "\n"
+                allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startDateText.getText() + "\n"
+                        + endGuide.getText() + "\n" + endDateText.getText() + "\n"
                         + placeText.getText() + "\n" + descriptionText.getText();
                 //Create Dialog
 //                CustomDialogFragment cdf = new CustomDialogFragment();
@@ -183,9 +183,7 @@ public class EditActivity extends DatePickActivity
             endDateText.setText(dataList.get(4));
         }
         //Put All Data
-        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
-                + endGuide.getText() + "\n" + endText.getText() + "\n"
-                + placeText.getText() + "\n" + descriptionText.getText();
+        putAllData();
     }
 
     @Override
@@ -222,9 +220,7 @@ public class EditActivity extends DatePickActivity
             endDateText.setText(dataList.get(4).split(" ")[0] + " " + endTimeData);
         }
         //Put All Data
-        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
-                + endGuide.getText() + "\n" + endText.getText() + "\n"
-                + placeText.getText() + "\n" + descriptionText.getText();
+        putAllData();
     }
 
     public String[] getTimeNow(){
@@ -257,13 +253,17 @@ public class EditActivity extends DatePickActivity
 
     @Override
     public void afterTextChanged(Editable editable){
+        putAllData();
+    }
+
+    private void putAllData(){
         dataList.set(2,titleText.getText().toString());
         dataList.set(3,startDateText.getText().toString());
         dataList.set(4,endDateText.getText().toString());
         dataList.set(5,placeText.getText().toString());
         dataList.set(6,descriptionText.getText().toString());
-        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
-                + endGuide.getText() + "\n" + endText.getText() + "\n"
+        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startDateText.getText() + "\n"
+                + endGuide.getText() + "\n" + endDateText.getText() + "\n"
                 + placeText.getText() + "\n" + descriptionText.getText();
     }
 

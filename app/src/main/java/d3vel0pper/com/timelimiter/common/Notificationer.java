@@ -21,7 +21,7 @@ public class Notificationer {
      * @param requestCode: ID in DB
      * @param targetDate: get From registered data
      */
-    public static void setLocalNotification(Context context, String message, int requestCode,String targetDate){
+    public static void setLocalNotification(Context context, String message, int requestCode, String targetDate){
         //stand intent
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("MESSAGE", message);
