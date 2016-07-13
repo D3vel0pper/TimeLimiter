@@ -26,8 +26,10 @@ import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
 import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
+import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
 //import d3vel0pper.com.timelimiter.fragment.EditFragment;
+import d3vel0pper.com.timelimiter.fragment.EditDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -41,7 +43,7 @@ public class EditActivity extends DatePickActivity
      * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
      * [5] -> place  [6] -> description
      */
-    private List<String> dataList;
+    public List<String> dataList;
     private TextView startDateText,endDateText;
     private EditText titleText,placeText,descriptionText;
     private Button startDateBtn,startTimeBtn,endDateBtn,endTimeBtn,endBtn;
@@ -68,10 +70,13 @@ public class EditActivity extends DatePickActivity
         endDateText.setText(dataList.get(4));
         titleText = (EditText)findViewById(R.id.titleText);
         titleText.setText(dataList.get(2));
+        titleText.addTextChangedListener(this);
         placeText = (EditText)findViewById(R.id.placeText);
         placeText.setText(dataList.get(5));
+        placeText.addTextChangedListener(this);
         descriptionText = (EditText)findViewById(R.id.descriptionText);
         descriptionText.setText(dataList.get(6));
+        descriptionText.addTextChangedListener(this);
 
         startDateBtn = (Button)findViewById(R.id.startDateBtn);
         startDateBtn.setOnClickListener(this);
@@ -108,8 +113,31 @@ public class EditActivity extends DatePickActivity
                 pickerEndTime.show(getSupportFragmentManager(),"endTimePicker");
                 break;
             case R.id.endBtn:
-                Toast.makeText(this, "ended correctly", Toast.LENGTH_SHORT).show();
-                finish();
+//                Toast.makeText(this, "ended correctly", Toast.LENGTH_SHORT).show();
+//                finish();
+                //Null Check
+                String temp;
+                temp = titleText.getText().toString();
+                if(temp.length() == 0){
+                    titleText.setText("-");
+                }
+                temp = placeText.getText().toString();
+                if(temp.length() == 0){
+                    placeText.setText("-");
+                }
+                temp = descriptionText.getText().toString();
+                if(temp.length() == 0){
+                    descriptionText.setText("-");
+                }
+                //Set All Data
+                allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
+                        + endGuide.getText() + "\n" + endText.getText() + "\n"
+                        + placeText.getText() + "\n" + descriptionText.getText();
+                //Create Dialog
+//                CustomDialogFragment cdf = new CustomDialogFragment();
+//                cdf.show(getSupportFragmentManager(),"edit");
+                EditDialogFragment edf = new EditDialogFragment();
+                edf.show(getSupportFragmentManager(),"edit");
                 break;
         }
     }
@@ -229,9 +257,18 @@ public class EditActivity extends DatePickActivity
 
     @Override
     public void afterTextChanged(Editable editable){
+        dataList.set(2,titleText.getText().toString());
+        dataList.set(3,startDateText.getText().toString());
+        dataList.set(4,endDateText.getText().toString());
+        dataList.set(5,placeText.getText().toString());
+        dataList.set(6,descriptionText.getText().toString());
         allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startText.getText() + "\n"
                 + endGuide.getText() + "\n" + endText.getText() + "\n"
                 + placeText.getText() + "\n" + descriptionText.getText();
+    }
+
+    public List<String> getDataList(){
+        return this.dataList;
     }
 
     }

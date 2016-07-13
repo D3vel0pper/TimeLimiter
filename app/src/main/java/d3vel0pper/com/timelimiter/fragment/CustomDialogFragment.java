@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,8 @@ public class CustomDialogFragment extends DialogFragment {
         View view;
         if(getTag().equals("register")){
             view = registerCase(inflater,container,savedInstanceState,(DatePickActivity)parent);
+        }else if(getTag().equals("edit")){
+            view = editCase(inflater,container,savedInstanceState,(EditActivity)parent);
         } else if(getTag().equals("setting0") || getTag().equals("setting1") || getTag().equals("setting2")){
            view = settingCase(inflater,container,savedInstanceState,(SettingActivity) parent);
         } else {
@@ -296,6 +299,153 @@ public class CustomDialogFragment extends DialogFragment {
             }
         });
         return view;
+    }
+
+    private View editCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
+        View view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
+        TextView confirmText = (TextView)view.findViewById(R.id.confirmText);
+        if(dataString == null){
+            dataString = "";
+        }
+        dataString = parent.getAllData();
+        String confirmString = "Do U want to register the date below?\n" + dataString;
+        confirmText.setText(confirmString);
+        confirmText.setGravity(Gravity.CENTER);
+        Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
+        confirmBtn.setText("Yes !");
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterInformer registerInformer = RegisterInformer.getInstance();
+                registerInformer.setData(dataString);
+                if(dataString != null) {
+                    inOnClick(registerInformer);
+                }
+            }
+        });
+        return view;
+    }
+
+    private void inOnClick(RegisterInformer registerInformer){
+        /**
+         * data[]
+         *      [0] -> title
+         *      [1] -> startGuide -> this is not for need X
+         *      [2] -> startDate (yyyy/MM/dd hh:mm)
+         *      [3] -> endGuide -> this is not for need X
+         *      [4] -> endDate (yyyy/MM/dd hh:mm)
+         *      [5] -> place
+         *      [6] -> description
+         */
+        String[] data = dataString.split("\n");
+        SharedPreferences preferences
+                = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
+        realm = Realm.getDefaultInstance();
+
+        //for check is empty
+        RealmResults<DBData> results;
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        results = query.findAll().sort("id", Sort.ASCENDING);
+
+
+        //start transaction and register
+        realm.beginTransaction();
+        DBData dbData = realm.createObject(DBData.class);
+        int putId = 0;
+        if(results.isEmpty()){
+            dbData.setId(0);
+        } else {
+            putId = results.last().getId() + 1;
+            dbData.setId(putId);
+        }
+
+        //set data
+        dbData.setTitle(data[0]);
+        dbData.setStartDate(data[2]);
+        dbData.setStartDay(data[2].split(" ")[0]);
+        dbData.setEndDate(data[4]);
+        dbData.setEndDay(data[4].split(" ")[0]);
+        dbData.setMonth(data[2].split(" ")[0].split("/")[1]);
+        dbData.setPlace(data[5]);
+        dbData.setDescription(data[6]);
+
+        //get Current Date for CreatedAt
+        DatePickActivity parent = (DatePickActivity)getActivity();
+        String[] timeNow = parent.getTimeNow();
+        dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
+
+        //Calculating and Registering sum of scheduled plans
+        Calculator dayCalc = new Calculator();
+        Calculator calc = new Calculator();
+        dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
+
+        int dayTotal = 0;
+        results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
+        for(int i = 0;i <  results.size();i++){
+            if(results.get(i).getId() != putId) {
+                calc.calcGap(results.get(i).getStartDate()
+                        , results.get(i).getEndDate());
+                dayTotal += calc.getAllGapInHour();
+                calc.reset();
+            }
+        }
+
+        MyCalendar myCalendar = new MyCalendar();
+        myCalendar.setDateFromFormat(data[2].split(" ")[0]);
+        List<String> daysInWeek = myCalendar.getDaysInWeek();
+        results = query.equalTo("startDay",daysInWeek.get(0))
+                .or().equalTo("startDay",daysInWeek.get(1))
+                .or().equalTo("startDay",daysInWeek.get(2))
+                .or().equalTo("startDay",daysInWeek.get(3))
+                .or().equalTo("startDay",daysInWeek.get(4))
+                .or().equalTo("startDay",daysInWeek.get(5))
+                .or().equalTo("startDay",daysInWeek.get(6))
+                .findAll();
+
+        int weekTotal = 0;
+        for(int i = 0;i < results.size();i++){
+            if(results.get(i).getId() != putId) {
+                calc.calcGap(results.get(i).getStartDate()
+                        , results.get(i).getEndDate());
+                weekTotal += calc.getAllGapInHour();
+                calc.reset();
+            }
+        }
+
+        int monthTotal = 0;
+        results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
+        for(int i = 0;i < results.size();i++){
+            if(results.get(i).getId() != putId) {
+                calc.calcGap(results.get(i).getStartDate()
+                        , results.get(i).getEndDate());
+                monthTotal += calc.getAllGapInHour();
+                calc.reset();
+            }
+        }
+
+        if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {
+            realm.commitTransaction();
+            //register Notification
+//                        if (preferences.getBoolean("notification", true)) {
+//                            Notificationer.setLocalNotification(
+//                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+//                            );
+//                        }
+            if (Boolean.valueOf(preferences.getString("notification", "true"))) {
+                Notificationer.setLocalNotification(
+                        getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+                );
+            }
+
+//                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
+            preferences.edit().putString("nowRegistered", String.valueOf(dayCalc.getAllGapInHour())).apply();
+            registerInformer.informToActivity();
+            getActivity().finish();
+        }else{
+            realm.cancelTransaction();
+            Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
+            dismiss();
+        }
     }
 
     private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc,int dayTotal,int weekTotal,int monthTotal){
