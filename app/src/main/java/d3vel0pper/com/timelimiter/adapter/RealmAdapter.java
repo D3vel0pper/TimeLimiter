@@ -62,7 +62,12 @@ public class RealmAdapter extends BaseAdapter {
         ((TextView)convertView.findViewById(R.id.startDateText)).setText(realmResults.get(position).getStartDate());
         ((TextView)convertView.findViewById(R.id.endDateText)).setText(realmResults.get(position).getEndDate());
         ((TextView)convertView.findViewById(R.id.placeText)).setText(realmResults.get(position).getPlace());
-        ((TextView)convertView.findViewById(R.id.descriptionText)).setText(realmResults.get(position).getDescription());
+        if(realmResults.get(position).getDescription().length() > 36){
+            String temp = realmResults.get(position).getDescription().substring(0,35) + "...";
+            ((TextView)convertView.findViewById(R.id.descriptionText)).setText(temp);
+        } else{
+            ((TextView) convertView.findViewById(R.id.descriptionText)).setText(realmResults.get(position).getDescription());
+        }
 
         return convertView;
     }
