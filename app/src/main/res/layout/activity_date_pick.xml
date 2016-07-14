@@ -115,7 +115,7 @@
     <EditText
         android:id="@+id/descriptionText"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="160dp"
         android:hint="詳細を入力"
         android:textSize="20sp"
         android:nextFocusDown="@+id/footer"/>
