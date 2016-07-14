@@ -158,7 +158,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                         ShowDetailFragment sdf = new ShowDetailFragment();
                         sdf.setShowData(dataList);
                         sdf.show(getSupportFragmentManager(),"showDetail");
-                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
                     }
                 });
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
