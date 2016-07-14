@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.RunnableFuture;
 import java.util.logging.Handler;
@@ -32,6 +35,7 @@ import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
+import d3vel0pper.com.timelimiter.fragment.ShowDetailFragment;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
@@ -85,16 +89,6 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
         loadRealm();
 //        ---------------------------Test Code---------------------------------------------------
-        Button testBtn = (Button)findViewById(R.id.testBtn);
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("maxHourPerDay","10");
-                editor.apply();
-            }
-        });
-
         Button deleteBtn = (Button)findViewById(R.id.deleteBtn);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +148,16 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        DBData dbdata = (DBData)listView.getItemAtPosition(position);
+                        List<String> dataList = new ArrayList<String>();
+                        dataList.add(dbdata.getTitle());
+                        dataList.add(dbdata.getStartDate());
+                        dataList.add(dbdata.getEndDate());
+                        dataList.add(dbdata.getPlace());
+                        dataList.add(dbdata.getDescription());
+                        ShowDetailFragment sdf = new ShowDetailFragment();
+                        sdf.setShowData(dataList);
+                        sdf.show(getSupportFragmentManager(),"showDetail");
                         Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
                     }
                 });
