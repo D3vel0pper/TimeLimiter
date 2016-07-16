@@ -34,7 +34,7 @@
             android:id="@+id/deleteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             android:text="deleteDB"/>
 
         <ListView
