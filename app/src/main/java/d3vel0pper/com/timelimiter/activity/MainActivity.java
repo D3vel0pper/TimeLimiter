@@ -46,9 +46,9 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
     private RegisterInformer registerInformer;
     private Realm realm;
-    private ListView listView;
     private Context context;
     private SharedPreferences preferences;
+    public ListView listView;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle toggle;
     public int itemId;

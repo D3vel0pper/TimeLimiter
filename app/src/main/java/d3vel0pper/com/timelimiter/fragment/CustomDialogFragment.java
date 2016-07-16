@@ -138,12 +138,14 @@ public class CustomDialogFragment extends DialogFragment {
                     case 1:
                         realm = Realm.getDefaultInstance();
                         final RealmResults<DBData> results;
-                        query = realm.where(DBData.class);
-                        results = query.findAll();
+                        //Search that match to item's Id
+                        results = realm.where(DBData.class)
+                                .equalTo("id",(int)passParent.listView.getItemIdAtPosition(parentItemPosition))
+                                .findAll();
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
-                                results.get(parentItemPosition).deleteFromRealm();
+                                results.get(0).deleteFromRealm();
                             }
                         });
                         passParent.realmAdapter.notifyDataSetChanged();

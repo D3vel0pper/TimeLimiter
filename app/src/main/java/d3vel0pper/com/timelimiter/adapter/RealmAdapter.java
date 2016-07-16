@@ -36,13 +36,18 @@ public class RealmAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position){
         loadRealm();
-        return realmResults.get(position);
+        TextView v = (TextView)getView(position,null,null).findViewById(R.id.hiddenData);
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmResults<DBData> res = query.equalTo("id",Integer.parseInt(v.getText().toString())).findAll();
+        return res.get(0);
     }
 
     @Override
     public long getItemId(int position){
         loadRealm();
-        return realmResults.get(position).getId();
+//        return realmResults.get(position).getId();
+        return Integer.parseInt(((TextView)getView(position,null,null).findViewById(R.id.hiddenData)).getText().toString());
     }
 
     @Override
