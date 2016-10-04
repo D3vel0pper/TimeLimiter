@@ -28,6 +28,43 @@ public class RealmMigrator {
             @Override
             public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
                 //add here code to migrate Realm Model
+                /*
+                //ex.)
+                // DynamicRealmから変更可能なスキーマオブジェクトを取得します
+                 RealmSchema schema = realm.getSchema();
+
+                 // バージョン1へのマイグレーション: クラスの追加
+                 // Example:
+                 // public Person extends RealmObject {
+                 //     private String name;
+                 //     private int age;
+                 //     // getterとsetterは省略
+                 // }
+                 if (oldVersion == 0) {
+                    schema.create("Person")
+                        .addField("name", String.class)
+                        .addField("age", int.class);
+                    oldVersion++;
+                 }
+
+                 //バージョン2へのマイグレーション: プライマリキーと関連の追加
+                 // Example:
+                 // public Person extends RealmObject {
+                 //     private String name;
+                 //     @PrimaryKey
+                 //     private int age;
+                 //     private Dog favoriteDog;
+                 //     private RealmList<Dog> dogs;
+                 //     //getterとsetterは省略
+                 // }
+                 if (oldVersion == 1) {
+                    schema.get("Person")
+                        .addField("id", long.class, FieldAttribute.PRIMARY_KEY)
+                        .addRealmObjectField("favoriteDog", schema.get("Dog"))
+                        .addRealmListField("dogs", schema.get("Dog"));
+                    oldVersion++;
+                 }
+                 */
             }
         };
     }
