@@ -49,69 +49,16 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-        //Use String
-        String[] data = getTimeNow();
 
-        startTimeData = data[1];
-        startDateData = data[0];
-        endTimeData = data[1];
-        endDateData = data[0];
-
-        //Use Map--------------------
         Map<String,String> timeMap = getTimeMap();
-
         startTimeData = timeMap.get("time");
         startDateData = timeMap.get("date");
         endTimeData = timeMap.get("time");
         endDateData = timeMap.get("date");
-        //-----------------------------------
+
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_date_pick);
-
-        //Use String[]
-
-        //allDataText = (TextView)findViewById(R.id.allDataText);
-        startText = (TextView)findViewById(R.id.startText);
-        startText.setText(data[0] + " " + data[1]);
-        endText = (TextView)findViewById(R.id.endText);
-        endText.setText(data[0] + " " + data[1]);
-        startGuide = (TextView)findViewById(R.id.startGuide);
-        endGuide = (TextView)findViewById(R.id.endGuide);
-
-        titleText = (EditText)findViewById(R.id.titleText);
-        titleText.addTextChangedListener(this);
-        placeText = (EditText)findViewById(R.id.placeText);
-        placeText.addTextChangedListener(this);
-        descriptionText = (EditText)findViewById(R.id.descriptionText);
-        descriptionText.addTextChangedListener(this);
-        descriptionText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(event.getAction() == KeyEvent.ACTION_DOWN
-                        && keyCode == KeyEvent.KEYCODE_ENTER){
-                    // Process when Enter Key Pressed
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-                return false;
-            }
-        });
-
-        Button startDateBtn = (Button)findViewById(R.id.startDateBtn);
-        startDateBtn.setOnClickListener(this);
-        Button startTimeBtn = (Button)findViewById(R.id.startTimeBtn);
-        startTimeBtn.setOnClickListener(this);
-        Button endDateBtn = (Button)findViewById(R.id.endDateBtn);
-        endDateBtn.setOnClickListener(this);
-        Button endTimeBtn = (Button)findViewById(R.id.endTimeBtn);
-        endTimeBtn.setOnClickListener(this);
-        Button endBtn = (Button)findViewById(R.id.endBtn);
-        endBtn.setOnClickListener(this);
-
-        //Registering ConfirmDialogListener
-        dialogTeller = DialogTeller.getInstance();
-        dialogTeller.setListener(this);
 
         //Use Map
         setUpViews(timeMap);
@@ -249,20 +196,20 @@ public class DatePickActivity extends FragmentActivity
         return this.allData;
     }
 
-    public String[] getTimeNow(){
-        /**
-         *       [0] -> date (yyyy/MM/dd)
-         *       [1] -> time (hh:mm)
-         */
-        //Set default time and date
-        String[] data;
-        String temp;
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
-        temp = format.format(date);
-        data = temp.split(" ");
-        return data;
-    }
+//    public String[] getTimeNow(){
+//        /**
+//         *       [0] -> date (yyyy/MM/dd)
+//         *       [1] -> time (hh:mm)
+//         */
+//        //Set default time and date
+//        String[] data;
+//        String temp;
+//        Date date = new Date();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
+//        temp = format.format(date);
+//        data = temp.split(" ");
+//        return data;
+//    }
 
     public Map<String, String> getTimeMap(){
         String[] data;

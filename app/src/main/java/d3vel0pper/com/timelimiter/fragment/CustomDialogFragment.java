@@ -308,22 +308,18 @@ public class CustomDialogFragment extends DialogFragment {
                 dbData.setId(putId);
             }
 
-            //!!!---------------------------put data at here-----------------------------!!!
             //set data
-            dbData.setTitle(data[0]);
-            dbData.setStartDate(data[2]);
-            dbData.setStartDay(data[2].split(" ")[0]);
-            dbData.setEndDate(data[4]);
-            dbData.setEndDay(data[4].split(" ")[0]);
-            dbData.setMonth(data[2].split(" ")[0].split("/")[1]);
-            dbData.setPlace(data[5]);
-            dbData.setDescription(data[6]);
+            dbData.setTitle(dataMap.get("title"));
+            dbData.setStartDate(dataMap.get("startDate"));
+            dbData.setStartDay(dataMap.get("startDate").split(" ")[0]);
+            dbData.setEndDate(dataMap.get("endDate"));
+            dbData.setEndDay(dataMap.get("endDate").split(" ")[0]);
+            dbData.setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);
+            dbData.setPlace(dataMap.get("place"));
+            dbData.setDescription(dataMap.get("description"));
 
             //get Current Date for CreatedAt
             DatePickActivity parent = (DatePickActivity)getActivity();
-            //!!!----------------------------getTimeNow() here----------------------------------!!!
-            String[] timeNow = parent.getTimeNow();
-            dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
             //Use Map
             Map<String, String> timeNowMap = parent.getTimeMap();
             dbData.setCreatedAt(timeNowMap.get("date") + " " + timeNowMap.get("time"));
@@ -334,7 +330,7 @@ public class CustomDialogFragment extends DialogFragment {
             dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
 
             int dayTotal = 0;
-            results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
+            results = query.equalTo("startDay",dataMap.get("startDate").split(" ")[0]).notEqualTo("id",putId).findAll();
             for(int i = 0;i <  results.size();i++){
                 if(results.get(i).getId() != putId) {
                     calc.calcGap(results.get(i).getStartDate()
@@ -345,15 +341,15 @@ public class CustomDialogFragment extends DialogFragment {
             }
 
             MyCalendar myCalendar = new MyCalendar();
-            myCalendar.setDateFromFormat(data[2].split(" ")[0]);
+            myCalendar.setDateFromFormat(dataMap.get("startDate").split(" ")[0]);
             List<String> daysInWeek = myCalendar.getDaysInWeek();
-            results = query.equalTo("startDay",daysInWeek.get(0))
-                    .or().equalTo("startDay",daysInWeek.get(1))
-                    .or().equalTo("startDay",daysInWeek.get(2))
-                    .or().equalTo("startDay",daysInWeek.get(3))
-                    .or().equalTo("startDay",daysInWeek.get(4))
-                    .or().equalTo("startDay",daysInWeek.get(5))
-                    .or().equalTo("startDay",daysInWeek.get(6))
+            results = query.equalTo("startDay",daysInWeek.get(MyCalendar.MONDAY))
+                    .or().equalTo("startDay",daysInWeek.get(MyCalendar.TUESDAY))
+                    .or().equalTo("startDay",daysInWeek.get(MyCalendar.WEDNESDAY))
+                    .or().equalTo("startDay",daysInWeek.get(MyCalendar.THURSDAY))
+                    .or().equalTo("startDay",daysInWeek.get(MyCalendar.FRIDAY))
+                    .or().equalTo("startDay",daysInWeek.get(MyCalendar.SATURDAY))
+                    .or().equalTo("startDay",daysInWeek.get(MyCalendar.SUNDAY))
                     .findAll();
 
             int weekTotal = 0;
@@ -367,7 +363,7 @@ public class CustomDialogFragment extends DialogFragment {
             }
 
             int monthTotal = 0;
-            results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
+            results = query.equalTo("month",dataMap.get("startDate").split(" ")[0].split("/")[1]).findAll();
             for(int i = 0;i < results.size();i++){
                 if(results.get(i).getId() != putId) {
                     calc.calcGap(results.get(i).getStartDate()

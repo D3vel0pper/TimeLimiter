@@ -122,13 +122,13 @@ public class EditDialogFragment extends DialogFragment {
         MyCalendar myCalendar = new MyCalendar();
         myCalendar.setDateFromFormat(dataMap.get("startDate").split(" ")[0]);
         List<String> daysInWeek = myCalendar.getDaysInWeek();
-        results = query.equalTo("startDay",daysInWeek.get(0))
-                .or().equalTo("startDay",daysInWeek.get(1))
-                .or().equalTo("startDay",daysInWeek.get(2))
-                .or().equalTo("startDay",daysInWeek.get(3))
-                .or().equalTo("startDay",daysInWeek.get(4))
-                .or().equalTo("startDay",daysInWeek.get(5))
-                .or().equalTo("startDay",daysInWeek.get(6))
+        results = query.equalTo("startDay",daysInWeek.get(MyCalendar.MONDAY))
+                .or().equalTo("startDay",daysInWeek.get(MyCalendar.TUESDAY))
+                .or().equalTo("startDay",daysInWeek.get(MyCalendar.WEDNESDAY))
+                .or().equalTo("startDay",daysInWeek.get(MyCalendar.THURSDAY))
+                .or().equalTo("startDay",daysInWeek.get(MyCalendar.FRIDAY))
+                .or().equalTo("startDay",daysInWeek.get(MyCalendar.SATURDAY))
+                .or().equalTo("startDay",daysInWeek.get(MyCalendar.SUNDAY))
                 .findAll();
 
         int weekTotal = 0;

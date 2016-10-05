@@ -41,11 +41,6 @@ import io.realm.Sort;
 public class EditActivity extends DatePickActivity
         implements ConfirmDialogListener,TextWatcher,DatePickerDialog.OnDateSetListener
         ,TimePickerDialog.OnTimeSetListener {
-    /**
-     * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
-     * [5] -> place  [6] -> description
-     */
-    public List<String> dataList;
     private Map<String, String> dataMap;
     private TextView startDateText,endDateText;
     private EditText titleText,placeText,descriptionText;
@@ -61,8 +56,6 @@ public class EditActivity extends DatePickActivity
 //        getSupportFragmentManager().beginTransaction().add(R.id.container,EditFragment.getInstance(),"EditFragment").commit();
 
         //if id == -1 -> don't search from realm and set texts
-        //Use List
-        dataList = new ArrayList<String>();
         //Use Map
         dataMap = new HashMap<>();
         int id = getIntent().getIntExtra("id",-1);
@@ -70,21 +63,6 @@ public class EditActivity extends DatePickActivity
             Toast.makeText(this,"cannot find the data",Toast.LENGTH_SHORT).show();
             finish();
         }
-        //Use List
-        setUpList(id);
-        startDateText = (TextView)findViewById(R.id.startText);
-        startDateText.setText(dataList.get(3));
-        endDateText = (TextView)findViewById(R.id.endText);
-        endDateText.setText(dataList.get(4));
-        titleText = (EditText)findViewById(R.id.titleText);
-        titleText.setText(dataList.get(2));
-        titleText.addTextChangedListener(this);
-        placeText = (EditText)findViewById(R.id.placeText);
-        placeText.setText(dataList.get(5));
-        placeText.addTextChangedListener(this);
-        descriptionText = (EditText)findViewById(R.id.descriptionText);
-        descriptionText.setText(dataList.get(6));
-        descriptionText.addTextChangedListener(this);
         //Use Map
         setUpMap(id);
         setUpViews();
@@ -143,28 +121,6 @@ public class EditActivity extends DatePickActivity
     public void onDestroy(){
         super.onDestroy();
     }
-    /**
-     * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
-     * [5] -> place  [6] -> description
-     */
-    private void setUpList(int id){
-
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<DBData> results;
-        RealmQuery<DBData> query = realm.where(DBData.class);
-        results = query.equalTo("id",id).findAll().sort("id", Sort.ASCENDING);
-        if(results.get(0) == null){
-            Toast.makeText(this, "results show null", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        dataList.add(String.valueOf(results.get(0).getId()));
-        dataList.add(results.get(0).getCreatedAt());
-        dataList.add(results.get(0).getTitle());
-        dataList.add(results.get(0).getStartDate());
-        dataList.add(results.get(0).getEndDate());
-        dataList.add(results.get(0).getPlace());
-        dataList.add(results.get(0).getDescription());
-    }
 
     private void setUpMap(int id){
         Realm realm = Realm.getDefaultInstance();
@@ -217,18 +173,6 @@ public class EditActivity extends DatePickActivity
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-        //Use List
-        if(this.TAG.equals("startDatePicker")){
-            dataList.set(3,String.valueOf(year) + "/"
-                    + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(dayOfMonth)
-                    + " " + dataList.get(3).split(" ")[1]);
-            startDateText.setText(dataList.get(3));
-        } else if(this.TAG.equals("endDatePicker")){
-            dataList.set(4,String.valueOf(year) + "/"
-                    + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(dayOfMonth)
-                    + " " + dataList.get(4).split(" ")[1]);
-            endDateText.setText(dataList.get(4));
-        }
         //Use Map
         if(this.TAG.equals("startDatePicker")){
             dataMap.put("startDate", String.valueOf(year) + "/"
@@ -265,8 +209,6 @@ public class EditActivity extends DatePickActivity
                     startTimeData = String.valueOf(hour) + ":" + String.valueOf(min);
                 }
             }
-            //Use List
-            startDateText.setText(dataList.get(3).split(" ")[0] + " " + startTimeData);
             //Use Map
             startDateText.setText(dataMap.get("startDate").split(" ")[0] + " " + startTimeData);
         } else if(TAG.equals("endTimePicker")){
@@ -283,28 +225,11 @@ public class EditActivity extends DatePickActivity
                     endTimeData = String.valueOf(hour) + ":" + String.valueOf(min);
                 }
             }
-            //Use List
-            endDateText.setText(dataList.get(4).split(" ")[0] + " " + endTimeData);
             //Use Map
             endDateText.setText(dataMap.get("endDate").split(" ")[0] + " " + endTimeData);
         }
         //Put All Data
         putAllData();
-    }
-
-    public String[] getTimeNow(){
-        /**
-         *       [0] -> date (yyyy/MM/dd)
-         *       [1] -> time (hh:mm)
-         */
-        //Set default time and date
-        String[] data;
-        String temp;
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
-        temp = format.format(date);
-        data = temp.split(" ");
-        return data;
     }
 
     public Map<String, String> getTimeMap(){
@@ -337,15 +262,6 @@ public class EditActivity extends DatePickActivity
     }
 
     private void putAllData(){
-        //Use List
-        dataList.set(2,titleText.getText().toString());
-        dataList.set(3,startDateText.getText().toString());
-        dataList.set(4,endDateText.getText().toString());
-        dataList.set(5,placeText.getText().toString());
-        dataList.set(6,descriptionText.getText().toString());
-        allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startDateText.getText() + "\n"
-                + endGuide.getText() + "\n" + endDateText.getText() + "\n"
-                 + placeText.getText() + "\n" + descriptionText.getText();
         //Use Map
         dataMap.put("title",titleText.getText().toString());
         dataMap.put("startDate",startDateText.getText().toString());
@@ -355,10 +271,6 @@ public class EditActivity extends DatePickActivity
         allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startDateText.getText() + "\n"
                 + endGuide.getText() + "\n" + endDateText.getText() + "\n"
                 + placeText.getText() + "\n" + descriptionText.getText();
-    }
-
-    public List<String> getDataList(){
-        return this.dataList;
     }
 
     public Map<String, String> getDataMap(){
