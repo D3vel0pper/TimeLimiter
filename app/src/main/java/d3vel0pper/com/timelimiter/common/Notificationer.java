@@ -33,10 +33,16 @@ public class Notificationer {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat();
             sdf.setLenient(false);
-            sdf.applyPattern("yyyy/MM/dd hh:mm");
+            if(targetDate.length() < 15){
+                sdf.applyPattern("yyyy/M/d/ HH:mm");
+            } else if(targetDate.length() < 16){
+                sdf.applyPattern("yyyy/MM/d/ HH:mm");
+            } else {
+                sdf.applyPattern("yyyy/MM/dd HH:mm");
+            }
             date = sdf.parse(targetDate);
         } catch (java.text.ParseException e){
-            Log.e("PARSE ERROR","Date has not formated or correct");
+            Log.e("PARSE ERROR","Date has not be formated or is incorrect");
         }
         //set alarm
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -46,7 +52,7 @@ public class Notificationer {
     /**
      *
      * @param context
-     * @param requestCode: position
+     * @param requestCode: position(id of data)
      */
     public static void cancelLocalNotification(Context context, int requestCode){
         //get intent which registered relate on requestCode

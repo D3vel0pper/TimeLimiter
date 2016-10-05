@@ -58,6 +58,7 @@ public class RealmAdapter extends BaseAdapter {
         RealmQuery<DBData> query = realm.where(DBData.class);
         //if sort() is not called, order will be not in correct position after delete Object
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
+//        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
 
         TextView hiddenId = (TextView)convertView.findViewById(R.id.hiddenData);
 //        hiddenId.setText(String.valueOf(realmResults.get(position).getId()) + " " + realmResults.get(position).getStartDay() + " " + realmResults.get(position).getMonth());

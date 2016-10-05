@@ -143,6 +143,7 @@ public class CustomDialogFragment extends DialogFragment {
                         results = realm.where(DBData.class)
                                 .equalTo("id",(int)passParent.listView.getItemIdAtPosition(parentItemPosition))
                                 .findAll();
+                        Notificationer.cancelLocalNotification(getActivity(),results.get(0).getId());
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
