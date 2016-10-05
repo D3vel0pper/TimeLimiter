@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Map;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.EditActivity;
@@ -90,21 +92,24 @@ public class EditDialogFragment extends DialogFragment {
         RealmResults<DBData> results;
         RealmResults<DBData> updateTarget;
         RealmQuery<DBData> query = realm.where(DBData.class);
-        List<String> list = parent.getDataList();
-        updateTarget = query.equalTo("id",Integer.parseInt(list.get(0))).findAll();
+
+        //Use Map
+        Map<String, String> dataMap = parent.getDataMap();
+        //Search target data exist
+        updateTarget = query.equalTo("id",Integer.parseInt(dataMap.get("id"))).findAll();
         if(updateTarget.isEmpty()){
             Toast.makeText(parent, "No such file exists", Toast.LENGTH_SHORT).show();
             dismiss();
         }
-        int putId = Integer.parseInt(list.get(0));
+        int putId = Integer.parseInt(dataMap.get("id"));
 
         //Calculating and Registering sum of scheduled plans
         Calculator dayCalc = new Calculator();
         Calculator calc = new Calculator();
-        dayCalc.calcGap(list.get(3),list.get(4));
+        dayCalc.calcGap(dataMap.get("startDate"),dataMap.get("endDate"));
 
         int dayTotal = 0;
-        results = query.equalTo("startDay",list.get(3).split(" ")[0]).notEqualTo("id",putId).findAll();
+        results = query.equalTo("startDay",dataMap.get("startDate").split(" ")[0]).notEqualTo("id",putId).findAll();
         for(int i = 0;i <  results.size();i++){
             if(results.get(i).getId() != putId) {
                 calc.calcGap(results.get(i).getStartDate()
@@ -115,7 +120,7 @@ public class EditDialogFragment extends DialogFragment {
         }
 
         MyCalendar myCalendar = new MyCalendar();
-        myCalendar.setDateFromFormat(list.get(3).split(" ")[0]);
+        myCalendar.setDateFromFormat(dataMap.get("startDate").split(" ")[0]);
         List<String> daysInWeek = myCalendar.getDaysInWeek();
         results = query.equalTo("startDay",daysInWeek.get(0))
                 .or().equalTo("startDay",daysInWeek.get(1))
@@ -137,7 +142,7 @@ public class EditDialogFragment extends DialogFragment {
         }
 
         int monthTotal = 0;
-        results = query.equalTo("month",list.get(3).split(" ")[0].split("/")[1]).findAll();
+        results = query.equalTo("month",dataMap.get("startDate").split(" ")[0].split("/")[1]).findAll();
         for(int i = 0;i < results.size();i++){
             if(results.get(i).getId() != putId) {
                 calc.calcGap(results.get(i).getStartDate()
@@ -150,16 +155,16 @@ public class EditDialogFragment extends DialogFragment {
         if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {
             realm.beginTransaction();
             //update data
-            String[] timeNow = parent.getTimeNow();
-            updateTarget.get(0).setCreatedAt(timeNow[0] + " " + timeNow[1]);
-            updateTarget.get(0).setTitle(list.get(2));
-            updateTarget.get(0).setStartDate(list.get(3));
-            updateTarget.get(0).setStartDay(list.get(3).split(" ")[0]);
-            updateTarget.get(0).setEndDate(list.get(4));
-            updateTarget.get(0).setEndDay(list.get(4).split(" ")[0]);
-            updateTarget.get(0).setMonth(list.get(3).split(" ")[0].split("/")[1]);
-            updateTarget.get(0).setPlace(list.get(5));
-            updateTarget.get(0).setDescription(list.get(6));
+            Map<String, String> timeNowMap = parent.getTimeMap();
+            updateTarget.get(0).setCreatedAt(timeNowMap.get("date") + " " + timeNowMap.get("time"));
+            updateTarget.get(0).setTitle(dataMap.get("title"));
+            updateTarget.get(0).setStartDate(dataMap.get("startDate"));
+            updateTarget.get(0).setStartDay(dataMap.get("startDate").split(" ")[0]);
+            updateTarget.get(0).setEndDate(dataMap.get("endDate"));
+            updateTarget.get(0).setEndDay(dataMap.get("endDate").split(" ")[0]);
+            updateTarget.get(0).setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);
+            updateTarget.get(0).setPlace(dataMap.get("place"));
+            updateTarget.get(0).setDescription(dataMap.get("description"));
             realm.commitTransaction();
             //register Notification
 //                        if (preferences.getBoolean("notification", true)) {
@@ -167,9 +172,11 @@ public class EditDialogFragment extends DialogFragment {
 //                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
 //                            );
 //                        }
+            //Uses lis.get() because of not using dbData
+            //!!!--Plus, U must cancel notification already exists before register notification--!!!
             if (Boolean.valueOf(preferences.getString("notification", "true"))) {
                 Notificationer.setLocalNotification(
-                        getActivity(), list.get(2), Integer.parseInt(list.get(0)), list.get(3)
+                        getActivity(), dataMap.get("title"), Integer.parseInt(dataMap.get("id")), dataMap.get("startDate")
                 );
             }
 
@@ -178,7 +185,11 @@ public class EditDialogFragment extends DialogFragment {
             registerInformer.informToActivity();
             getActivity().finish();
         }else{
-            realm.cancelTransaction();
+            try {
+                realm.cancelTransaction();
+            } catch(IllegalStateException e){
+                Log.e("IllegalStateException","transAction have not been started");
+            }
             Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
             dismiss();
         }

@@ -307,7 +307,7 @@ public class EditActivity extends DatePickActivity
         return data;
     }
 
-    public Map getTimeMap(){
+    public Map<String, String> getTimeMap(){
         String[] data;
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
@@ -345,7 +345,7 @@ public class EditActivity extends DatePickActivity
         dataList.set(6,descriptionText.getText().toString());
         allData = titleText.getText() + "\n" + startGuide.getText() + "\n" + startDateText.getText() + "\n"
                 + endGuide.getText() + "\n" + endDateText.getText() + "\n"
-                + placeText.getText() + "\n" + descriptionText.getText();
+                 + placeText.getText() + "\n" + descriptionText.getText();
         //Use Map
         dataMap.put("title",titleText.getText().toString());
         dataMap.put("startDate",startDateText.getText().toString());
