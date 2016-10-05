@@ -78,7 +78,7 @@ public class CustomDialogFragment extends DialogFragment {
         View view;
         if(getTag().equals("register")){
             view = registerCase(inflater,container,savedInstanceState,(DatePickActivity)parent);
-        }else if(getTag().equals("edit")){
+        } else if(getTag().equals("edit")){
             view = editCase(inflater,container,savedInstanceState,(EditActivity)parent);
         } else if(getTag().equals("setting0") || getTag().equals("setting1") || getTag().equals("setting2")){
            view = settingCase(inflater,container,savedInstanceState,(SettingActivity) parent);

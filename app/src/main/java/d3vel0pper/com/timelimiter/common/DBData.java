@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by HotFlush on 2016/06/24.
+ * Created by D3vel0pper on 2016/06/24.
  */
 public class DBData extends RealmObject {
     //yyyy/MM/dd hh:mm
