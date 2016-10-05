@@ -26,8 +26,10 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import d3vel0pper.com.timelimiter.R;
@@ -116,21 +118,6 @@ public class CustomDialogFragment extends DialogFragment {
                         RealmResults<DBData> res;
                         query = realm.where(DBData.class);
                         res = query.findAll();
-//                        List<String> scheduleData = new ArrayList<String>();
-//                        /**
-//                         * add data to List
-//                         * [0] -> id  [1] -> createdAt  [2] -> title  [3] -> startDate  [4] -> endDate
-//                         * [5] -> place  [6] -> description
-//                         */
-//                        scheduleData.add(String.valueOf(res.get(parentItemPosition).getId()));
-//                        scheduleData.add(res.get(parentItemPosition).getCreatedAt());
-//                        scheduleData.add(res.get(parentItemPosition).getTitle());
-//                        scheduleData.add(res.get(parentItemPosition).getStartDate());
-//                        scheduleData.add(res.get(parentItemPosition).getEndDate());
-//                        scheduleData.add(res.get(parentItemPosition).getPlace());
-//                        scheduleData.add(res.get(parentItemPosition).getDescription());
-//                        EditFragment editFragment = EditFragment.getInstance();
-//                        editFragment.setDataList(scheduleData);
                         Intent intent = new Intent(getActivity().getApplicationContext(),EditActivity.class);
                         intent.putExtra("id",res.get(parentItemPosition).getId());
                         realm.close();
@@ -175,131 +162,7 @@ public class CustomDialogFragment extends DialogFragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                RegisterInformer registerInformer = RegisterInformer.getInstance();
-                registerInformer.setData(dataString);
-
-                if(dataString != null){
-                    /**
-                     * data[]
-                     *      [0] -> title
-                     *      [1] -> startGuide -> this is not for need X
-                     *      [2] -> startDate (yyyy/MM/dd hh:mm)
-                     *      [3] -> endGuide -> this is not for need X
-                     *      [4] -> endDate (yyyy/MM/dd hh:mm)
-                     *      [5] -> place
-                     *      [6] -> description
-                     */
-                    String[] data = dataString.split("\n");
-                    SharedPreferences preferences
-                            = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
-                    realm = Realm.getDefaultInstance();
-
-                    //for check is empty
-                    RealmResults<DBData> results;
-                    RealmQuery<DBData> query = realm.where(DBData.class);
-                    results = query.findAll().sort("id", Sort.ASCENDING);
-
-                    //start transaction and register
-                    realm.beginTransaction();
-                    DBData dbData = realm.createObject(DBData.class);
-                    int putId = 0;
-                    if(results.isEmpty()){
-                        dbData.setId(0);
-                    } else {
-                        putId = results.last().getId() + 1;
-                        dbData.setId(putId);
-                    }
-
-                    //set data
-                    dbData.setTitle(data[0]);
-                    dbData.setStartDate(data[2]);
-                    dbData.setStartDay(data[2].split(" ")[0]);
-                    dbData.setEndDate(data[4]);
-                    dbData.setEndDay(data[4].split(" ")[0]);
-                    dbData.setMonth(data[2].split(" ")[0].split("/")[1]);
-                    dbData.setPlace(data[5]);
-                    dbData.setDescription(data[6]);
-
-                    //get Current Date for CreatedAt
-                    DatePickActivity parent = (DatePickActivity)getActivity();
-                    String[] timeNow = parent.getTimeNow();
-                    dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
-
-                    //Calculating and Registering sum of scheduled plans
-                    Calculator dayCalc = new Calculator();
-                    Calculator calc = new Calculator();
-                    dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
-
-                    int dayTotal = 0;
-                    results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
-                    for(int i = 0;i <  results.size();i++){
-                        if(results.get(i).getId() != putId) {
-                            calc.calcGap(results.get(i).getStartDate()
-                                    , results.get(i).getEndDate());
-                            dayTotal += calc.getAllGapInHour();
-                            calc.reset();
-                        }
-                    }
-
-                    MyCalendar myCalendar = new MyCalendar();
-                    myCalendar.setDateFromFormat(data[2].split(" ")[0]);
-                    List<String> daysInWeek = myCalendar.getDaysInWeek();
-                    results = query.equalTo("startDay",daysInWeek.get(0))
-                            .or().equalTo("startDay",daysInWeek.get(1))
-                            .or().equalTo("startDay",daysInWeek.get(2))
-                            .or().equalTo("startDay",daysInWeek.get(3))
-                            .or().equalTo("startDay",daysInWeek.get(4))
-                            .or().equalTo("startDay",daysInWeek.get(5))
-                            .or().equalTo("startDay",daysInWeek.get(6))
-                            .findAll();
-
-                    int weekTotal = 0;
-                    for(int i = 0;i < results.size();i++){
-                        if(results.get(i).getId() != putId) {
-                            calc.calcGap(results.get(i).getStartDate()
-                                    , results.get(i).getEndDate());
-                            weekTotal += calc.getAllGapInHour();
-                            calc.reset();
-                        }
-                    }
-
-                    int monthTotal = 0;
-                    results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
-                    for(int i = 0;i < results.size();i++){
-                        if(results.get(i).getId() != putId) {
-                            calc.calcGap(results.get(i).getStartDate()
-                                    , results.get(i).getEndDate());
-                            monthTotal += calc.getAllGapInHour();
-                            calc.reset();
-                        }
-                    }
-
-                    if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {
-                        realm.commitTransaction();
-                        //register Notification
-//                        if (preferences.getBoolean("notification", true)) {
-//                            Notificationer.setLocalNotification(
-//                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
-//                            );
-//                        }
-                        if (Boolean.valueOf(preferences.getString("notification", "true"))) {
-                            Notificationer.setLocalNotification(
-                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
-                            );
-                        }
-
-//                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
-                        preferences.edit().putString("nowRegistered", String.valueOf(dayCalc.getAllGapInHour())).apply();
-                        registerInformer.informToActivity();
-                        getActivity().finish();
-                    }else{
-                        realm.cancelTransaction();
-                        Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
-                        dismiss();
-                    }
-
-                }
+                registerData();
             }
         });
         return view;
@@ -320,156 +183,14 @@ public class CustomDialogFragment extends DialogFragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterInformer registerInformer = RegisterInformer.getInstance();
-                registerInformer.setData(dataString);
-                if(dataString != null) {
-                    inOnClick(registerInformer);
-                }
+                registerData();
             }
         });
         return view;
     }
 
-    private void inOnClick(RegisterInformer registerInformer){
-        /**
-         * data[]
-         *      [0] -> title
-         *      [1] -> startGuide -> this is not for need X
-         *      [2] -> startDate (yyyy/MM/dd hh:mm)
-         *      [3] -> endGuide -> this is not for need X
-         *      [4] -> endDate (yyyy/MM/dd hh:mm)
-         *      [5] -> place
-         *      [6] -> description
-         */
-        String[] data = dataString.split("\n");
-        SharedPreferences preferences
-                = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
-        realm = Realm.getDefaultInstance();
-
-        //for check is empty
-        RealmResults<DBData> results;
-        RealmQuery<DBData> query = realm.where(DBData.class);
-        results = query.findAll().sort("id", Sort.ASCENDING);
-
-
-        //start transaction and register
-        realm.beginTransaction();
-        DBData dbData = realm.createObject(DBData.class);
-        int putId = 0;
-        if(results.isEmpty()){
-            dbData.setId(0);
-        } else {
-            putId = results.last().getId() + 1;
-            dbData.setId(putId);
-        }
-
-        //set data
-        dbData.setTitle(data[0]);
-        dbData.setStartDate(data[2]);
-        dbData.setStartDay(data[2].split(" ")[0]);
-        dbData.setEndDate(data[4]);
-        dbData.setEndDay(data[4].split(" ")[0]);
-        dbData.setMonth(data[2].split(" ")[0].split("/")[1]);
-        dbData.setPlace(data[5]);
-        dbData.setDescription(data[6]);
-
-        //get Current Date for CreatedAt
-        DatePickActivity parent = (DatePickActivity)getActivity();
-        String[] timeNow = parent.getTimeNow();
-        dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
-
-        //Calculating and Registering sum of scheduled plans
-        Calculator dayCalc = new Calculator();
-        Calculator calc = new Calculator();
-        dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
-
-        int dayTotal = 0;
-        results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
-        for(int i = 0;i <  results.size();i++){
-            if(results.get(i).getId() != putId) {
-                calc.calcGap(results.get(i).getStartDate()
-                        , results.get(i).getEndDate());
-                dayTotal += calc.getAllGapInHour();
-                calc.reset();
-            }
-        }
-
-        MyCalendar myCalendar = new MyCalendar();
-        myCalendar.setDateFromFormat(data[2].split(" ")[0]);
-        List<String> daysInWeek = myCalendar.getDaysInWeek();
-        results = query.equalTo("startDay",daysInWeek.get(0))
-                .or().equalTo("startDay",daysInWeek.get(1))
-                .or().equalTo("startDay",daysInWeek.get(2))
-                .or().equalTo("startDay",daysInWeek.get(3))
-                .or().equalTo("startDay",daysInWeek.get(4))
-                .or().equalTo("startDay",daysInWeek.get(5))
-                .or().equalTo("startDay",daysInWeek.get(6))
-                .findAll();
-
-        int weekTotal = 0;
-        for(int i = 0;i < results.size();i++){
-            if(results.get(i).getId() != putId) {
-                calc.calcGap(results.get(i).getStartDate()
-                        , results.get(i).getEndDate());
-                weekTotal += calc.getAllGapInHour();
-                calc.reset();
-            }
-        }
-
-        int monthTotal = 0;
-        results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
-        for(int i = 0;i < results.size();i++){
-            if(results.get(i).getId() != putId) {
-                calc.calcGap(results.get(i).getStartDate()
-                        , results.get(i).getEndDate());
-                monthTotal += calc.getAllGapInHour();
-                calc.reset();
-            }
-        }
-
-        if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {
-            realm.commitTransaction();
-            //register Notification
-//                        if (preferences.getBoolean("notification", true)) {
-//                            Notificationer.setLocalNotification(
-//                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
-//                            );
-//                        }
-            if (Boolean.valueOf(preferences.getString("notification", "true"))) {
-                Notificationer.setLocalNotification(
-                        getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
-                );
-            }
-
-//                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
-            preferences.edit().putString("nowRegistered", String.valueOf(dayCalc.getAllGapInHour())).apply();
-            registerInformer.informToActivity();
-            getActivity().finish();
-        }else{
-            realm.cancelTransaction();
-            Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
-            dismiss();
-        }
-    }
-
     private boolean isRegistable(SharedPreferences preferences,Calculator calcedCalc,int dayTotal,int weekTotal,int monthTotal){
-//        try{
-//            if(((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
-//                && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
-//                && ((preferences.getInt("nowRegistered",0) + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE))){
-//                return true;
-//            }
-//
-//        } catch(ClassCastException e){
-//            if(((Integer.parseInt(preferences.getString("nowRegistered","0"))
-//                    + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerDay",Integer.MAX_VALUE))
-//                    && ((Integer.parseInt(preferences.getString("nowRegistered","0"))
-//                    + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE))
-//                    && ((Integer.parseInt(preferences.getString("nowRegistered","0")
-//                    + calcedCalc.getAllGapInHour()) < preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE)))){
-//                return true;
-//            }
-//        }
+
         if(((dayTotal + calcedCalc.getAllGapInHour())
                 < Integer.parseInt(preferences.getString("maxHourPerDay",String.valueOf(Integer.MAX_VALUE))))
                 && ((weekTotal + calcedCalc.getAllGapInHour())
@@ -492,9 +213,6 @@ public class CustomDialogFragment extends DialogFragment {
                 switch (getTag()){
                     case "setting0":
                         if(!editText.getText().toString().isEmpty()) {
-//                            preferences.edit().
-//                                    putInt("maxHourPerDay", Integer.parseInt(editText.getText().toString())).
-//                                    apply();
                             preferences.edit().
                                     putString("maxHourPerDay", editText.getText().toString()).
                                     apply();
@@ -506,9 +224,6 @@ public class CustomDialogFragment extends DialogFragment {
                         break;
                     case "setting1":
                         if(!editText.getText().toString().isEmpty()) {
-//                            preferences.edit().
-//                                    putInt("maxHourPerWeek", Integer.parseInt(editText.getText().toString())).
-//                                    apply();
                             preferences.edit().
                                     putString("maxHourPerWeek", editText.getText().toString()).
                                     apply();
@@ -520,9 +235,6 @@ public class CustomDialogFragment extends DialogFragment {
                         break;
                     case "setting2":
                         if(!editText.getText().toString().isEmpty()) {
-//                            preferences.edit().
-//                                    putInt("maxHourPerMonth", Integer.parseInt(editText.getText().toString())).
-//                                    apply();
                             preferences.edit().
                                     putString("maxHourPerMonth", editText.getText().toString()).
                                     apply();
@@ -548,6 +260,148 @@ public class CustomDialogFragment extends DialogFragment {
             realm.close();
         }
         super.onDestroyView();
+    }
+
+    private void registerData(){
+        RegisterInformer registerInformer = RegisterInformer.getInstance();
+        registerInformer.setData(dataString);
+
+        if(dataString != null){
+            /**
+             * data[]
+             *      [0] -> title
+             *      [1] -> startGuide -> this is not for need X
+             *      [2] -> startDate (yyyy/MM/dd hh:mm)
+             *      [3] -> endGuide -> this is not for need X
+             *      [4] -> endDate (yyyy/MM/dd hh:mm)
+             *      [5] -> place
+             *      [6] -> description
+             */
+            String[] data = dataString.split("\n");
+            //put to Map
+            Map<String, String> dataMap = new HashMap<>();
+            dataMap.put("title",data[0]);
+            dataMap.put("startGuide",data[1]);
+            dataMap.put("startDate",data[2]);
+            dataMap.put("endGuide",data[3]);
+            dataMap.put("endDate",data[4]);
+            dataMap.put("place",data[5]);
+            dataMap.put("description",data[6]);
+
+            SharedPreferences preferences
+                    = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
+            realm = Realm.getDefaultInstance();
+
+            //for check is empty
+            RealmResults<DBData> results;
+            RealmQuery<DBData> query = realm.where(DBData.class);
+            results = query.findAll().sort("id", Sort.ASCENDING);
+
+            //start transaction and register
+            realm.beginTransaction();
+            DBData dbData = realm.createObject(DBData.class);
+            int putId = 0;
+            if(results.isEmpty()){
+                dbData.setId(0);
+            } else {
+                putId = results.last().getId() + 1;
+                dbData.setId(putId);
+            }
+
+            //!!!---------------------------put data at here-----------------------------!!!
+            //set data
+            dbData.setTitle(data[0]);
+            dbData.setStartDate(data[2]);
+            dbData.setStartDay(data[2].split(" ")[0]);
+            dbData.setEndDate(data[4]);
+            dbData.setEndDay(data[4].split(" ")[0]);
+            dbData.setMonth(data[2].split(" ")[0].split("/")[1]);
+            dbData.setPlace(data[5]);
+            dbData.setDescription(data[6]);
+
+            //get Current Date for CreatedAt
+            DatePickActivity parent = (DatePickActivity)getActivity();
+            //!!!----------------------------getTimeNow() here----------------------------------!!!
+            String[] timeNow = parent.getTimeNow();
+            dbData.setCreatedAt(timeNow[0] + " " + timeNow[1]);
+            //Use Map
+            Map<String, String> timeNowMap = parent.getTimeMap();
+            dbData.setCreatedAt(timeNowMap.get("date") + " " + timeNowMap.get("time"));
+
+            //Calculating and Registering sum of scheduled plans
+            Calculator dayCalc = new Calculator();
+            Calculator calc = new Calculator();
+            dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
+
+            int dayTotal = 0;
+            results = query.equalTo("startDay",data[2].split(" ")[0]).notEqualTo("id",putId).findAll();
+            for(int i = 0;i <  results.size();i++){
+                if(results.get(i).getId() != putId) {
+                    calc.calcGap(results.get(i).getStartDate()
+                            , results.get(i).getEndDate());
+                    dayTotal += calc.getAllGapInHour();
+                    calc.reset();
+                }
+            }
+
+            MyCalendar myCalendar = new MyCalendar();
+            myCalendar.setDateFromFormat(data[2].split(" ")[0]);
+            List<String> daysInWeek = myCalendar.getDaysInWeek();
+            results = query.equalTo("startDay",daysInWeek.get(0))
+                    .or().equalTo("startDay",daysInWeek.get(1))
+                    .or().equalTo("startDay",daysInWeek.get(2))
+                    .or().equalTo("startDay",daysInWeek.get(3))
+                    .or().equalTo("startDay",daysInWeek.get(4))
+                    .or().equalTo("startDay",daysInWeek.get(5))
+                    .or().equalTo("startDay",daysInWeek.get(6))
+                    .findAll();
+
+            int weekTotal = 0;
+            for(int i = 0;i < results.size();i++){
+                if(results.get(i).getId() != putId) {
+                    calc.calcGap(results.get(i).getStartDate()
+                            , results.get(i).getEndDate());
+                    weekTotal += calc.getAllGapInHour();
+                    calc.reset();
+                }
+            }
+
+            int monthTotal = 0;
+            results = query.equalTo("month",data[2].split(" ")[0].split("/")[1]).findAll();
+            for(int i = 0;i < results.size();i++){
+                if(results.get(i).getId() != putId) {
+                    calc.calcGap(results.get(i).getStartDate()
+                            , results.get(i).getEndDate());
+                    monthTotal += calc.getAllGapInHour();
+                    calc.reset();
+                }
+            }
+
+            if(isRegistable(preferences,dayCalc,dayTotal,weekTotal,monthTotal)) {
+                realm.commitTransaction();
+                //register Notification
+//                        if (preferences.getBoolean("notification", true)) {
+//                            Notificationer.setLocalNotification(
+//                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+//                            );
+//                        }
+                if (Boolean.valueOf(preferences.getString("notification", "true"))) {
+                    Notificationer.setLocalNotification(
+                            getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+                    );
+                }
+
+//                        preferences.edit().putInt("nowRegistered", calc.getAllGapInHour()).apply();
+                preferences.edit().putString("nowRegistered", String.valueOf(dayCalc.getAllGapInHour())).apply();
+                registerInformer.informToActivity();
+                getActivity().finish();
+            }else{
+                realm.cancelTransaction();
+                Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
+
+        }
     }
 
 }

@@ -23,7 +23,9 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
@@ -47,6 +49,7 @@ public class DatePickActivity extends FragmentActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        //Use String
         String[] data = getTimeNow();
 
         startTimeData = data[1];
@@ -54,9 +57,19 @@ public class DatePickActivity extends FragmentActivity
         endTimeData = data[1];
         endDateData = data[0];
 
+        //Use Map--------------------
+        Map<String,String> timeMap = getTimeMap();
+
+        startTimeData = timeMap.get("time");
+        startDateData = timeMap.get("date");
+        endTimeData = timeMap.get("time");
+        endDateData = timeMap.get("date");
+        //-----------------------------------
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_date_pick);
+
+        //Use String[]
 
         //allDataText = (TextView)findViewById(R.id.allDataText);
         startText = (TextView)findViewById(R.id.startText);
@@ -99,6 +112,9 @@ public class DatePickActivity extends FragmentActivity
         //Registering ConfirmDialogListener
         dialogTeller = DialogTeller.getInstance();
         dialogTeller.setListener(this);
+
+        //Use Map
+        setUpViews(timeMap);
 
     }
 
@@ -246,6 +262,61 @@ public class DatePickActivity extends FragmentActivity
         temp = format.format(date);
         data = temp.split(" ");
         return data;
+    }
+
+    public Map<String, String> getTimeMap(){
+        String[] data;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN);
+        data = format.format(date).split(" ");
+        Map<String, String> map = new HashMap<>();
+        map.put("date", data[0]);
+        map.put("time", data[1]);
+        return map;
+    }
+
+    private void setUpViews(Map<String,String> map){
+
+        startText = (TextView)findViewById(R.id.startText);
+        startText.setText(map.get("date") + " " + map.get("time"));
+        endText = (TextView)findViewById(R.id.endText);
+        endText.setText(map.get("date") + " " + map.get("time"));
+        startGuide = (TextView)findViewById(R.id.startGuide);
+        endGuide = (TextView)findViewById(R.id.endGuide);
+
+        titleText = (EditText)findViewById(R.id.titleText);
+        titleText.addTextChangedListener(this);
+        placeText = (EditText)findViewById(R.id.placeText);
+        placeText.addTextChangedListener(this);
+        descriptionText = (EditText)findViewById(R.id.descriptionText);
+        descriptionText.addTextChangedListener(this);
+        descriptionText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN
+                        && keyCode == KeyEvent.KEYCODE_ENTER){
+                    // Process when Enter Key Pressed
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
+
+        Button startDateBtn = (Button)findViewById(R.id.startDateBtn);
+        startDateBtn.setOnClickListener(this);
+        Button startTimeBtn = (Button)findViewById(R.id.startTimeBtn);
+        startTimeBtn.setOnClickListener(this);
+        Button endDateBtn = (Button)findViewById(R.id.endDateBtn);
+        endDateBtn.setOnClickListener(this);
+        Button endTimeBtn = (Button)findViewById(R.id.endTimeBtn);
+        endTimeBtn.setOnClickListener(this);
+        Button endBtn = (Button)findViewById(R.id.endBtn);
+        endBtn.setOnClickListener(this);
+
+        //Registering ConfirmDialogListener
+        dialogTeller = DialogTeller.getInstance();
+        dialogTeller.setListener(this);
     }
 
     public void onConfirmDialog(String TAG){
