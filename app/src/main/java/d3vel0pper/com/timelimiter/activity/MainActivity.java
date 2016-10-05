@@ -23,8 +23,10 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.RunnableFuture;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -149,14 +151,15 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         DBData dbdata = (DBData)listView.getItemAtPosition(position);
-                        List<String> dataList = new ArrayList<String>();
-                        dataList.add(dbdata.getTitle());
-                        dataList.add(dbdata.getStartDate());
-                        dataList.add(dbdata.getEndDate());
-                        dataList.add(dbdata.getPlace());
-                        dataList.add(dbdata.getDescription());
+                        //Map of data (Using Map)
+                        Map<String, String> dataMap = new HashMap<>();
+                        dataMap.put("title",dbdata.getTitle());
+                        dataMap.put("startDate",dbdata.getStartDate());
+                        dataMap.put("endDate",dbdata.getEndDate());
+                        dataMap.put("place",dbdata.getPlace());
+                        dataMap.put("description",dbdata.getDescription());
                         ShowDetailFragment sdf = new ShowDetailFragment();
-                        sdf.setShowData(dataList);
+                        sdf.setDataMap(dataMap);
                         sdf.show(getSupportFragmentManager(),"showDetail");
 //                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
                     }
@@ -179,8 +182,4 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         }
     }
 
-    public void setupCalc(){
-
-    }
-    
 }
