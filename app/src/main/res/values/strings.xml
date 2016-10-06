@@ -12,6 +12,50 @@
 
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- app strings -->
+
+    <!-- units -->
+    <string name="hour_per_day">時間/日</string>
+    <string name="hour_per_week">時間/週</string>
+    <string name="hour_per_month">時間/月</string>
+
+    <!-- preference -->
+    <string name="toggle_notification">通知をオン</string>
+    <string name="toggle_auto_complete">予定の自動削除をオン</string>
+    <string name="input_number">数字を入力</string>
+
+    <!-- main contents -->
+    <string name="input_title">タイトルを入力</string>
+    <string name="input_place">場所を入力</string>
+    <string name="input_detail">詳細を入力</string>
+    <string name="start_date">開始日時</string>
+    <string name="end_date">終了日時</string>
+    <string name="confirm_text">以下の内容で登録します</string>
+
+    <!-- toast text -->
+    <string name="limit_over_toasttext">登録できる予定の総時間数上限を超えています</string>
+    <string name="now_registered_toasttext">登録しました</string>
+    <string name="recommend_number_toasttext">数字を入力してください</string>
+    <string name="setting_changed_toasttext">設定を変更しました</string>
+    <string name="file_not_exists">指定されたファイルが見つかりません</string>
+    <string name="data_not_found">データが見つかりません</string>
+    <string name="registered_data_is">登録されたデータ：</string>
+
+    <!-- button -->
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="close_button">閉じる</string>
+    <string name="set_date_button">日付を選択</string>
+    <string name="set_time_button">時間を選択</string>
+    <string name="complete_button">完了</string>
+    <string name="init">初期化</string>
+
+    <!-- default values -->
+    <string name="default_id">0</string>
+    <string name="default_title">defaultTitle</string>
+    <string name="default_date">0000/00/00 00:00</string>
+    <string name="default_place">defaultPlace</string>
+    <string name="default_description">defaultDescription</string>
+    <string name="default_text">defaultText</string>
+
 </resources>

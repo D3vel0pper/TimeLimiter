@@ -54,7 +54,7 @@ public class ShowDetailFragment extends DialogFragment {
         );
         textView.setGravity(Gravity.CENTER);
         Button button = (Button)view.findViewById(R.id.confirmBtn);
-        button.setText("閉じる");
+        button.setText(R.string.close_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

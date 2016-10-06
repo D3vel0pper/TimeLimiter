@@ -67,11 +67,11 @@ public class EditDialogFragment extends DialogFragment {
             dataString = "";
         }
         dataString = parent.getAllData();
-        String confirmString = "Do U want to register the date below?\n" + dataString;
+        String confirmString = R.string.confirm_text + "\n" + dataString;
         confirmText.setText(confirmString);
         confirmText.setGravity(Gravity.CENTER);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
-        confirmBtn.setText("Yes !");
+        confirmBtn.setText(R.string.ok_button);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +98,7 @@ public class EditDialogFragment extends DialogFragment {
         //Search target data exist
         updateTarget = query.equalTo("id",Integer.parseInt(dataMap.get("id"))).findAll();
         if(updateTarget.isEmpty()){
-            Toast.makeText(parent, "No such file exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parent, R.string.file_not_exists, Toast.LENGTH_SHORT).show();
             dismiss();
         }
         int putId = Integer.parseInt(dataMap.get("id"));
@@ -190,7 +190,7 @@ public class EditDialogFragment extends DialogFragment {
             } catch(IllegalStateException e){
                 Log.e("IllegalStateException","transAction have not been started");
             }
-            Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parent, R.string.limit_over_toasttext, Toast.LENGTH_SHORT).show();
             dismiss();
         }
     }

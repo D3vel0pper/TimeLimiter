@@ -6,7 +6,6 @@
         android:id="@+id/percentage"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:text="test"
         android:textSize="30sp"
         android:gravity="center"/>
     <Button

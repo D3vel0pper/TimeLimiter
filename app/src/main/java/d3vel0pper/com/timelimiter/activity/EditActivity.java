@@ -60,7 +60,7 @@ public class EditActivity extends DatePickActivity
         dataMap = new HashMap<>();
         int id = getIntent().getIntExtra("id",-1);
         if(id == -1){
-            Toast.makeText(this,"cannot find the data",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.data_not_found,Toast.LENGTH_SHORT).show();
             finish();
         }
         //Use Map

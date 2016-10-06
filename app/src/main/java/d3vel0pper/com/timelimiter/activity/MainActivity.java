@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     //Custom Listener of registration
     @Override
     public void onRegistered(String data){
-        Toast.makeText(this,"The data = " + data,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,R.string.registered_data_is + data,Toast.LENGTH_SHORT).show();
     }
 
     public void loadRealm(){

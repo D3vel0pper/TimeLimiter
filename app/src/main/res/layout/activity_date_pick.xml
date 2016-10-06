@@ -11,7 +11,7 @@
             android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="タイトルを入力"
+            android:hint="@string/input_title"
             android:singleLine="true"
             android:textSize="20sp"/>
 
@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SetStartDate"
+            android:text="@string/set_date_button"
             android:textSize="15sp"
             android:layout_marginLeft="5dp"/>
 
@@ -57,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SetStartTime"
+            android:text="@string/set_time_button"
             android:textSize="15sp"/>
     </LinearLayout>
 
@@ -92,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SetEndDate"
+            android:text="@string/set_date_button"
             android:textSize="15sp"/>
 
         <Button
@@ -100,7 +100,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SetEndTime"
+            android:text="@string/set_time_button"
             android:textSize="15sp"/>
     </LinearLayout>
 
@@ -108,7 +108,7 @@
         android:id="@+id/placeText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="場所を入力"
+        android:hint="@string/input_place"
         android:textSize="20sp"
         android:singleLine="true"/>
 
@@ -116,7 +116,7 @@
         android:id="@+id/descriptionText"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:hint="詳細を入力"
+        android:hint="@string/input_detail"
         android:textSize="20sp"
         android:nextFocusDown="@+id/footer"/>
 
@@ -131,7 +131,7 @@
             android:id="@+id/endBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="complete"
+            android:text="@string/complete_button"
             android:textSize="15sp"/>
     </LinearLayout>
 </LinearLayout>

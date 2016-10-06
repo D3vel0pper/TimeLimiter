@@ -155,10 +155,10 @@ public class CustomDialogFragment extends DialogFragment {
             dataString = "";
         }
         dataString = parent.getAllData();
-        String confirmString = "Do U want to register the date below?\n" + dataString;
+        String confirmString = R.string.confirm_text + "\n" + dataString;
         confirmText.setText(confirmString);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
-        confirmBtn.setText("Yes !");
+        confirmBtn.setText(R.string.ok_button);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,11 +175,11 @@ public class CustomDialogFragment extends DialogFragment {
             dataString = "";
         }
         dataString = parent.getAllData();
-        String confirmString = "Do U want to register the date below?\n" + dataString;
+        String confirmString = R.string.confirm_text + "\n" + dataString;
         confirmText.setText(confirmString);
         confirmText.setGravity(Gravity.CENTER);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
-        confirmBtn.setText("Yes !");
+        confirmBtn.setText(R.string.ok_button);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,9 +217,9 @@ public class CustomDialogFragment extends DialogFragment {
                                     putString("maxHourPerDay", editText.getText().toString()).
                                     apply();
                             parent.adapter.notifyDataSetChanged();
-                            Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(parent, R.string.setting_changed_toasttext, Toast.LENGTH_SHORT).show();
                         } else{
-                            Toast.makeText(getActivity(), "please input number", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.recommend_number_toasttext, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case "setting1":
@@ -228,9 +228,9 @@ public class CustomDialogFragment extends DialogFragment {
                                     putString("maxHourPerWeek", editText.getText().toString()).
                                     apply();
                             parent.adapter.notifyDataSetChanged();
-                            Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(parent, R.string.setting_changed_toasttext, Toast.LENGTH_SHORT).show();
                         } else{
-                            Toast.makeText(getActivity(), "please input number", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.recommend_number_toasttext, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case "setting2":
@@ -239,9 +239,9 @@ public class CustomDialogFragment extends DialogFragment {
                                     putString("maxHourPerMonth", editText.getText().toString()).
                                     apply();
                             parent.adapter.notifyDataSetChanged();
-                            Toast.makeText(parent, "changed settings", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(parent, R.string.setting_changed_toasttext, Toast.LENGTH_SHORT).show();
                         } else{
-                            Toast.makeText(getActivity(), "please input number", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.recommend_number_toasttext, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     default:
@@ -393,7 +393,7 @@ public class CustomDialogFragment extends DialogFragment {
                 getActivity().finish();
             }else{
                 realm.cancelTransaction();
-                Toast.makeText(parent, "you over the limit of scheduling", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent, R.string.limit_over_toasttext, Toast.LENGTH_SHORT).show();
                 dismiss();
             }
 
