@@ -65,25 +65,25 @@ public class SettingAdapter extends BaseAdapter {
         Switch itemSwitch = (Switch)convertView.findViewById(R.id.itemSwitch);
         switch (position){
             case 0:
-                guide.setText("h/Day");
+                guide.setText(R.string.hour_per_day);
 //                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerDay",Integer.MAX_VALUE)));
                 inputedText.setText(preferences.getString("maxHourPerDay",String.valueOf(Integer.MAX_VALUE)));
                 break;
             case 1:
-                guide.setText("h/Week");
+                guide.setText(R.string.hour_per_week);
 //                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerWeek",Integer.MAX_VALUE)));
                 inputedText.setText(preferences.getString("maxHourPerWeek",String.valueOf(Integer.MAX_VALUE)));
                 break;
             case 2:
-                guide.setText("h/Month");
+                guide.setText(R.string.hour_per_month);
 //                inputedText.setText(String.valueOf(preferences.getInt("maxHourPerMonth",Integer.MAX_VALUE)));
                 inputedText.setText(preferences.getString("maxHourPerMonth",String.valueOf(Integer.MAX_VALUE)));
                 break;
             case 3:
-                inputedText.setText("showingMode");
+                inputedText.setText(R.string.showing_mode);
                 break;
             case 4:
-                guide.setText("Toggle Notification");
+                guide.setText(R.string.toggle_notification);
                 inputedText.setVisibility(View.GONE);
                 itemSwitch.setVisibility(View.VISIBLE);
 //                itemSwitch.setChecked(preferences.getBoolean("notification",true));
@@ -97,7 +97,7 @@ public class SettingAdapter extends BaseAdapter {
                 });
                 break;
             case 5:
-                guide.setText("Toggle auto Delete");
+                guide.setText(R.string.toggle_auto_complete);
                 inputedText.setVisibility(View.GONE);
                 itemSwitch.setVisibility(View.VISIBLE);
 //                itemSwitch.setChecked(preferences.getBoolean("deleteAuto",false));
