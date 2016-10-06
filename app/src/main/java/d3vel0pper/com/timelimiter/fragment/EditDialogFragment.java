@@ -167,14 +167,14 @@ public class EditDialogFragment extends DialogFragment {
             updateTarget.get(0).setDescription(dataMap.get("description"));
             realm.commitTransaction();
             //register Notification
-//                        if (preferences.getBoolean("notification", true)) {
-//                            Notificationer.setLocalNotification(
-//                                    getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
-//                            );
-//                        }
+//            if (preferences.getBoolean("notification", true)) {
+//                Notificationer.setLocalNotification(
+//                        getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+//                );
+//            }
             //Uses lis.get() because of not using dbData
-            //!!!--Plus, U must cancel notification already exists before register notification--!!!
             if (Boolean.valueOf(preferences.getString("notification", "true"))) {
+                Notificationer.cancelLocalNotification(getActivity(),Integer.parseInt(dataMap.get("id")));
                 Notificationer.setLocalNotification(
                         getActivity(), dataMap.get("title"), Integer.parseInt(dataMap.get("id")), dataMap.get("startDate")
                 );

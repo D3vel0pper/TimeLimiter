@@ -195,7 +195,7 @@ public class DatePickActivity extends FragmentActivity
     public String getAllData(){
         return this.allData;
     }
-    
+
     public Map<String, String> getTimeMap(){
         String[] data;
         Date date = new Date();
