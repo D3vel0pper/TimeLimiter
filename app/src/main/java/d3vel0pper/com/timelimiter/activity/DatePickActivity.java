@@ -138,7 +138,12 @@ public class DatePickActivity extends FragmentActivity
                     + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(dayOfMonth);
             bothStartData = startDateData + " " + startTimeData;
             startText.setText(bothStartData);
-
+            StringBuilder dateBuilder = new StringBuilder(startDateData);
+            StringBuilder timeBuilder = new StringBuilder(startTimeData);
+            endDateData = dateBuilder.toString();
+            endTimeData = timeBuilder.toString();
+            bothEndData = endDateData + " " + endTimeData;
+            endText.setText(bothEndData);
         } else if(TAG.equals("endDatePicker")){
             endDateData = String.valueOf(year) + "/"
                     + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(dayOfMonth);
@@ -169,6 +174,12 @@ public class DatePickActivity extends FragmentActivity
             }
             bothStartData = startDateData + " " + startTimeData;
             startText.setText(bothStartData);
+            StringBuilder dateBuilder = new StringBuilder(startDateData);
+            StringBuilder timeBuilder = new StringBuilder(startTimeData);
+            endDateData = dateBuilder.toString();
+            endTimeData = timeBuilder.toString();
+            bothEndData = endDateData + " " + endTimeData;
+            endText.setText(bothEndData);
         } else if(TAG.equals("endTimePicker")){
             if(hour < 10){
                 if(minute < 10){

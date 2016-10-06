@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import d3vel0pper.com.timelimiter.activity.DatePickActivity;
 import d3vel0pper.com.timelimiter.activity.MainActivity;
@@ -21,12 +22,18 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public Dialog onCreateDialog(Bundle savedInstanceState){
         DialogTeller dialogTeller = DialogTeller.getInstance();
         dialogTeller.InformDialog(getTag());
-        final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        TimePickerDialog dialog
-                = new TimePickerDialog(getActivity(),(DatePickActivity)getActivity(),hour,minute,true);
-        return dialog;
+        int hour;
+        int minute;
+        if(getTag().equals("endTimePicker")){
+            DatePickActivity parent = (DatePickActivity) getActivity();
+            hour = Integer.parseInt(parent.endTimeData.split(":")[0]);
+            minute = Integer.parseInt(parent.endTimeData.split(":")[1]);
+        }else {
+            final Calendar calendar = Calendar.getInstance();
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            minute = calendar.get(Calendar.MINUTE);
+        }
+        return new TimePickerDialog(getActivity(),(DatePickActivity)getActivity(),hour,minute,true);
     }
 
     @Override
