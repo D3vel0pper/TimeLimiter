@@ -22,6 +22,7 @@ import java.util.Map;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.EditActivity;
 import d3vel0pper.com.timelimiter.common.Calculator;
+import d3vel0pper.com.timelimiter.common.ConstantValues;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.Notificationer;
@@ -67,7 +68,7 @@ public class EditDialogFragment extends DialogFragment {
             dataString = "";
         }
         dataString = parent.getAllData();
-        String confirmString = R.string.confirm_text + "\n" + dataString;
+        String confirmString = ConstantValues.CONFIRMATION_TEXT_JP + "\n" + dataString;
         confirmText.setText(confirmString);
         confirmText.setGravity(Gravity.CENTER);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
