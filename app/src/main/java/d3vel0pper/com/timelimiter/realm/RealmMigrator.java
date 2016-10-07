@@ -1,6 +1,11 @@
 package d3vel0pper.com.timelimiter.realm;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.DynamicRealm;
 import io.realm.DynamicRealmObject;
@@ -78,13 +83,24 @@ public class RealmMigrator {
 //                            .addField("dateStartDate",Date.class)
 //                            .addField("dateEndDate",Date.class);
                     schema.get("DBData")
-                            .addField("intStartDay",int.class, FieldAttribute.REQUIRED)
-                            .addField("intEndDay",int.class, FieldAttribute.REQUIRED)
+                            .addField("dateCreatedAt",Date.class, FieldAttribute.REQUIRED)
+                            .addField("dateStartDate", Date.class, FieldAttribute.REQUIRED)
+                            .addField("dateEndDate", Date.class, FieldAttribute.REQUIRED)
+                            .addField("dateStartDay",Date.class, FieldAttribute.REQUIRED)
+                            .addField("dateEndDay",Date.class, FieldAttribute.REQUIRED)
                     .transform(new RealmObjectSchema.Function(){
                         @Override
                         public void apply(DynamicRealmObject obj){
-                            obj.setInt("intStartDay",Integer.parseInt(obj.getString("startDay")));
-                            obj.setInt("intEndDay",Integer.parseInt(obj.getString("endDay")));
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+                            try {
+                                obj.setDate("dateCreatedAt",sdf.parse(obj.getString("createdAt")));
+                                obj.setDate("dateStartDate",sdf.parse(obj.getString("StartDate")));
+                                obj.setDate("dateEndDate",sdf.parse(obj.getString("endDate")));
+                                obj.setDate("dateStartDay",sdf.parse(obj.getString("startDay")));
+                                obj.setDate("dateEndDay",sdf.parse(obj.getString("endDay")));
+                            } catch(ParseException e){
+                                Log.e("PE","Parse has not finished correctly.");
+                            }
                         }
                     });
 

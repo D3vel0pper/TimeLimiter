@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -79,7 +81,14 @@ public class RealmAdapter extends BaseAdapter {
     }
 
     private void loadRealm(){
-        Realm realm = Realm.getDefaultInstance();
+        //migration process for Realm
+        RealmMigrator migrator = RealmMigrator.getInstance();
+        RealmConfiguration config = new RealmConfiguration.Builder(context)
+                .schemaVersion(1)
+                .migration(migrator.runMigration())
+                .build();
+//        Realm realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getInstance(config);;
         RealmQuery<DBData> query = realm.where(DBData.class);
         this.realmResults = query.findAll();
     }

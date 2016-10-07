@@ -1,5 +1,12 @@
 package d3vel0pper.com.timelimiter.common;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -7,12 +14,22 @@ import io.realm.annotations.PrimaryKey;
  * Created by D3vel0pper on 2016/06/24.
  */
 public class DBData extends RealmObject {
-    //yyyy/MM/dd hh:mm
+    //yyyy/MM/dd HH:mm
     private String createdAt;
     private String startDate;
     private String endDate;
+    //--------------Added----------
+    private Date dateCreatedAt;
+    private Date dateStartDate;
+    private Date dateEndDate;
+    //-----------------------------
+    //yyyy/MM/dd
     private String startDay;
     private String endDay;
+    //-------------Added-----------
+    private Date dateStartDay;
+    private Date dateEndDay;
+    //-----------------------------
     //private String startWeekOfMonth;
     private String title;
     private String place;
@@ -20,6 +37,7 @@ public class DBData extends RealmObject {
     private boolean notifable;
     private boolean isRepeatable;
     private String month;
+
 
 
     private int id;
@@ -116,6 +134,67 @@ public class DBData extends RealmObject {
     }
     public boolean getIsRepeatable(){
         return this.isRepeatable;
+    }
+
+    //---------------Add Setter & Getter----------------
+    public void setDateCreatedAt(String formatedDateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+        try {
+            this.dateCreatedAt = sdf.parse(formatedDateString);
+        } catch(ParseException e){
+            Log.e("PE","Parse hasnot finished correctly");
+        }
+    }
+    public Date getDateCreatedAt(){
+        return this.dateCreatedAt;
+    }
+
+    public void setDateStartDate(String formatedDateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+        try {
+            this.dateStartDate = sdf.parse(formatedDateString);
+        } catch(ParseException e){
+            Log.e("PE","Parse hasnot finished correctly");
+        }
+    }
+    public Date getDateStartDate(){
+        return this.dateStartDate;
+    }
+
+    public void setDateEndDate(String formatedDateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+        try {
+            this.dateEndDate = sdf.parse(formatedDateString);
+        } catch(ParseException e){
+            Log.e("PE","Parse hasnot finished correctly");
+        }
+    }
+    public Date getDateEndDate(){
+        return this.dateEndDate;
+    }
+
+    public void setDateStartDay(String formatedDateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+        try {
+            this.dateStartDay = sdf.parse(formatedDateString);
+        } catch(ParseException e){
+            Log.e("PE","Parse hasnot finished correctly");
+        }
+    }
+    public Date getDateStartDay(){
+        return this.dateStartDay;
+    }
+
+    public void setDateEndDay(String formatedDateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+        try {
+            this.dateEndDay = sdf.parse(formatedDateString);
+        } catch(ParseException e){
+            Log.e("PE","Parse hasnot finished correctly");
+        }
+    }
+    public Date getDateEndDay(){
+        return this.dateEndDay;
     }
 
 }
