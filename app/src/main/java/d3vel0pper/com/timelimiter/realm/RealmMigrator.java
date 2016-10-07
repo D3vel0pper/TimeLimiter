@@ -1,12 +1,15 @@
 package d3vel0pper.com.timelimiter.realm;
 
+import java.util.Date;
+
 import io.realm.DynamicRealm;
 import io.realm.RealmMigration;
+import io.realm.RealmSchema;
 
 /**
  * Created by D3vel0pper on 2016/10/03.
  *
- * This class should be single instance cuz don't need any instance to use
+ * This class should be single instance cuz don't need any othenr instance to use
  */
 public class RealmMigrator {
 
@@ -65,6 +68,14 @@ public class RealmMigrator {
                     oldVersion++;
                  }
                  */
+                RealmSchema schema = realm.getSchema();
+                if(oldVersion == 0) {
+                    schema.get("DBData")
+                            .addField("dateCreatedAt", Date.class)
+                            .addField("dateStartDate",Date.class)
+                            .addField("dateEndDate",Date.class);
+                    oldVersion++;
+                }
             }
         };
     }
