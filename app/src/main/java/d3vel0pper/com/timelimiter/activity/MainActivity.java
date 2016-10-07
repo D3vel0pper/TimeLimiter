@@ -108,6 +108,8 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 loadRealm();
             }
         });
+        //modify here to decide show or not
+//        deleteBtn.setVisibility(View.VISIBLE);
 
 //        --------------------------Test Code End-------------------------------------------------
         listView = (ListView)findViewById(R.id.itemList);

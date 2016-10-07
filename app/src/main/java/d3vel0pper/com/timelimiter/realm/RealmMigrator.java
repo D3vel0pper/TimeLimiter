@@ -3,7 +3,10 @@ package d3vel0pper.com.timelimiter.realm;
 import java.util.Date;
 
 import io.realm.DynamicRealm;
+import io.realm.DynamicRealmObject;
+import io.realm.FieldAttribute;
 import io.realm.RealmMigration;
+import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
 
 /**
@@ -13,20 +16,20 @@ import io.realm.RealmSchema;
  */
 public class RealmMigrator {
 
-    private RealmMigrator instance;
+    private static RealmMigrator instance;
 
     private RealmMigrator(){
 
     }
 
-    public RealmMigrator getInstance(){
+    public static RealmMigrator getInstance(){
         if(instance == null){
             instance = new RealmMigrator();
         }
         return instance;
     }
 
-    public void runMigration(){
+    public RealmMigration runMigration(){
         RealmMigration migration = new RealmMigration() {
             @Override
             public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
@@ -70,14 +73,26 @@ public class RealmMigrator {
                  */
                 RealmSchema schema = realm.getSchema();
                 if(oldVersion == 0) {
+//                    schema.get("DBData")
+//                            .addField("dateCreatedAt", Date.class)
+//                            .addField("dateStartDate",Date.class)
+//                            .addField("dateEndDate",Date.class);
                     schema.get("DBData")
-                            .addField("dateCreatedAt", Date.class)
-                            .addField("dateStartDate",Date.class)
-                            .addField("dateEndDate",Date.class);
+                            .addField("intStartDay",int.class, FieldAttribute.REQUIRED)
+                            .addField("intEndDay",int.class, FieldAttribute.REQUIRED)
+                    .transform(new RealmObjectSchema.Function(){
+                        @Override
+                        public void apply(DynamicRealmObject obj){
+                            obj.setInt("intStartDay",Integer.parseInt(obj.getString("startDay")));
+                            obj.setInt("intEndDay",Integer.parseInt(obj.getString("endDay")));
+                        }
+                    });
+
                     oldVersion++;
                 }
             }
         };
+        return migration;
     }
 
 }
