@@ -56,7 +56,8 @@ public class RealmAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent){
         convertView = layoutInflater.inflate(R.layout.card_layout,parent,false);
 
-        Realm realm = Realm.getDefaultInstance();
+//        Realm realm = Realm.getDefaultInstance();
+        Realm realm = RealmMigrator.getInstance(context).getRealm(context);
         RealmQuery<DBData> query = realm.where(DBData.class);
         //if sort() is not called, order will be not in correct position after delete Object
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
@@ -82,13 +83,8 @@ public class RealmAdapter extends BaseAdapter {
 
     private void loadRealm(){
         //migration process for Realm
-        RealmMigrator migrator = RealmMigrator.getInstance();
-        RealmConfiguration config = new RealmConfiguration.Builder(context)
-                .schemaVersion(1)
-                .migration(migrator.runMigration())
-                .build();
+        Realm realm = RealmMigrator.getInstance(context).getRealm(context);
 //        Realm realm = Realm.getDefaultInstance();
-        Realm realm = Realm.getInstance(config);;
         RealmQuery<DBData> query = realm.where(DBData.class);
         this.realmResults = query.findAll();
     }

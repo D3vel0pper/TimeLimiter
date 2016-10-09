@@ -63,8 +63,10 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
         PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
+        //!!!-----------This part will cause unexpected Error that relate on multi file access--------!!!
         final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(realmConfiguration);
+        //---------------------------------------------------------------------------------------------
         setContentView(R.layout.activity_main);
 
         //Set Register Informer
@@ -95,21 +97,14 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(realm != null){
-                    realm.close();
-                }
-                realm = Realm.getDefaultInstance();
-                realm.beginTransaction();
-                realm.deleteAll();
-                realm.commitTransaction();
-                realm.close();
-                preferences.edit().putString("nowRegistered","0").apply();
+                //delete Realm
+                deleteRealm();
                 //After delete, reload Realm
                 loadRealm();
             }
         });
         //modify here to decide show or not
-//        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setVisibility(View.VISIBLE);
 
 //        --------------------------Test Code End-------------------------------------------------
         listView = (ListView)findViewById(R.id.itemList);
@@ -182,6 +177,20 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         if(realm != null){
             realm.close();
         }
+    }
+
+    public void deleteRealm(){
+        if(realm != null){
+            realm.close();
+        }
+        realm = Realm.getInstance(new RealmConfiguration.Builder(context).schemaVersion(2).build());
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
+        realm.close();
+        preferences.edit().putString("nowRegistered","0").apply();
+        //After delete, reload Realm
+        loadRealm();
     }
 
 }
