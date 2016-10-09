@@ -94,7 +94,7 @@ public class RealmMigrator {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
                             try {
                                 obj.setDate("dateCreatedAt",sdf.parse(obj.getString("createdAt")));
-                                obj.setDate("dateStartDate",sdf.parse(obj.getString("StartDate")));
+                                obj.setDate("dateStartDate",sdf.parse(obj.getString("startDate")));
                                 obj.setDate("dateEndDate",sdf.parse(obj.getString("endDate")));
                                 obj.setDate("dateStartDay",sdf.parse(obj.getString("startDay")));
                                 obj.setDate("dateEndDay",sdf.parse(obj.getString("endDay")));
