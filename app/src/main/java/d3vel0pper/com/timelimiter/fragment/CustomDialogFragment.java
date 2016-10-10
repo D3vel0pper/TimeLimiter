@@ -40,6 +40,7 @@ import d3vel0pper.com.timelimiter.activity.SettingActivity;
 import d3vel0pper.com.timelimiter.common.Calculator;
 import d3vel0pper.com.timelimiter.common.ConstantValues;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
@@ -55,10 +56,12 @@ public class CustomDialogFragment extends DialogFragment {
     public CustomDialogFragment(){}
     static private String dataString;
     private Realm realm;
+    private FormatWrapper formatWrapper;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        formatWrapper = new FormatWrapper();
     }
 
     @Override
@@ -311,10 +314,10 @@ public class CustomDialogFragment extends DialogFragment {
 
             //set data
             dbData.setTitle(dataMap.get("title"));
-            dbData.setStartDate(dataMap.get("startDate"));
-            dbData.setStartDay(dataMap.get("startDate").split(" ")[0]);
-            dbData.setEndDate(dataMap.get("endDate"));
-            dbData.setEndDay(dataMap.get("endDate").split(" ")[0]);
+            dbData.setDateStartDate(formatWrapper.getFormatedDateWithTime(dataMap.get("startDate")));
+            dbData.setDateStartDay(formatWrapper.getFormatedDate(dataMap.get("startDate").split(" ")[0]));
+            dbData.setDateEndDate(formatWrapper.getFormatedDateWithTime(dataMap.get("endDate")));
+            dbData.setDateEndDay(formatWrapper.getFormatedDate(dataMap.get("endDate").split(" ")[0]));
             dbData.setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);
             dbData.setPlace(dataMap.get("place"));
             dbData.setDescription(dataMap.get("description"));
@@ -323,19 +326,20 @@ public class CustomDialogFragment extends DialogFragment {
             DatePickActivity parent = (DatePickActivity)getActivity();
             //Use Map
             Map<String, String> timeNowMap = parent.getTimeMap();
-            dbData.setCreatedAt(timeNowMap.get("date") + " " + timeNowMap.get("time"));
+            dbData.setDateCreatedAt(formatWrapper.getFormatedDateWithTime(timeNowMap.get("date") + " " + timeNowMap.get("time")));
 
             //Calculating and Registering sum of scheduled plans
             Calculator dayCalc = new Calculator();
             Calculator calc = new Calculator();
-            dayCalc.calcGap(dbData.getStartDate(),dbData.getEndDate());
+            dayCalc.calcGap(formatWrapper.getFormatedStringDateWithTime(dbData.getDateStartDate())
+                    ,formatWrapper.getFormatedStringDateWithTime(dbData.getDateEndDate()));
 
             int dayTotal = 0;
             results = query.equalTo("startDay",dataMap.get("startDate").split(" ")[0]).notEqualTo("id",putId).findAll();
             for(int i = 0;i <  results.size();i++){
                 if(results.get(i).getId() != putId) {
-                    calc.calcGap(results.get(i).getStartDate()
-                            , results.get(i).getEndDate());
+                    calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())
+                            , formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateEndDate()));
                     dayTotal += calc.getAllGapInHour();
                     calc.reset();
                 }
@@ -356,8 +360,8 @@ public class CustomDialogFragment extends DialogFragment {
             int weekTotal = 0;
             for(int i = 0;i < results.size();i++){
                 if(results.get(i).getId() != putId) {
-                    calc.calcGap(results.get(i).getStartDate()
-                            , results.get(i).getEndDate());
+                    calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())
+                            , formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateEndDate()));
                     weekTotal += calc.getAllGapInHour();
                     calc.reset();
                 }
@@ -367,8 +371,8 @@ public class CustomDialogFragment extends DialogFragment {
             results = query.equalTo("month",dataMap.get("startDate").split(" ")[0].split("/")[1]).findAll();
             for(int i = 0;i < results.size();i++){
                 if(results.get(i).getId() != putId) {
-                    calc.calcGap(results.get(i).getStartDate()
-                            , results.get(i).getEndDate());
+                    calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())
+                            , formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateEndDate()));
                     monthTotal += calc.getAllGapInHour();
                     calc.reset();
                 }
@@ -384,7 +388,8 @@ public class CustomDialogFragment extends DialogFragment {
 //                        }
                 if (Boolean.valueOf(preferences.getString("notification", "true"))) {
                     Notificationer.setLocalNotification(
-                            getActivity(), dbData.getTitle(), dbData.getId(), dbData.getStartDate()
+                            getActivity(), dbData.getTitle(), dbData.getId()
+                            , formatWrapper.getFormatedStringDateWithTime(dbData.getDateStartDate())
                     );
                 }
 

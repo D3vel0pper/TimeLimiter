@@ -26,6 +26,7 @@ import java.util.Map;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
 import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
@@ -47,10 +48,12 @@ public class EditActivity extends DatePickActivity
     private Button startDateBtn,startTimeBtn,endDateBtn,endTimeBtn,endBtn;
     private String TAG;
     private DialogTeller dialogTeller;
+    private FormatWrapper formatWrapper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        formatWrapper = new FormatWrapper();
         setContentView(R.layout.activity_date_pick);
 //        setContentView(R.layout.activity_edit);
 //        getSupportFragmentManager().beginTransaction().add(R.id.container,EditFragment.getInstance(),"EditFragment").commit();
@@ -132,10 +135,10 @@ public class EditActivity extends DatePickActivity
             finish();
         }
         dataMap.put("id",String.valueOf(results.get(0).getId()));
-        dataMap.put("createdAt",results.get(0).getCreatedAt());
+        dataMap.put("createdAt",formatWrapper.getFormatedStringDateWithTime(results.get(0).getDateCreatedAt()));
         dataMap.put("title",results.get(0).getTitle());
-        dataMap.put("startDate",results.get(0).getStartDate());
-        dataMap.put("endDate",results.get(0).getEndDate());
+        dataMap.put("startDate",formatWrapper.getFormatedStringDateWithTime(results.get(0).getDateStartDate()));
+        dataMap.put("endDate",formatWrapper.getFormatedStringDateWithTime(results.get(0).getDateEndDate()));
         dataMap.put("place",results.get(0).getPlace());
         dataMap.put("description",results.get(0).getDescription());
     }

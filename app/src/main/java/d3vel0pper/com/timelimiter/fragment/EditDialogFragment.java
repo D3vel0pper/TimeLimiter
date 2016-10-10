@@ -24,6 +24,7 @@ import d3vel0pper.com.timelimiter.activity.EditActivity;
 import d3vel0pper.com.timelimiter.common.Calculator;
 import d3vel0pper.com.timelimiter.common.ConstantValues;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
@@ -40,10 +41,12 @@ public class EditDialogFragment extends DialogFragment {
     private String dataString;
     private Realm realm;
     private EditActivity parent;
+    private FormatWrapper formatWrapper;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        formatWrapper = new FormatWrapper();
     }
 
     @Override
@@ -113,8 +116,8 @@ public class EditDialogFragment extends DialogFragment {
         results = query.equalTo("startDay",dataMap.get("startDate").split(" ")[0]).notEqualTo("id",putId).findAll();
         for(int i = 0;i <  results.size();i++){
             if(results.get(i).getId() != putId) {
-                calc.calcGap(results.get(i).getStartDate()
-                        , results.get(i).getEndDate());
+                calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())
+                        , formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateEndDate()));
                 dayTotal += calc.getAllGapInHour();
                 calc.reset();
             }
@@ -135,8 +138,8 @@ public class EditDialogFragment extends DialogFragment {
         int weekTotal = 0;
         for(int i = 0;i < results.size();i++){
             if(results.get(i).getId() != putId) {
-                calc.calcGap(results.get(i).getStartDate()
-                        , results.get(i).getEndDate());
+                calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())
+                        , formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateEndDate()));
                 weekTotal += calc.getAllGapInHour();
                 calc.reset();
             }
@@ -146,8 +149,8 @@ public class EditDialogFragment extends DialogFragment {
         results = query.equalTo("month",dataMap.get("startDate").split(" ")[0].split("/")[1]).findAll();
         for(int i = 0;i < results.size();i++){
             if(results.get(i).getId() != putId) {
-                calc.calcGap(results.get(i).getStartDate()
-                        , results.get(i).getEndDate());
+                calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())
+                        , formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateEndDate()));
                 monthTotal += calc.getAllGapInHour();
                 calc.reset();
             }
@@ -157,12 +160,14 @@ public class EditDialogFragment extends DialogFragment {
             realm.beginTransaction();
             //update data
             Map<String, String> timeNowMap = parent.getTimeMap();
-            updateTarget.get(0).setCreatedAt(timeNowMap.get("date") + " " + timeNowMap.get("time"));
+            updateTarget.get(0).setDateCreatedAt(formatWrapper
+                    .getFormatedDateWithTime(timeNowMap.get("date") + " " + timeNowMap.get("time"))
+            );
             updateTarget.get(0).setTitle(dataMap.get("title"));
-            updateTarget.get(0).setStartDate(dataMap.get("startDate"));
-            updateTarget.get(0).setStartDay(dataMap.get("startDate").split(" ")[0]);
-            updateTarget.get(0).setEndDate(dataMap.get("endDate"));
-            updateTarget.get(0).setEndDay(dataMap.get("endDate").split(" ")[0]);
+            updateTarget.get(0).setDateStartDate(formatWrapper.getFormatedDateWithTime(dataMap.get("startDate")));
+            updateTarget.get(0).setDateStartDay(formatWrapper.getFormatedDate(dataMap.get("startDate").split(" ")[0]));
+            updateTarget.get(0).setDateEndDate(formatWrapper.getFormatedDateWithTime(dataMap.get("endDate")));
+            updateTarget.get(0).setDateEndDay(formatWrapper.getFormatedDate(dataMap.get("endDate").split(" ")[0]));
             updateTarget.get(0).setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);
             updateTarget.get(0).setPlace(dataMap.get("place"));
             updateTarget.get(0).setDescription(dataMap.get("description"));

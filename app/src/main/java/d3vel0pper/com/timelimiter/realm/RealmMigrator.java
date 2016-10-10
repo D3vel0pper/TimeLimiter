@@ -101,40 +101,36 @@ public final class RealmMigrator {
                  }
                  */
                 RealmSchema schema = realm.getSchema();
-                if(oldVersion == 0) {
+//                if(oldVersion == 0) {
 //                    schema.get("DBData")
-//                            .addField("dateCreatedAt", Date.class)
-//                            .addField("dateStartDate",Date.class)
-//                            .addField("dateEndDate",Date.class);
-                    schema.get("DBData")
-                            .addField("dateCreatedAt",Date.class)
-                            .setNullable("dateCreatedAt",true)
-                            .addField("dateStartDate", Date.class)
-                            .setNullable("dateStartDate",true)
-                            .addField("dateEndDate", Date.class)
-                            .setNullable("dateEndDate",true)
-                            .addField("dateStartDay",Date.class)
-                            .setNullable("dateStartDay",true)
-                            .addField("dateEndDay",Date.class)
-                            .setNullable("dateEndDay",true)
-                    .transform(new RealmObjectSchema.Function(){
-                        @Override
-                        public void apply(DynamicRealmObject obj){
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-                            try {
-                                obj.setDate("dateCreatedAt",sdf.parse(obj.getString("createdAt")));
-                                obj.setDate("dateStartDate",sdf.parse(obj.getString("startDate")));
-                                obj.setDate("dateEndDate",sdf.parse(obj.getString("endDate")));
-                                obj.setDate("dateStartDay",sdf.parse(obj.getString("startDay")));
-                                obj.setDate("dateEndDay",sdf.parse(obj.getString("endDay")));
-                            } catch(ParseException e){
-                                Log.e("PE","Parse has not finished correctly.");
-                            }
-                        }
-                    });
-
-                    oldVersion++;
-                }
+//                            .addField("dateCreatedAt",Date.class)
+//                            .setNullable("dateCreatedAt",true)
+//                            .addField("dateStartDate", Date.class)
+//                            .setNullable("dateStartDate",true)
+//                            .addField("dateEndDate", Date.class)
+//                            .setNullable("dateEndDate",true)
+//                            .addField("dateStartDay",Date.class)
+//                            .setNullable("dateStartDay",true)
+//                            .addField("dateEndDay",Date.class)
+//                            .setNullable("dateEndDay",true)
+//                    .transform(new RealmObjectSchema.Function(){
+//                        @Override
+//                        public void apply(DynamicRealmObject obj){
+//                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+//                            try {
+//                                obj.setDate("dateCreatedAt",sdf.parse(obj.getString("createdAt")));
+//                                obj.setDate("dateStartDate",sdf.parse(obj.getString("startDate")));
+//                                obj.setDate("dateEndDate",sdf.parse(obj.getString("endDate")));
+//                                obj.setDate("dateStartDay",sdf.parse(obj.getString("startDay")));
+//                                obj.setDate("dateEndDay",sdf.parse(obj.getString("endDay")));
+//                            } catch(ParseException e){
+//                                Log.e("PE","Parse has not finished correctly.");
+//                            }
+//                        }
+//                    });
+//
+//                    oldVersion++;
+//                }
 //                else if(oldVersion == 1){
 //                    schema.get("DBData")
 //                            .setNullable("dateCreatedAt",true)

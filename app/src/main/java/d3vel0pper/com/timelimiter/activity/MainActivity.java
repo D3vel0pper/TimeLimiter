@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,12 +35,15 @@ import java.util.logging.LogRecord;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.ShowDetailFragment;
+import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -63,6 +67,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
         PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
+        deleteRealm();
         //!!!-----------This part will cause unexpected Error that relate on multi file access--------!!!
         final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(realmConfiguration);
@@ -151,8 +156,11 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                         //Map of data (Using Map)
                         Map<String, String> dataMap = new HashMap<>();
                         dataMap.put("title",dbdata.getTitle());
-                        dataMap.put("startDate",dbdata.getStartDate());
-                        dataMap.put("endDate",dbdata.getEndDate());
+//                        dataMap.put("startDate",dbdata.getStartDate());
+//                        dataMap.put("endDate",dbdata.getEndDate());
+                        FormatWrapper formatWrapper = new FormatWrapper();
+                        dataMap.put("startDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
+                        dataMap.put("endDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
                         dataMap.put("place",dbdata.getPlace());
                         dataMap.put("description",dbdata.getDescription());
                         ShowDetailFragment sdf = new ShowDetailFragment();
@@ -183,7 +191,9 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         if(realm != null){
             realm.close();
         }
-        realm = Realm.getInstance(new RealmConfiguration.Builder(context).schemaVersion(2).build());
+        realm = Realm.getInstance(new RealmConfiguration.Builder(context)
+                .schemaVersion(0).migration(RealmMigrator.getInstance(this).runMigration()).build());
+//        realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.deleteAll();
         realm.commitTransaction();

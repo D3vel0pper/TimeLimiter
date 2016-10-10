@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
+import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -23,10 +24,12 @@ public class RealmAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private RealmResults<DBData> realmResults;
+    private FormatWrapper fw;
 
     public RealmAdapter(Context context){
         this.context = context;
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fw = new FormatWrapper();
     }
 
     @Override
@@ -68,8 +71,8 @@ public class RealmAdapter extends BaseAdapter {
         hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
         hiddenId.setVisibility(View.GONE);
         ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
-        ((TextView)convertView.findViewById(R.id.startDateText)).setText(realmResults.get(position).getStartDate());
-        ((TextView)convertView.findViewById(R.id.endDateText)).setText(realmResults.get(position).getEndDate());
+        ((TextView)convertView.findViewById(R.id.startDateText)).setText(fw.getFormatedStringDate(realmResults.get(position).getDateStartDate()));
+        ((TextView)convertView.findViewById(R.id.endDateText)).setText(fw.getFormatedStringDate(realmResults.get(position).getDateEndDate()));
         ((TextView)convertView.findViewById(R.id.placeText)).setText(realmResults.get(position).getPlace());
         if(realmResults.get(position).getDescription().length() > 36){
             String temp = realmResults.get(position).getDescription().substring(0,35) + "...";

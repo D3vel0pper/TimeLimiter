@@ -15,17 +15,17 @@ import io.realm.annotations.PrimaryKey;
  */
 public class DBData extends RealmObject {
     //yyyy/MM/dd HH:mm
-    private String createdAt;
-    private String startDate;
-    private String endDate;
+//    private String createdAt;
+//    private String startDate;
+//    private String endDate;
     //--------------Added----------
     private Date dateCreatedAt;
     private Date dateStartDate;
     private Date dateEndDate;
     //-----------------------------
     //yyyy/MM/dd
-    private String startDay;
-    private String endDay;
+//    private String startDay;
+//    private String endDay;
     //-------------Added-----------
     private Date dateStartDay;
     private Date dateEndDay;
@@ -39,7 +39,7 @@ public class DBData extends RealmObject {
     private String month;
 
 
-
+    @PrimaryKey
     private int id;
 
     public void setId(int id){
@@ -57,42 +57,42 @@ public class DBData extends RealmObject {
     }
     /**
      *
-     * @param formatedDate: yyyy/MM/dd hh:mm
+//     * @param formatedDate: yyyy/MM/dd hh:mm
      */
-    public void setCreatedAt(String formatedDate){
-        this.createdAt = formatedDate;
-    }
-    public String getCreatedAt(){
-        return this.createdAt;
-    }
-
-    public void setStartDate(String formatedDate){
-        this.startDate = formatedDate;
-    }
-    public String getStartDate(){
-        return this.startDate;
-    }
-
-    public void setEndDate(String formatedDate){
-        this.endDate = formatedDate;
-    }
-    public String getEndDate(){
-        return this.endDate;
-    }
-
-    public void setStartDay(String startDay){
-        this.startDay = startDay;
-    }
-    public String getStartDay(){
-        return this.startDay;
-    }
-
-    public void setEndDay(String endDay){
-        this.endDay = endDay;
-    }
-    public String getEndDay(){
-        return this.endDay;
-    }
+//    public void setCreatedAt(String formatedDate){
+//        this.createdAt = formatedDate;
+//    }
+//    public String getCreatedAt(){
+//        return this.createdAt;
+//    }
+//
+//    public void setStartDate(String formatedDate){
+//        this.startDate = formatedDate;
+//    }
+//    public String getStartDate(){
+//        return this.startDate;
+//    }
+//
+//    public void setEndDate(String formatedDate){
+//        this.endDate = formatedDate;
+//    }
+//    public String getEndDate(){
+//        return this.endDate;
+//    }
+//
+//    public void setStartDay(String startDay){
+//        this.startDay = startDay;
+//    }
+//    public String getStartDay(){
+//        return this.startDay;
+//    }
+//
+//    public void setEndDay(String endDay){
+//        this.endDay = endDay;
+//    }
+//    public String getEndDay(){
+//        return this.endDay;
+//    }
 
 //    public void setStartWeekOfMonth(String startWeekOfMonth){
 //        this.startWeekOfMonth = startWeekOfMonth;
@@ -137,61 +137,36 @@ public class DBData extends RealmObject {
     }
 
     //---------------Add Setter & Getter----------------
-    public void setDateCreatedAt(String formatedDateString){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-        try {
-            this.dateCreatedAt = sdf.parse(formatedDateString);
-        } catch(ParseException e){
-            Log.e("PE","Parse hasnot finished correctly");
-        }
+    public void setDateCreatedAt(Date formatedDate){
+        this.dateCreatedAt = formatedDate;
     }
     public Date getDateCreatedAt(){
         return this.dateCreatedAt;
     }
 
-    public void setDateStartDate(String formatedDateString){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-        try {
-            this.dateStartDate = sdf.parse(formatedDateString);
-        } catch(ParseException e){
-            Log.e("PE","Parse hasnot finished correctly");
-        }
+    public void setDateStartDate(Date formatedDate){
+        this.dateStartDate = formatedDate;
     }
     public Date getDateStartDate(){
         return this.dateStartDate;
     }
 
-    public void setDateEndDate(String formatedDateString){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-        try {
-            this.dateEndDate = sdf.parse(formatedDateString);
-        } catch(ParseException e){
-            Log.e("PE","Parse hasnot finished correctly");
-        }
+    public void setDateEndDate(Date formatedDate){
+        this.dateEndDate = formatedDate;
     }
     public Date getDateEndDate(){
         return this.dateEndDate;
     }
 
-    public void setDateStartDay(String formatedDateString){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-        try {
-            this.dateStartDay = sdf.parse(formatedDateString);
-        } catch(ParseException e){
-            Log.e("PE","Parse hasnot finished correctly");
-        }
+    public void setDateStartDay(Date formatedDate){
+        this.dateStartDay = formatedDate;
     }
     public Date getDateStartDay(){
         return this.dateStartDay;
     }
 
-    public void setDateEndDay(String formatedDateString){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-        try {
-            this.dateEndDay = sdf.parse(formatedDateString);
-        } catch(ParseException e){
-            Log.e("PE","Parse hasnot finished correctly");
-        }
+    public void setDateEndDay(Date formatedDate){
+        this.dateEndDay = formatedDate;
     }
     public Date getDateEndDay(){
         return this.dateEndDay;
