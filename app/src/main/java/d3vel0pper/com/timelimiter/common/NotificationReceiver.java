@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.activity.MainActivity;
-import io.realm.Realm;
 
 /**
  * Created by D3vel0pper on 2016/06/29.

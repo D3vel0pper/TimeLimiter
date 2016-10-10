@@ -10,6 +10,7 @@ import android.widget.TextView;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.FormatWrapper;
+import d3vel0pper.com.timelimiter.realm.RealmManager;
 import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -25,11 +26,13 @@ public class RealmAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private RealmResults<DBData> realmResults;
     private FormatWrapper fw;
+    private RealmManager realmManager;
 
     public RealmAdapter(Context context){
         this.context = context;
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         fw = new FormatWrapper();
+        realmManager = RealmManager.getInstance();
     }
 
     @Override
@@ -42,8 +45,8 @@ public class RealmAdapter extends BaseAdapter {
     public Object getItem(int position){
         loadRealm();
         TextView v = (TextView)getView(position,null,null).findViewById(R.id.hiddenData);
-        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        Realm realm = realmManager.getRealm(context);
+        RealmQuery<DBData> query = realmManager.getQuery(context);
         RealmResults<DBData> res = query.equalTo("id",Integer.parseInt(v.getText().toString())).findAll();
         return res.get(0);
     }
@@ -60,8 +63,8 @@ public class RealmAdapter extends BaseAdapter {
         convertView = layoutInflater.inflate(R.layout.card_layout,parent,false);
 
 //        Realm realm = Realm.getDefaultInstance();
-        Realm realm = RealmMigrator.getInstance(context).getRealm(context);
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        Realm realm = realmManager.getRealm(context);
+        RealmQuery<DBData> query = realmManager.getQuery(context);
         //if sort() is not called, order will be not in correct position after delete Object
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
 //        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
@@ -86,9 +89,9 @@ public class RealmAdapter extends BaseAdapter {
 
     private void loadRealm(){
         //migration process for Realm
-        Realm realm = RealmMigrator.getInstance(context).getRealm(context);
+        Realm realm = realmManager.getRealm(context);
 //        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmQuery<DBData> query = realmManager.getQuery(context);
         this.realmResults = query.findAll();
     }
 

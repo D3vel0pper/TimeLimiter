@@ -44,6 +44,7 @@ import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
+import d3vel0pper.com.timelimiter.realm.RealmManager;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -57,11 +58,13 @@ public class CustomDialogFragment extends DialogFragment {
     static private String dataString;
     private Realm realm;
     private FormatWrapper formatWrapper;
+    private RealmManager realmManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         formatWrapper = new FormatWrapper();
+        realmManager = RealmManager.getInstance();
     }
 
     @Override
@@ -118,9 +121,9 @@ public class CustomDialogFragment extends DialogFragment {
                 RealmQuery<DBData> query;
                 switch(position){
                     case 0:
-                        realm = Realm.getDefaultInstance();
+                        realm = realmManager.getRealm(getActivity());
                         RealmResults<DBData> res;
-                        query = realm.where(DBData.class);
+                        query = realmManager.getQuery(getActivity());
                         res = query.findAll();
                         Intent intent = new Intent(getActivity().getApplicationContext(),EditActivity.class);
                         intent.putExtra("id",res.get(parentItemPosition).getId());
@@ -128,10 +131,10 @@ public class CustomDialogFragment extends DialogFragment {
                         startActivity(intent);
                         break;
                     case 1:
-                        realm = Realm.getDefaultInstance();
+                        realm = realmManager.getRealm(getActivity());
                         final RealmResults<DBData> results;
                         //Search that match to item's Id
-                        results = realm.where(DBData.class)
+                        results = realmManager.getQuery(getActivity())
                                 .equalTo("id",(int)passParent.listView.getItemIdAtPosition(parentItemPosition))
                                 .findAll();
                         Notificationer.cancelLocalNotification(getActivity(),results.get(0).getId());
@@ -294,11 +297,11 @@ public class CustomDialogFragment extends DialogFragment {
 
             SharedPreferences preferences
                     = getActivity().getSharedPreferences("ConfigData",Context.MODE_PRIVATE);
-            realm = Realm.getDefaultInstance();
+            realm = realmManager.getRealm(getActivity());
 
             //for check is empty
             RealmResults<DBData> results;
-            RealmQuery<DBData> query = realm.where(DBData.class);
+            RealmQuery<DBData> query = realmManager.getQuery(getActivity());
             results = query.findAll().sort("id", Sort.ASCENDING);
 
             //start transaction and register

@@ -40,6 +40,7 @@ import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.ShowDetailFragment;
+import d3vel0pper.com.timelimiter.realm.RealmManager;
 import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -60,6 +61,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public int itemId;
     public int itemPosition;
     public RealmAdapter realmAdapter;
+    private RealmManager realmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +69,9 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
         PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
-        deleteRealm();
+//        deleteRealm();
         //!!!-----------This part will cause unexpected Error that relate on multi file access--------!!!
-        final RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        final RealmConfiguration realmConfiguration = realmManager.getConfiguration(this);
         Realm.setDefaultConfiguration(realmConfiguration);
         //---------------------------------------------------------------------------------------------
         setContentView(R.layout.activity_main);
@@ -191,9 +193,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         if(realm != null){
             realm.close();
         }
-        realm = Realm.getInstance(new RealmConfiguration.Builder(context)
-                .schemaVersion(0).migration(RealmMigrator.getInstance(this).runMigration()).build());
-//        realm = Realm.getDefaultInstance();
+        realm = realmManager.getRealm(this);
         realm.beginTransaction();
         realm.deleteAll();
         realm.commitTransaction();

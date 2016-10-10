@@ -28,6 +28,7 @@ import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.Notificationer;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
+import d3vel0pper.com.timelimiter.realm.RealmManager;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -42,11 +43,13 @@ public class EditDialogFragment extends DialogFragment {
     private Realm realm;
     private EditActivity parent;
     private FormatWrapper formatWrapper;
+    private RealmManager realmManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         formatWrapper = new FormatWrapper();
+        realmManager = RealmManager.getInstance();
     }
 
     @Override
@@ -92,10 +95,10 @@ public class EditDialogFragment extends DialogFragment {
     public void inOnClick(RegisterInformer registerInformer){
         SharedPreferences preferences
                 = getActivity().getSharedPreferences("ConfigData", Context.MODE_PRIVATE);
-        realm = Realm.getDefaultInstance();
+        realm = realmManager.getRealm(getActivity());
         RealmResults<DBData> results;
         RealmResults<DBData> updateTarget;
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmQuery<DBData> query = realmManager.getQuery(getActivity());
 
         //Use Map
         Map<String, String> dataMap = parent.getDataMap();

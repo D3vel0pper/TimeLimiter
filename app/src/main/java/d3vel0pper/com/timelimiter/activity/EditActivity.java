@@ -29,11 +29,10 @@ import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.listener.ConfirmDialogListener;
 import d3vel0pper.com.timelimiter.common.listener.DialogTeller;
-import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.DatePickerFragment;
-//import d3vel0pper.com.timelimiter.fragment.EditFragment;
 import d3vel0pper.com.timelimiter.fragment.EditDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.TimePickerFragment;
+import d3vel0pper.com.timelimiter.realm.RealmManager;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -49,11 +48,13 @@ public class EditActivity extends DatePickActivity
     private String TAG;
     private DialogTeller dialogTeller;
     private FormatWrapper formatWrapper;
+    private RealmManager realmManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         formatWrapper = new FormatWrapper();
+        realmManager = RealmManager.getInstance();
         setContentView(R.layout.activity_date_pick);
 //        setContentView(R.layout.activity_edit);
 //        getSupportFragmentManager().beginTransaction().add(R.id.container,EditFragment.getInstance(),"EditFragment").commit();
@@ -126,9 +127,9 @@ public class EditActivity extends DatePickActivity
     }
 
     private void setUpMap(int id){
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = realmManager.getRealm(this);
         RealmResults<DBData> results;
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmQuery<DBData> query = realmManager.getQuery(this);
         results = query.equalTo("id",id).findAll().sort("id", Sort.ASCENDING);
         if(results.get(0) == null){
             Toast.makeText(this, "results show null", Toast.LENGTH_SHORT).show();
