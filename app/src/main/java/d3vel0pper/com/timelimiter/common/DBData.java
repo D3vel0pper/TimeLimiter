@@ -34,8 +34,6 @@ public class DBData extends RealmObject {
     private boolean isRepeatable;
     private String month;
 
-
-    @PrimaryKey
     private int id;
 
     public void setId(int id){

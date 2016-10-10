@@ -69,6 +69,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
         PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
+        realmManager = RealmManager.getInstance();
 //        deleteRealm();
         //!!!-----------This part will cause unexpected Error that relate on multi file access--------!!!
         final RealmConfiguration realmConfiguration = realmManager.getConfiguration(this);
