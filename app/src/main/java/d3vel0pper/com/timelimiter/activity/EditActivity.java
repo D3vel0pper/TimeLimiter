@@ -129,7 +129,7 @@ public class EditActivity extends DatePickActivity
     private void setUpMap(int id){
         Realm realm = realmManager.getRealm(this);
         RealmResults<DBData> results;
-        RealmQuery<DBData> query = realmManager.getQuery(this);
+        RealmQuery<DBData> query = realm.where(DBData.class);
         results = query.equalTo("id",id).findAll().sort("id", Sort.ASCENDING);
         if(results.get(0) == null){
             Toast.makeText(this, "results show null", Toast.LENGTH_SHORT).show();

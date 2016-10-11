@@ -37,22 +37,25 @@ public class RealmAdapter extends BaseAdapter {
 
     @Override
     public int getCount(){
+//        realmManager.closeRealm();
         loadRealm();
         return realmResults.size();
     }
 
     @Override
     public Object getItem(int position){
+//        realmManager.closeRealm();
         loadRealm();
         TextView v = (TextView)getView(position,null,null).findViewById(R.id.hiddenData);
         Realm realm = realmManager.getRealm(context);
-        RealmQuery<DBData> query = realmManager.getQuery(context);
+        RealmQuery<DBData> query = realm.where(DBData.class);
         RealmResults<DBData> res = query.equalTo("id",Integer.parseInt(v.getText().toString())).findAll();
         return res.get(0);
     }
 
     @Override
     public long getItemId(int position){
+//        realmManager.closeRealm();
         loadRealm();
 //        return realmResults.get(position).getId();
         return Integer.parseInt(((TextView)getView(position,null,null).findViewById(R.id.hiddenData)).getText().toString());
@@ -64,7 +67,7 @@ public class RealmAdapter extends BaseAdapter {
 
 //        Realm realm = Realm.getDefaultInstance();
         Realm realm = realmManager.getRealm(context);
-        RealmQuery<DBData> query = realmManager.getQuery(context);
+        RealmQuery<DBData> query = realm.where(DBData.class);
         //if sort() is not called, order will be not in correct position after delete Object
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
 //        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
@@ -83,15 +86,15 @@ public class RealmAdapter extends BaseAdapter {
         } else{
             ((TextView) convertView.findViewById(R.id.descriptionText)).setText(realmResults.get(position).getDescription());
         }
-
         return convertView;
     }
 
     private void loadRealm(){
         //migration process for Realm
+        realmManager = RealmManager.getInstance();
         Realm realm = realmManager.getRealm(context);
 //        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realmManager.getQuery(context);
+        RealmQuery<DBData> query = realm.where(DBData.class);
         this.realmResults = query.findAll();
     }
 

@@ -123,18 +123,18 @@ public class CustomDialogFragment extends DialogFragment {
                     case 0:
                         realm = realmManager.getRealm(getActivity());
                         RealmResults<DBData> res;
-                        query = realmManager.getQuery(getActivity());
+                        query = realm.where(DBData.class);
                         res = query.findAll();
                         Intent intent = new Intent(getActivity().getApplicationContext(),EditActivity.class);
                         intent.putExtra("id",res.get(parentItemPosition).getId());
-                        realm.close();
+//                        realm.close();
                         startActivity(intent);
                         break;
                     case 1:
                         realm = realmManager.getRealm(getActivity());
                         final RealmResults<DBData> results;
                         //Search that match to item's Id
-                        results = realmManager.getQuery(getActivity())
+                        results = realm.where(DBData.class)
                                 .equalTo("id",(int)passParent.listView.getItemIdAtPosition(parentItemPosition))
                                 .findAll();
                         Notificationer.cancelLocalNotification(getActivity(),results.get(0).getId());
@@ -263,9 +263,9 @@ public class CustomDialogFragment extends DialogFragment {
 
     @Override
     public void onDestroyView(){
-        if(realm != null) {
-            realm.close();
-        }
+//        if(realm != null) {
+//            realm.close();
+//        }
         super.onDestroyView();
     }
 
@@ -301,7 +301,7 @@ public class CustomDialogFragment extends DialogFragment {
 
             //for check is empty
             RealmResults<DBData> results;
-            RealmQuery<DBData> query = realmManager.getQuery(getActivity());
+            RealmQuery<DBData> query = realm.where(DBData.class);
             results = query.findAll().sort("id", Sort.ASCENDING);
 
             //start transaction and register

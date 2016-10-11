@@ -98,7 +98,7 @@ public class EditDialogFragment extends DialogFragment {
         realm = realmManager.getRealm(getActivity());
         RealmResults<DBData> results;
         RealmResults<DBData> updateTarget;
-        RealmQuery<DBData> query = realmManager.getQuery(getActivity());
+        RealmQuery<DBData> query = realm.where(DBData.class);
 
         //Use Map
         Map<String, String> dataMap = parent.getDataMap();

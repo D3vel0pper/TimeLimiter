@@ -2,13 +2,10 @@ package d3vel0pper.com.timelimiter.realm;
 
 import android.content.Context;
 
-import d3vel0pper.com.timelimiter.common.DBData;
 import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 /**
  * Created by D3vel0pper on 2016/10/10.
@@ -42,7 +39,7 @@ public class RealmManager {
     private Realm realm;
     private RealmMigration migration;
     private RealmConfiguration configuration;
-    private RealmQuery<DBData> query;
+//    private RealmQuery<DBData> query;
 //    private RealmResults<DBData> results;
 
     /**
@@ -108,11 +105,21 @@ public class RealmManager {
         return migration;
     }
 
-    public RealmQuery<DBData> getQuery(Context context){
-        if(query == null){
-            query = getRealm(context).where(DBData.class);
+//    public RealmQuery<DBData> getQuery(Context context){
+//        if(query == null){
+//            query = getRealm(context).where(DBData.class);
+//        }
+//        return query;
+//    }
+
+    /**
+     * you must close the realm if you won't handle after
+     */
+    public void closeRealm(){
+        if(realm != null) {
+            realm.close();
         }
-        return query;
+        realm = null;
     }
 
 }

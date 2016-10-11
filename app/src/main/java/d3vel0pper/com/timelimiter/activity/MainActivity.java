@@ -99,7 +99,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             }
         });
 
-        loadRealm();
+        setUpListView();
 //        ---------------------------Test Code---------------------------------------------------
         Button deleteBtn = (Button)findViewById(R.id.deleteBtn);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +107,6 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             public void onClick(View v) {
                 //delete Realm
                 deleteRealm();
-                //After delete, reload Realm
-                loadRealm();
             }
         });
         //modify here to decide show or not
@@ -123,18 +121,18 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public void onRestart(){
         super.onRestart();
         //Add here the code which reload the DB
-        loadRealm();
+        setUpListView();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        realmManager.closeRealm();
     }
 
     //Custom Listener of registration
@@ -143,7 +141,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         Toast.makeText(this,R.string.registered_data_is + data,Toast.LENGTH_SHORT).show();
     }
 
-    public void loadRealm(){
+    public void setUpListView(){
         //set RealmResult by using Handler to handle ResultData from UI thread
         //if u don't use handler, it will be crushed By NPE
         android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
@@ -185,23 +183,17 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 });
             }
         });
-        if(realm != null){
-            realm.close();
-        }
     }
 
     public void deleteRealm(){
-        if(realm != null){
-            realm.close();
-        }
         realm = realmManager.getRealm(this);
         realm.beginTransaction();
         realm.deleteAll();
         realm.commitTransaction();
-        realm.close();
+        realmManager.closeRealm();
         preferences.edit().putString("nowRegistered","0").apply();
-        //After delete, reload Realm
-        loadRealm();
+        //After delete, reset up listView
+        setUpListView();
     }
 
 }
