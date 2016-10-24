@@ -29,6 +29,11 @@
             android:label="Edit"
             android:launchMode="singleTask"></activity>
 
+        <!-- For debugging -->
+        <activity android:name=".activity.TabActivity"
+            android:label="Test"
+            android:launchMode="singleTask"></activity>
+
         <receiver
             android:name=".common.NotificationReceiver"
             android:process=":remote" />

@@ -63,6 +63,8 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public RealmAdapter realmAdapter;
     private RealmManager realmManager;
 
+    private Button testBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,8 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         //---------------------------------------------------------------------------------------------
 //        deleteRealm();
         setContentView(R.layout.activity_main);
+
+        setUpTestButton();
 
         //Set Register Informer
         registerInformer = RegisterInformer.getInstance();
@@ -194,6 +198,17 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         preferences.edit().putString("nowRegistered","0").apply();
         //After delete, reset up listView
         setUpListView();
+    }
+
+    private void setUpTestButton(){
+        this.testBtn = (Button)findViewById(R.id.testBtn);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),TabActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
