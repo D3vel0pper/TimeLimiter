@@ -144,7 +144,7 @@ public class CustomDialogFragment extends DialogFragment {
                                 results.get(0).deleteFromRealm();
                             }
                         });
-                        passParent.realmAdapter.notifyDataSetChanged();
+                        passParent.reloadViewPager();
                         break;
                     case 2:
                         break;

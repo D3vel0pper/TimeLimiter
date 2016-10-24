@@ -116,7 +116,7 @@ public class EditDialogFragment extends DialogFragment {
         dayCalc.calcGap(dataMap.get("startDate"),dataMap.get("endDate"));
 
         int dayTotal = 0;
-        results = query.equalTo("startDay",dataMap.get("startDate").split(" ")[0]).notEqualTo("id",putId).findAll();
+        results = query.equalTo("dateStartDay",formatWrapper.getFormatedDate(dataMap.get("startDate").split(" ")[0])).notEqualTo("id",putId).findAll();
         for(int i = 0;i <  results.size();i++){
             if(results.get(i).getId() != putId) {
                 calc.calcGap(formatWrapper.getFormatedStringDateWithTime(results.get(i).getDateStartDate())

@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
@@ -26,40 +30,35 @@ import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
+import d3vel0pper.com.timelimiter.fragment.MainFragment;
 import d3vel0pper.com.timelimiter.fragment.ShowDetailFragment;
+import d3vel0pper.com.timelimiter.fragment.TestFragment;
 import d3vel0pper.com.timelimiter.realm.RealmManager;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 
-public class MainActivity extends FragmentActivity implements RegisteredListener {
+public class MainActivity extends FragmentActivity implements RegisteredListener, ViewPager.OnPageChangeListener {
 
     private RegisterInformer registerInformer;
-    private Realm realm;
-    private Context context;
-    private SharedPreferences preferences;
-    public ListView listView;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle toggle;
     public int itemId;
     public int itemPosition;
-    public RealmAdapter realmAdapter;
-    private RealmManager realmManager;
+    public RealmManager realmManager;
+
+    public ListView listView;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    public FragmentPagerAdapter pagerAdapter;
 
     private Button testBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
-        PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
-        context = getBaseContext();
         realmManager = RealmManager.getInstance();
-        //!!!-----------This part will cause unexpected Error that relate on multi file access--------!!!
-        final RealmConfiguration realmConfiguration = realmManager.getConfiguration(this);
-        Realm.setDefaultConfiguration(realmConfiguration);
-        //---------------------------------------------------------------------------------------------
-//        deleteRealm();
         setContentView(R.layout.activity_main);
 
         setUpTestButton();
@@ -86,7 +85,6 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             }
         });
 
-        setUpListView();
 //        ---------------------------Test Code---------------------------------------------------
         Button deleteBtn = (Button)findViewById(R.id.deleteBtn);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,15 +98,48 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         deleteBtn.setVisibility(View.VISIBLE);
 
 //        --------------------------Test Code End-------------------------------------------------
-        listView = (ListView)findViewById(R.id.itemList);
+
+        tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        viewPager = (ViewPager)findViewById(R.id.view_pager);
+
+        pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return MainFragment.getInstance();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position){
+                switch (position){
+                    case 0:
+                        return "today";
+                    case 1:
+                        return "tomorrow";
+                    case 2:
+                        return "list";
+                    default:
+                        return "default";
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 3;
+            }
+        };
+
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(this);
+        //setup automatically
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
     @Override
     public void onRestart(){
         super.onRestart();
-        //Add here the code which reload the DB
-        setUpListView();
+        //reload ViewPager
+        reloadViewPager();
     }
 
     @Override
@@ -128,59 +159,18 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         Toast.makeText(this,R.string.registered_data_is + data,Toast.LENGTH_SHORT).show();
     }
 
-    public void setUpListView(){
-        //set RealmResult by using Handler to handle ResultData from UI thread
-        //if u don't use handler, it will be crushed By NPE
-        android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                realmAdapter = new RealmAdapter(context);
-                listView.setAdapter(realmAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        DBData dbdata = (DBData)listView.getItemAtPosition(position);
-                        //Map of data (Using Map)
-                        Map<String, String> dataMap = new HashMap<>();
-                        dataMap.put("title",dbdata.getTitle());
-//                        dataMap.put("startDate",dbdata.getStartDate());
-//                        dataMap.put("endDate",dbdata.getEndDate());
-                        FormatWrapper formatWrapper = new FormatWrapper();
-                        dataMap.put("startDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
-                        dataMap.put("endDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
-                        dataMap.put("place",dbdata.getPlace());
-                        dataMap.put("description",dbdata.getDescription());
-                        ShowDetailFragment sdf = new ShowDetailFragment();
-                        sdf.setDataMap(dataMap);
-                        sdf.show(getSupportFragmentManager(),"showDetail");
-//                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                        View rtnView = realmAdapter.getView(position,null,null);
-//                        itemId = Integer.parseInt(((TextView)rtnView.findViewById(R.id.hiddenData)).getText().toString());
-                        itemPosition = position;
-                        CustomDialogFragment cdf = new CustomDialogFragment();
-                        cdf.show(getSupportFragmentManager(),"list");
-                        return true;
-                    }
-                });
-            }
-        });
-    }
-
     public void deleteRealm(){
-        realm = realmManager.getRealm(this);
+        SharedPreferences preferences = getSharedPreferences("ConfigData",MODE_PRIVATE);
+        PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
+        Realm realm = realmManager.getRealm(this);
         realm.beginTransaction();
         realm.deleteAll();
         realm.commitTransaction();
         realmManager.closeRealm();
         preferences.edit().putString("nowRegistered","0").apply();
-        //After delete, reset up listView
-        setUpListView();
+        //reload ViewPager
+        pagerAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(pagerAdapter);
     }
 
     private void setUpTestButton(){
@@ -192,6 +182,26 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onPageScrolled(int position,float positionOffset,int positionOffsetPixels){
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int position){
+
+    }
+
+    @Override
+    public void onPageSelected(int position){
+//        Toast.makeText(this,"page " + Integer.toString(position) + "selected",Toast.LENGTH_SHORT).show();
+    }
+
+    public void reloadViewPager(){
+        pagerAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(pagerAdapter);
     }
 
 }
