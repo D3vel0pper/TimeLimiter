@@ -70,11 +70,11 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         PreferenceManager.setDefaultValues(this,"ConfigData",MODE_PRIVATE,R.xml.default_values,false);
         context = getBaseContext();
         realmManager = RealmManager.getInstance();
-//        deleteRealm();
         //!!!-----------This part will cause unexpected Error that relate on multi file access--------!!!
         final RealmConfiguration realmConfiguration = realmManager.getConfiguration(this);
         Realm.setDefaultConfiguration(realmConfiguration);
         //---------------------------------------------------------------------------------------------
+//        deleteRealm();
         setContentView(R.layout.activity_main);
 
         //Set Register Informer

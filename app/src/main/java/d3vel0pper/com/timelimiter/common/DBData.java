@@ -31,8 +31,16 @@ public class DBData extends RealmObject {
     private String place;
     private String description;
     private boolean notifable;
+    /**
+     * isRepeatable -> true repeat registering at "same dayOfWeek"
+     */
     private boolean isRepeatable;
     private String month;
+
+    /**
+     * isComplete means that if this is true, it will be invisible.
+     */
+    private boolean isComplete;
 
     private int id;
 
@@ -130,7 +138,6 @@ public class DBData extends RealmObject {
         return this.isRepeatable;
     }
 
-    //---------------Add Setter & Getter----------------
     public void setDateCreatedAt(Date formatedDate){
         this.dateCreatedAt = formatedDate;
     }
@@ -164,6 +171,13 @@ public class DBData extends RealmObject {
     }
     public Date getDateEndDay(){
         return this.dateEndDay;
+    }
+
+    public void setIsComplete(boolean isComplete){
+        this.isComplete = isComplete;
+    }
+    public boolean getIsComplete(){
+        return this.isComplete;
     }
 
 }

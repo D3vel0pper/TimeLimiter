@@ -6,6 +6,7 @@ import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
+import io.realm.RealmSchema;
 
 /**
  * Created by D3vel0pper on 2016/10/10.
@@ -45,7 +46,7 @@ public class RealmManager {
     /**
      * SCHEMA_VERSION is int number that showing schema version of Realm
      */
-    private static final int SCHEMA_VERSION = 0;
+    private static final int SCHEMA_VERSION = 1;
 
     public Realm getRealm(Context context){
         if(realm == null){
@@ -58,10 +59,8 @@ public class RealmManager {
      * If you upgraded modelClass, you must change SCHEMA_VERSION
      */
     public RealmConfiguration getConfiguration(Context context){
-        if(configuration == null){
-            configuration = new RealmConfiguration.Builder(context)
-                    .schemaVersion(SCHEMA_VERSION).migration(runMigration(context)).build();
-        }
+        configuration = new RealmConfiguration.Builder(context)
+                .schemaVersion(SCHEMA_VERSION).migration(runMigration(context)).build();
         return configuration;
     }
 
@@ -80,7 +79,7 @@ public class RealmManager {
 
                 //ex.)
                 // DynamicRealmから変更可能なスキーマオブジェクトを取得します
-                //RealmSchema schema = realm.getSchema();
+                RealmSchema schema = realm.getSchema();
 
                 // バージョン1へのマイグレーション: クラスの追加
                 // Example:
@@ -100,6 +99,18 @@ public class RealmManager {
                 //     private RealmList<Dog> dogs;
                 //     //getterとsetterは省略
                 // }
+//                if (oldVersion == 1) {
+//                    schema.get("Person")
+//                            .addField("id", long.class, FieldAttribute.PRIMARY_KEY)
+//                            .addRealmObjectField("favoriteDog", schema.get("Dog"))
+//                            .addRealmListField("dogs", schema.get("Dog"));
+//                    oldVersion++;
+//                }
+                if(oldVersion == 1){
+                    schema.get("DBData")
+                            .addField("isComplete",boolean.class);
+                    oldVersion++;
+                }
             }
         };
         return migration;
