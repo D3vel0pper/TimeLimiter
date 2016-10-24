@@ -14,7 +14,7 @@ import d3vel0pper.com.timelimiter.fragment.TestFragment;
 /**
  * Created by D3vel0pper on 2016/10/24.
  */
-public class TabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class TestActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;

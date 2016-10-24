@@ -30,7 +30,7 @@
             android:launchMode="singleTask"></activity>
 
         <!-- For debugging -->
-        <activity android:name=".activity.TabActivity"
+        <activity android:name=".activity.TestActivity"
             android:label="Test"
             android:launchMode="singleTask"></activity>
 

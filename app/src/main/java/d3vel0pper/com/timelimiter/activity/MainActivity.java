@@ -7,30 +7,17 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.Normalizer;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.RunnableFuture;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
@@ -41,12 +28,8 @@ import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
 import d3vel0pper.com.timelimiter.fragment.ShowDetailFragment;
 import d3vel0pper.com.timelimiter.realm.RealmManager;
-import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmMigration;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 
 public class MainActivity extends FragmentActivity implements RegisteredListener {
@@ -205,7 +188,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),TabActivity.class);
+                Intent intent = new Intent(getApplicationContext(),TestActivity.class);
                 startActivity(intent);
             }
         });
