@@ -1,137 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
 
-     <FrameLayout
-         android:layout_width="match_parent"
-        android:layout_height="60dp">
-
-         <EditText
-            android:id="@+id/titleText"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/input_title"
-            android:singleLine="true"
-            android:textSize="20sp"/>
+            android:layout_height="60dp">
 
-     </FrameLayout>
+             <EditText
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/input_title"
+                android:singleLine="true"
+                android:textSize="20sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/startGuide"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="開始日時："
-            android:textSize="20sp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/startGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="開始日時："
+                android:textSize="20sp"/>
 
 
-        <TextView
-            android:id="@+id/startText"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/startText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/startDateBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/set_date_button"
+                android:textSize="15sp"
+                android:layout_marginLeft="5dp"/>
+
+            <Button
+                android:id="@+id/startTimeBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/set_time_button"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/endGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="終了日時："
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/endText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/endDateBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/set_date_button"
+                android:textSize="15sp"/>
+
+            <Button
+                android:id="@+id/endTimeBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/set_time_button"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/placeText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/input_place"
             android:textSize="20sp"
-            android:layout_marginLeft="5dp" />
-    </LinearLayout>
+            android:singleLine="true"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/startDateBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/set_date_button"
-            android:textSize="15sp"
-            android:layout_marginLeft="5dp"/>
-
-        <Button
-            android:id="@+id/startTimeBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/set_time_button"
-            android:textSize="15sp"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/endGuide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="終了日時："
-            android:textSize="20sp"/>
-
-        <TextView
-            android:id="@+id/endText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:hint="@string/input_detail"
             android:textSize="20sp"
-            android:layout_marginLeft="5dp"/>
-    </LinearLayout>
+            android:nextFocusDown="@+id/footer"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/endDateBtn"
-            android:layout_width="0dp"
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/daily_work_cb"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/set_date_button"
-            android:textSize="15sp"/>
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@string/daily_work_cb_text"
+            android:textSize="20sp"
+            android:checked="false"/>
 
-        <Button
-            android:id="@+id/endTimeBtn"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/set_time_button"
-            android:textSize="15sp"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/placeText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="@string/input_place"
-        android:textSize="20sp"
-        android:singleLine="true"/>
-
-    <EditText
-        android:id="@+id/descriptionText"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:hint="@string/input_detail"
-        android:textSize="20sp"
-        android:nextFocusDown="@+id/footer"/>
-
-    <LinearLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/endBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/complete_button"
-            android:textSize="15sp"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/endBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/complete_button"
+                android:textSize="15sp"/>
+        </LinearLayout>
 </LinearLayout>

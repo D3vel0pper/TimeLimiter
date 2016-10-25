@@ -31,6 +31,7 @@
     <string name="input_detail">詳細を入力</string>
     <string name="start_date">開始日時</string>
     <string name="end_date">終了日時</string>
+    <string name="daily_work_cb_text">定常作業として登録する</string>
     <!--<string name="confirm_text">以下の内容で登録します</string>-->
 
     <!-- toast text -->
