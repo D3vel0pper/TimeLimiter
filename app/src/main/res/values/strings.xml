@@ -51,6 +51,11 @@
     <string name="complete_button">完了</string>
     <string name="init">初期化</string>
 
+    <!-- List View items -->
+    <string name="list_delete">削除</string>
+    <string name="list_edit">編集</string>
+    <string name="list_complete">完了</string>
+
     <!-- default values -->
     <string name="default_id">0</string>
     <string name="default_title">defaultTitle</string>

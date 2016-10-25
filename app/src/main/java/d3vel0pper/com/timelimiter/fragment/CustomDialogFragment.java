@@ -108,7 +108,7 @@ public class CustomDialogFragment extends DialogFragment {
 
     private View defaultCase(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState,MainActivity parent){
         View view = inflater.inflate(R.layout.fragment_list_dialog,container,false);
-        String[] listData = {"edit","delete","complete"};
+        String[] listData = {"編集","削除","完了"};
         final int parentItemPosition = parent.itemPosition;
         final MainActivity passParent = parent;
         ListView listView = (ListView)view.findViewById(R.id.listView);
@@ -122,31 +122,40 @@ public class CustomDialogFragment extends DialogFragment {
                 switch(position){
                     case 0:
                         realm = realmManager.getRealm(getActivity());
-                        RealmResults<DBData> res;
+                        RealmResults<DBData> res0;
                         query = realm.where(DBData.class);
-                        res = query.findAll();
+                        res0 = query.findAll();
                         Intent intent = new Intent(getActivity().getApplicationContext(),EditActivity.class);
-                        intent.putExtra("id",res.get(parentItemPosition).getId());
+                        intent.putExtra("id",res0.get(parentItemPosition).getId());
 //                        realm.close();
                         startActivity(intent);
                         break;
                     case 1:
                         realm = realmManager.getRealm(getActivity());
-                        final RealmResults<DBData> results;
+                        final RealmResults<DBData> res1;
                         //Search that match to item's Id
-                        results = realm.where(DBData.class)
+                        res1 = realm.where(DBData.class)
                                 .equalTo("id",(int)passParent.listView.getItemIdAtPosition(parentItemPosition))
                                 .findAll();
-                        Notificationer.cancelLocalNotification(getActivity(),results.get(0).getId());
+                        Notificationer.cancelLocalNotification(getActivity(),res1.get(0).getId());
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
-                                results.get(0).deleteFromRealm();
+                                res1.get(0).deleteFromRealm();
                             }
                         });
                         passParent.reloadViewPager();
                         break;
                     case 2:
+                        realm = realmManager.getRealm(getActivity());
+                        final RealmResults<DBData> res2;
+                        res2 = realm.where(DBData.class)
+                                .equalTo("id",(int)passParent.listView.getItemIdAtPosition(parentItemPosition))
+                                .findAll();
+                        realm.beginTransaction();
+                        res2.get(0).setIsComplete(true);
+                        realm.commitTransaction();
+                        passParent.reloadViewPager();
                         break;
                 }
                 dismiss();

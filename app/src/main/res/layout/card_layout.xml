@@ -21,11 +21,22 @@
             android:padding="10dp">
 
             <!-- Hidden Data -->
-            <TextView
-                android:id="@+id/hiddenData"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_id"/>
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/hiddenData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_id"/>
+                <TextView
+                    android:id="@+id/hiddenComplete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/titleText"

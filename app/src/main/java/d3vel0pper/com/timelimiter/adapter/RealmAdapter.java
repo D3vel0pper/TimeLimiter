@@ -72,10 +72,19 @@ public class RealmAdapter extends BaseAdapter {
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
 //        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
 
+        //Hidden data
         TextView hiddenId = (TextView)convertView.findViewById(R.id.hiddenData);
 //        hiddenId.setText(String.valueOf(realmResults.get(position).getId()) + " " + realmResults.get(position).getStartDay() + " " + realmResults.get(position).getMonth());
         hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
         hiddenId.setVisibility(View.GONE);
+        TextView hiddenComplete = (TextView)convertView.findViewById(R.id.hiddenComplete);
+        if(realmResults.get(position).getIsComplete()) {
+            hiddenComplete.setText("true");
+            convertView.setVisibility(View.GONE);
+        } else {
+            hiddenComplete.setText("false");
+        }
+
         ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.startDateText)).setText(fw.getFormatedStringDate(realmResults.get(position).getDateStartDate()));
         ((TextView)convertView.findViewById(R.id.endDateText)).setText(fw.getFormatedStringDate(realmResults.get(position).getDateEndDate()));
