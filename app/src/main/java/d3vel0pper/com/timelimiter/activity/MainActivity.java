@@ -104,8 +104,26 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
         pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
+            public int getItemPosition(Object object){
+                return POSITION_NONE;
+            }
+
+            @Override
             public Fragment getItem(int position) {
-                return MainFragment.getInstance();
+                MainFragment fragment;
+                fragment = new MainFragment();
+                switch(position){
+                    case 0:
+                        fragment.setTag("today");
+                        break;
+                    case 1:
+                        fragment.setTag("tomorrow");
+                        break;
+                    case 2:
+                        fragment.setTag("list");
+                        break;
+                }
+                return fragment;
             }
 
             @Override

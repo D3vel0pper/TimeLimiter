@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +30,6 @@ import io.realm.RealmConfiguration;
  */
 public class MainFragment extends Fragment {
 
-    private static MainFragment instance;
-
     private MainActivity parent;
     private Context context;
     public ListView listView;
@@ -38,14 +37,10 @@ public class MainFragment extends Fragment {
     public RealmAdapter realmAdapter;
     private RealmManager realmManager;
 
-    public MainFragment(){}
+    private String TAG;
 
-    public static MainFragment getInstance(){
-        if(instance == null){
-            instance = new MainFragment();
-            return instance;
-        }
-        return instance;
+    public MainFragment(){
+        TAG = "default";
     }
 
     @Override
@@ -64,6 +59,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_main,container,false);
+        TextView tv = (TextView)v.findViewById(R.id.tag_text);
+        tv.setText(TAG);
         listView = (ListView)v.findViewById(R.id.itemList);
         setUpListView();
         parent.listView = listView;
@@ -119,5 +116,8 @@ public class MainFragment extends Fragment {
         super.onDetach();
     }
 
+    public void setTag(String tag){
+        TAG = tag;
+    }
 
 }
