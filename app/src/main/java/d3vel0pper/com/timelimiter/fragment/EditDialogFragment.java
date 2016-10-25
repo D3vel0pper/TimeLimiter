@@ -126,16 +126,19 @@ public class EditDialogFragment extends DialogFragment {
             }
         }
 
+        /**
+         * set StartDate, then, return List of days contained at that week
+         */
         MyCalendar myCalendar = new MyCalendar();
         myCalendar.setDateFromFormat(dataMap.get("startDate").split(" ")[0]);
         List<String> daysInWeek = myCalendar.getDaysInWeek();
-        results = query.equalTo("startDay",daysInWeek.get(MyCalendar.MONDAY))
-                .or().equalTo("startDay",daysInWeek.get(MyCalendar.TUESDAY))
-                .or().equalTo("startDay",daysInWeek.get(MyCalendar.WEDNESDAY))
-                .or().equalTo("startDay",daysInWeek.get(MyCalendar.THURSDAY))
-                .or().equalTo("startDay",daysInWeek.get(MyCalendar.FRIDAY))
-                .or().equalTo("startDay",daysInWeek.get(MyCalendar.SATURDAY))
-                .or().equalTo("startDay",daysInWeek.get(MyCalendar.SUNDAY))
+        results = query.equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.MONDAY)))
+                .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.TUESDAY)))
+                .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.WEDNESDAY)))
+                .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.THURSDAY)))
+                .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.FRIDAY)))
+                .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.SATURDAY)))
+                .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.SUNDAY)))
                 .findAll();
 
         int weekTotal = 0;
