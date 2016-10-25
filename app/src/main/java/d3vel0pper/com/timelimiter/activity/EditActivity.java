@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -49,6 +50,8 @@ public class EditActivity extends DatePickActivity
     private DialogTeller dialogTeller;
     private FormatWrapper formatWrapper;
     private RealmManager realmManager;
+    public AppCompatCheckBox checkBox;
+    private boolean isRepeatable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,6 +145,7 @@ public class EditActivity extends DatePickActivity
         dataMap.put("endDate",formatWrapper.getFormatedStringDateWithTime(results.get(0).getDateEndDate()));
         dataMap.put("place",results.get(0).getPlace());
         dataMap.put("description",results.get(0).getDescription());
+        isRepeatable = results.get(0).getIsRepeatable();
     }
 
     private void setUpViews(){
@@ -170,6 +174,9 @@ public class EditActivity extends DatePickActivity
         endTimeBtn.setOnClickListener(this);
         endBtn = (Button)findViewById(R.id.endBtn);
         endBtn.setOnClickListener(this);
+        //checkbox
+        checkBox = (AppCompatCheckBox)findViewById(R.id.daily_work_cb);
+        checkBox.setChecked(isRepeatable);
         //dialogTeller
         dialogTeller = DialogTeller.getInstance();
         dialogTeller.setListener(this);

@@ -44,6 +44,7 @@ public class EditDialogFragment extends DialogFragment {
     private EditActivity parent;
     private FormatWrapper formatWrapper;
     private RealmManager realmManager;
+    private boolean isRepeatable;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -74,6 +75,7 @@ public class EditDialogFragment extends DialogFragment {
             dataString = "";
         }
         dataString = parent.getAllData();
+        isRepeatable = parent.checkBox.isChecked();
         String confirmString = ConstantValues.CONFIRMATION_TEXT_JP + "\n" + dataString;
         confirmText.setText(confirmString);
         confirmText.setGravity(Gravity.CENTER);
@@ -83,7 +85,7 @@ public class EditDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 RegisterInformer registerInformer = RegisterInformer.getInstance();
-                registerInformer.setData(dataString);
+                registerInformer.setData(dataString,isRepeatable);
                 if(dataString != null) {
                     inOnClick(registerInformer);
                 }
@@ -177,6 +179,11 @@ public class EditDialogFragment extends DialogFragment {
             updateTarget.get(0).setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);
             updateTarget.get(0).setPlace(dataMap.get("place"));
             updateTarget.get(0).setDescription(dataMap.get("description"));
+            if(isRepeatable){
+                updateTarget.get(0).setIsRepeatable(true);
+            } else {
+                updateTarget.get(0).setIsRepeatable(false);
+            }
             realm.commitTransaction();
             //register Notification
 //            if (preferences.getBoolean("notification", true)) {

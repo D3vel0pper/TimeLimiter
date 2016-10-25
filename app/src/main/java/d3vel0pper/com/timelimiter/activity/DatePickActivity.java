@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -46,6 +47,7 @@ public class DatePickActivity extends FragmentActivity
             ,endTimeData,bothStartData,bothEndData,allData,TAG;
     public EditText titleText,placeText,descriptionText;
     private DialogTeller dialogTeller;
+    public AppCompatCheckBox checkBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -257,9 +259,11 @@ public class DatePickActivity extends FragmentActivity
         Button endBtn = (Button)findViewById(R.id.endBtn);
         endBtn.setOnClickListener(this);
 
+        checkBox = (AppCompatCheckBox)findViewById(R.id.daily_work_cb);
         //Registering ConfirmDialogListener
         dialogTeller = DialogTeller.getInstance();
         dialogTeller.setListener(this);
+
     }
 
     public void onConfirmDialog(String TAG){

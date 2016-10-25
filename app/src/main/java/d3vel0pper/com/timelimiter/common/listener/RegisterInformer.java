@@ -9,6 +9,7 @@ public class RegisterInformer {
     }
     private RegisteredListener listener;
     private String data;
+    private boolean isRepeatable;
 
     public static RegisterInformer getInstance(){
         if(instance == null){
@@ -17,12 +18,13 @@ public class RegisterInformer {
         return instance;
     }
 
-    public void setData(String data){
+    public void setData(String data,boolean isRepeatable){
         this.data = data;
+        this.isRepeatable = isRepeatable;
     }
 
     public void informToActivity(){
-        listener.onRegistered(data);
+        listener.onRegistered(data,isRepeatable);
     }
 
     public void setListener(RegisteredListener listener){

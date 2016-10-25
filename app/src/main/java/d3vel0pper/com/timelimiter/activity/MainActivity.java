@@ -182,8 +182,13 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
     //Custom Listener of registration
     @Override
-    public void onRegistered(String data){
-        Toast.makeText(this,R.string.registered_data_is + data,Toast.LENGTH_SHORT).show();
+    public void onRegistered(String data,boolean isRepeatable){
+        if(isRepeatable){
+            Toast.makeText(this,R.string.registered_data_is + data + "\n" + "isRepeatable = true",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this,R.string.registered_data_is + data + "\n" + "isRepeatable = false",Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public void deleteRealm(){

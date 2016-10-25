@@ -59,6 +59,7 @@ public class CustomDialogFragment extends DialogFragment {
     private Realm realm;
     private FormatWrapper formatWrapper;
     private RealmManager realmManager;
+    private boolean isRepeatable;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -171,6 +172,7 @@ public class CustomDialogFragment extends DialogFragment {
             dataString = "";
         }
         dataString = parent.getAllData();
+        isRepeatable = parent.checkBox.isChecked();
         String confirmString = ConstantValues.CONFIRMATION_TEXT_JP + "\n" + dataString;
         confirmText.setText(confirmString);
         Button confirmBtn = (Button)view.findViewById(R.id.confirmBtn);
@@ -280,7 +282,7 @@ public class CustomDialogFragment extends DialogFragment {
 
     private void registerData(){
         RegisterInformer registerInformer = RegisterInformer.getInstance();
-        registerInformer.setData(dataString);
+        registerInformer.setData(dataString,isRepeatable);
 
         if(dataString != null){
             /**
@@ -333,6 +335,11 @@ public class CustomDialogFragment extends DialogFragment {
             dbData.setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);
             dbData.setPlace(dataMap.get("place"));
             dbData.setDescription(dataMap.get("description"));
+            if(isRepeatable){
+                dbData.setIsRepeatable(true);
+            } else {
+                dbData.setIsRepeatable(false);
+            }
 
             //get Current Date for CreatedAt
             DatePickActivity parent = (DatePickActivity)getActivity();
