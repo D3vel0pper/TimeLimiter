@@ -45,7 +45,7 @@ public class RealmAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position){
 //        realmManager.closeRealm();
-        loadRealm();
+//        loadRealm();
         TextView v = (TextView)getView(position,null,null).findViewById(R.id.hiddenData);
         Realm realm = realmManager.getRealm(context);
         RealmQuery<DBData> query = realm.where(DBData.class);

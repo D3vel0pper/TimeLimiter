@@ -20,14 +20,25 @@
         <activity
             android:name=".activity.DatePickActivity"
             android:label="TimeLimiter"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask">
+
+        </activity>
         <activity
             android:name=".activity.SettingActivity"
             android:label="Setting"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask">
+
+        </activity>
         <activity android:name=".activity.EditActivity"
             android:label="Edit"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask">
+
+        </activity>
+        <activity android:name=".activity.DailyTaskActivity"
+            android:label="DailyTask"
+            android:launchMode="singleTask">
+
+        </activity>
 
         <!-- For debugging -->
         <activity android:name=".activity.TestActivity"

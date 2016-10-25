@@ -156,7 +156,9 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(),"fab clicked !",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(),"fab clicked !",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getBaseContext(),DailyTaskActivity.class);
+                startActivity(intent);
             }
         });
 
