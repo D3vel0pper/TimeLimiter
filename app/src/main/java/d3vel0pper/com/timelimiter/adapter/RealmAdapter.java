@@ -67,7 +67,7 @@ public class RealmAdapter extends BaseAdapter {
 
 //        Realm realm = Realm.getDefaultInstance();
         Realm realm = realmManager.getRealm(context);
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmQuery<DBData> query = realm.where(DBData.class).notEqualTo("isComplete",true);
         //if sort() is not called, order will be not in correct position after delete Object
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
 //        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
@@ -103,7 +103,7 @@ public class RealmAdapter extends BaseAdapter {
         realmManager = RealmManager.getInstance();
         Realm realm = realmManager.getRealm(context);
 //        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmQuery<DBData> query = realm.where(DBData.class).notEqualTo("isComplete",true);
         this.realmResults = query.findAll();
     }
 
