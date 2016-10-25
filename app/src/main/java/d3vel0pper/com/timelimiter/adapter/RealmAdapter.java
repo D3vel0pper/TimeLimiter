@@ -65,11 +65,7 @@ public class RealmAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent){
         convertView = layoutInflater.inflate(R.layout.card_layout,parent,false);
 
-//        Realm realm = Realm.getDefaultInstance();
-        Realm realm = realmManager.getRealm(context);
-        RealmQuery<DBData> query = realm.where(DBData.class).notEqualTo("isComplete",true);
-        //if sort() is not called, order will be not in correct position after delete Object
-        this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
+        loadRealm();
 //        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
 
         //Hidden data
@@ -104,7 +100,8 @@ public class RealmAdapter extends BaseAdapter {
         Realm realm = realmManager.getRealm(context);
 //        Realm realm = Realm.getDefaultInstance();
         RealmQuery<DBData> query = realm.where(DBData.class).notEqualTo("isComplete",true);
-        this.realmResults = query.findAll();
+        //if sort() is not called, order will be not in correct position after delete Object
+        this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
     }
 
 }
