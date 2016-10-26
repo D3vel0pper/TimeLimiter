@@ -330,6 +330,7 @@ public class CustomDialogFragment extends DialogFragment {
             dbData.setTitle(dataMap.get("title"));
             dbData.setDateStartDate(formatWrapper.getFormatedDateWithTime(dataMap.get("startDate")));
             dbData.setDateStartDay(formatWrapper.getFormatedDate(dataMap.get("startDate").split(" ")[0]));
+            dbData.setStartDay(dataMap.get("startDate").split(" ")[0]);
             dbData.setDateEndDate(formatWrapper.getFormatedDateWithTime(dataMap.get("endDate")));
             dbData.setDateEndDay(formatWrapper.getFormatedDate(dataMap.get("endDate").split(" ")[0]));
             dbData.setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);

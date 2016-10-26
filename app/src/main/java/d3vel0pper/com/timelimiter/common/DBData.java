@@ -20,7 +20,7 @@ public class DBData extends RealmObject {
     private Date dateEndDate;
     //-----------------------------
     //yyyy/MM/dd
-//    private String startDay;
+    private String startDay;
 //    private String endDay;
     //-------------Added-----------
     private Date dateStartDay;
@@ -82,12 +82,12 @@ public class DBData extends RealmObject {
 //        return this.endDate;
 //    }
 //
-//    public void setStartDay(String startDay){
-//        this.startDay = startDay;
-//    }
-//    public String getStartDay(){
-//        return this.startDay;
-//    }
+    public void setStartDay(String startDay){
+        this.startDay = startDay;
+    }
+    public String getStartDay(){
+        return this.startDay;
+    }
 //
 //    public void setEndDay(String endDay){
 //        this.endDay = endDay;

@@ -7,13 +7,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.FormatWrapper;
+import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.realm.RealmManager;
-import d3vel0pper.com.timelimiter.realm.RealmMigrator;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -27,12 +31,14 @@ public class RealmAdapter extends BaseAdapter {
     private RealmResults<DBData> realmResults;
     private FormatWrapper fw;
     private RealmManager realmManager;
+    private String parentTag;
 
-    public RealmAdapter(Context context){
+    public RealmAdapter(Context context,String parentTag){
         this.context = context;
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         fw = new FormatWrapper();
         realmManager = RealmManager.getInstance();
+        this.parentTag = parentTag;
     }
 
     @Override
@@ -49,6 +55,7 @@ public class RealmAdapter extends BaseAdapter {
         TextView v = (TextView)getView(position,null,null).findViewById(R.id.hiddenData);
         Realm realm = realmManager.getRealm(context);
         RealmQuery<DBData> query = realm.where(DBData.class);
+        //get the item matched id
         RealmResults<DBData> res = query.equalTo("id",Integer.parseInt(v.getText().toString())).findAll();
         return res.get(0);
     }
@@ -82,8 +89,8 @@ public class RealmAdapter extends BaseAdapter {
         }
 
         ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
-        ((TextView)convertView.findViewById(R.id.startDateText)).setText(fw.getFormatedStringDate(realmResults.get(position).getDateStartDate()));
-        ((TextView)convertView.findViewById(R.id.endDateText)).setText(fw.getFormatedStringDate(realmResults.get(position).getDateEndDate()));
+        ((TextView)convertView.findViewById(R.id.startDateText)).setText(fw.getFormatedStringDateWithTime(realmResults.get(position).getDateStartDate()));
+        ((TextView)convertView.findViewById(R.id.endDateText)).setText(fw.getFormatedStringDateWithTime(realmResults.get(position).getDateEndDate()));
         ((TextView)convertView.findViewById(R.id.placeText)).setText(realmResults.get(position).getPlace());
         if(realmResults.get(position).getDescription().length() > 36){
             String temp = realmResults.get(position).getDescription().substring(0,35) + "...";
@@ -99,7 +106,23 @@ public class RealmAdapter extends BaseAdapter {
         realmManager = RealmManager.getInstance();
         Realm realm = realmManager.getRealm(context);
 //        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<DBData> query = realm.where(DBData.class).notEqualTo("isComplete",true);
+        RealmQuery<DBData> query;
+        if(parentTag.equals("today")){
+            Date date = new Date();
+            MyCalendar calendar = new MyCalendar();
+            FormatWrapper fw = new FormatWrapper();
+            calendar.setDateWithoutTime(fw.getFormatedStringDate(date));
+            query = realm.where(DBData.class).equalTo("startDay",calendar.getFormatedDate());
+        } else if(parentTag.equals("tomorrow")){
+            Date date = new Date();
+            MyCalendar calendar = new MyCalendar();
+            FormatWrapper fw = new FormatWrapper();
+            calendar.setDateWithoutTime(fw.getFormatedStringDate(date));
+            calendar.incrementDay();
+            query = realm.where(DBData.class).equalTo("startDay",calendar.getFormatedDate());
+        } else {
+            query = realm.where(DBData.class).notEqualTo("isComplete",true);
+        }
         //if sort() is not called, order will be not in correct position after delete Object
         this.realmResults = query.findAll().sort("id", Sort.ASCENDING);
     }

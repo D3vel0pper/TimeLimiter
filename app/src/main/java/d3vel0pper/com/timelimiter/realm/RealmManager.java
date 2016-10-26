@@ -106,10 +106,14 @@ public class RealmManager {
 //                            .addRealmListField("dogs", schema.get("Dog"));
 //                    oldVersion++;
 //                }
-                if(oldVersion == 1){
+                if(oldVersion == 0){
                     schema.get("DBData")
                             .addField("isComplete",boolean.class);
                     oldVersion++;
+                }
+                if(oldVersion == 1){
+                    schema.get("DBData")
+                            .addField("startDay",String.class);
                 }
             }
         };

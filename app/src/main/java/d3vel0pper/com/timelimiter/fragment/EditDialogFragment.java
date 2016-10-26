@@ -174,6 +174,7 @@ public class EditDialogFragment extends DialogFragment {
             updateTarget.get(0).setTitle(dataMap.get("title"));
             updateTarget.get(0).setDateStartDate(formatWrapper.getFormatedDateWithTime(dataMap.get("startDate")));
             updateTarget.get(0).setDateStartDay(formatWrapper.getFormatedDate(dataMap.get("startDate").split(" ")[0]));
+            updateTarget.get(0).setStartDay(dataMap.get("startDate").split(" ")[0]);
             updateTarget.get(0).setDateEndDate(formatWrapper.getFormatedDateWithTime(dataMap.get("endDate")));
             updateTarget.get(0).setDateEndDay(formatWrapper.getFormatedDate(dataMap.get("endDate").split(" ")[0]));
             updateTarget.get(0).setMonth(dataMap.get("startDate").split(" ")[0].split("/")[1]);

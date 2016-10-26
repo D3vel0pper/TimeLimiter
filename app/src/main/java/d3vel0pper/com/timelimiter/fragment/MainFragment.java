@@ -72,7 +72,7 @@ public class MainFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                realmAdapter = new RealmAdapter(context);
+                realmAdapter = new RealmAdapter(context,TAG);
                 listView.setAdapter(realmAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

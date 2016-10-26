@@ -64,52 +64,52 @@ public class TestFragment extends Fragment {
         TextView tv = (TextView) v.findViewById(R.id.testText);
         tv.setText("Page" + Integer.toString(page));
         listView = (ListView)v.findViewById(R.id.testList);
-        setUpListView();
+//        setUpListView();
         return v;
     }
 
-    public void setUpListView(){
-        //set RealmResult by using Handler to handle ResultData from UI thread
-        //if u don't use handler, it will be crushed By NPE
-        android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                realmAdapter = new RealmAdapter(context);
-                listView.setAdapter(realmAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        DBData dbdata = (DBData)listView.getItemAtPosition(position);
-                        //Map of data (Using Map)
-                        Map<String, String> dataMap = new HashMap<>();
-                        dataMap.put("title",dbdata.getTitle());
-//                        dataMap.put("startDate",dbdata.getStartDate());
-//                        dataMap.put("endDate",dbdata.getEndDate());
-                        FormatWrapper formatWrapper = new FormatWrapper();
-                        dataMap.put("startDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
-                        dataMap.put("endDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
-                        dataMap.put("place",dbdata.getPlace());
-                        dataMap.put("description",dbdata.getDescription());
-                        ShowDetailFragment sdf = new ShowDetailFragment();
-                        sdf.setDataMap(dataMap);
-                        sdf.show(getActivity().getSupportFragmentManager(),"showDetail");
-//                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                        View rtnView = realmAdapter.getView(position,null,null);
-//                        itemId = Integer.parseInt(((TextView)rtnView.findViewById(R.id.hiddenData)).getText().toString());
-                        itemPosition = position;
-                        CustomDialogFragment cdf = new CustomDialogFragment();
-                        cdf.show(getActivity().getSupportFragmentManager(),"list");
-                        return true;
-                    }
-                });
-            }
-        });
-    }
+//    public void setUpListView(){
+//        //set RealmResult by using Handler to handle ResultData from UI thread
+//        //if u don't use handler, it will be crushed By NPE
+//        android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+////                realmAdapter = new RealmAdapter(context);
+//                listView.setAdapter(realmAdapter);
+//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        DBData dbdata = (DBData)listView.getItemAtPosition(position);
+//                        //Map of data (Using Map)
+//                        Map<String, String> dataMap = new HashMap<>();
+//                        dataMap.put("title",dbdata.getTitle());
+////                        dataMap.put("startDate",dbdata.getStartDate());
+////                        dataMap.put("endDate",dbdata.getEndDate());
+//                        FormatWrapper formatWrapper = new FormatWrapper();
+//                        dataMap.put("startDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
+//                        dataMap.put("endDate",formatWrapper.getFormatedStringDateWithTime(dbdata.getDateStartDate()));
+//                        dataMap.put("place",dbdata.getPlace());
+//                        dataMap.put("description",dbdata.getDescription());
+//                        ShowDetailFragment sdf = new ShowDetailFragment();
+//                        sdf.setDataMap(dataMap);
+//                        sdf.show(getActivity().getSupportFragmentManager(),"showDetail");
+////                        Toast.makeText(context,"position = " + String.valueOf(position) + " Clicked",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                    @Override
+//                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+////                        View rtnView = realmAdapter.getView(position,null,null);
+////                        itemId = Integer.parseInt(((TextView)rtnView.findViewById(R.id.hiddenData)).getText().toString());
+//                        itemPosition = position;
+//                        CustomDialogFragment cdf = new CustomDialogFragment();
+//                        cdf.show(getActivity().getSupportFragmentManager(),"list");
+//                        return true;
+//                    }
+//                });
+//            }
+//        });
+//    }
 
 }
