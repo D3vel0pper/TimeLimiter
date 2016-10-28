@@ -68,11 +68,11 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         registerInformer = RegisterInformer.getInstance();
         registerInformer.setListener(this);
 
-        ImageButton mvToDatePick = (ImageButton)findViewById(R.id.mvToDatePick);
+        ImageButton mvToDatePick = (ImageButton)findViewById(R.id.mvToDailyWork);
         mvToDatePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),DatePickActivity.class);
+                Intent intent = new Intent(getApplicationContext(),DailyTaskActivity.class);
                 startActivity(intent);
             }
         });
@@ -111,20 +111,25 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
             @Override
             public Fragment getItem(int position) {
-                MainFragment fragment;
-                fragment = new MainFragment();
+
                 switch(position){
                     case 0:
-                        fragment.setTag("today");
-                        break;
+                        MainFragment fragmentToday;
+                        fragmentToday = new MainFragment();
+                        fragmentToday.setTag("today");
+                        return fragmentToday;
                     case 1:
-                        fragment.setTag("tomorrow");
-                        break;
+                        MainFragment fragmentTomorrow;
+                        fragmentTomorrow = new MainFragment();
+                        fragmentTomorrow.setTag("tomorrow");
+                        return fragmentTomorrow;
                     case 2:
+                        MainFragment fragment;
+                        fragment = new MainFragment();
                         fragment.setTag("list");
-                        break;
+                        return fragment;
                 }
-                return fragment;
+                return new MainFragment();
             }
 
             @Override
@@ -157,7 +162,7 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             @Override
             public void onClick(View v) {
 //                Toast.makeText(getBaseContext(),"fab clicked !",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getBaseContext(),DailyTaskActivity.class);
+                Intent intent = new Intent(getApplicationContext(),DatePickActivity.class);
                 startActivity(intent);
             }
         });

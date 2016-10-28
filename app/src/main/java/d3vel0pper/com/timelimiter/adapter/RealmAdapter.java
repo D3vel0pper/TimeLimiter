@@ -79,7 +79,7 @@ public class RealmAdapter extends BaseAdapter {
         TextView hiddenId = (TextView)convertView.findViewById(R.id.hiddenData);
 //        hiddenId.setText(String.valueOf(realmResults.get(position).getId()) + " " + realmResults.get(position).getStartDay() + " " + realmResults.get(position).getMonth());
         hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
-        hiddenId.setVisibility(View.GONE);
+        hiddenId.setVisibility(View.VISIBLE);
         TextView hiddenComplete = (TextView)convertView.findViewById(R.id.hiddenComplete);
         if(realmResults.get(position).getIsComplete()) {
             hiddenComplete.setText("true");
@@ -112,14 +112,16 @@ public class RealmAdapter extends BaseAdapter {
             MyCalendar calendar = new MyCalendar();
             FormatWrapper fw = new FormatWrapper();
             calendar.setDateWithoutTime(fw.getFormatedStringDate(date));
-            query = realm.where(DBData.class).equalTo("startDay",calendar.getFormatedDate());
+            query = realm.where(DBData.class).equalTo("startDay",calendar.getFormatedDate())
+                    .notEqualTo("isComplete",true);
         } else if(parentTag.equals("tomorrow")){
             Date date = new Date();
             MyCalendar calendar = new MyCalendar();
             FormatWrapper fw = new FormatWrapper();
             calendar.setDateWithoutTime(fw.getFormatedStringDate(date));
             calendar.incrementDay();
-            query = realm.where(DBData.class).equalTo("startDay",calendar.getFormatedDate());
+            query = realm.where(DBData.class).equalTo("startDay",calendar.getFormatedDate())
+                    .notEqualTo("isComplete",true);
         } else {
             query = realm.where(DBData.class).notEqualTo("isComplete",true);
         }
