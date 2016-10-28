@@ -74,5 +74,6 @@
     android:layout_margin="16dp"
     android:layout_gravity="bottom|end"
     app:backgroundTint="#00695C"
-        />
+    android:src="@android:drawable/ic_menu_edit" />
+
 </android.support.design.widget.CoordinatorLayout>
