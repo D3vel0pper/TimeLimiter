@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp">
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -147,4 +152,5 @@
                 android:text="@string/complete_button"
                 android:textSize="15sp"/>
         </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

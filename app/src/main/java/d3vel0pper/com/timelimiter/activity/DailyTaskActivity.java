@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import d3vel0pper.com.timelimiter.R;
-import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.FormatWrapper;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
@@ -40,11 +41,26 @@ public class DailyTaskActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main);
+        setContentView(R.layout.activity_daily_work);
+
+        setUpToolBar();
 
         context = getBaseContext();
         listView = (ListView)findViewById(R.id.itemList);
         setUpListView();
+    }
+
+    private void setUpToolBar(){
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("定常作業");
+        setSupportActionBar(toolbar);
+
+        ImageButton settingBtn, mvToDailyWork;
+        settingBtn = (ImageButton)findViewById(R.id.settingBtn);
+        mvToDailyWork = (ImageButton)findViewById(R.id.mvToDailyWork);
+        settingBtn.setVisibility(View.GONE);
+        mvToDailyWork.setVisibility(View.GONE);
     }
 
     public void setUpListView(){

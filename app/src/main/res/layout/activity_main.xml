@@ -12,7 +12,7 @@
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/rootLinear">
-
+<!--
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -38,6 +38,8 @@
                     android:src="@android:drawable/ic_menu_my_calendar"/>
             </FrameLayout>
         </android.support.v7.widget.Toolbar>
+-->
+        <include layout="@layout/toolbar_layout"/>
 
         <Button
             android:id="@+id/deleteBtn"

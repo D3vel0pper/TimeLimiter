@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="#00695C"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/settingBtn"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_manage"
+            android:layout_gravity="left"/>
+
+        <ImageButton
+            android:id="@+id/mvToDailyWork"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:src="@android:drawable/ic_menu_my_calendar"/>
+
+        <ImageButton
+            android:id="@+id/resetImgBtn"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_revert"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+</android.support.v7.widget.Toolbar>

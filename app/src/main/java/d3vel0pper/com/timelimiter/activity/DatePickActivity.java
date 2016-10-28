@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -61,6 +62,12 @@ public class DatePickActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_date_pick);
+
+        ImageButton settingBtn, mvToDailyWork;
+        settingBtn = (ImageButton)findViewById(R.id.settingBtn);
+        mvToDailyWork = (ImageButton)findViewById(R.id.mvToDailyWork);
+        settingBtn.setVisibility(View.GONE);
+        mvToDailyWork.setVisibility(View.GONE);
 
         //Use Map
         setUpViews(timeMap);

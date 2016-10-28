@@ -51,6 +51,7 @@
     <string name="set_time_button">時間を選択</string>
     <string name="complete_button">完了</string>
     <string name="init">初期化</string>
+    <string name="reset_button">設定をリセット</string>
 
     <!-- List View items -->
     <string name="list_delete">削除</string>

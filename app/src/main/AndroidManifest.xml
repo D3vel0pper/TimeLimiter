@@ -36,8 +36,8 @@
         </activity>
         <activity android:name=".activity.DailyTaskActivity"
             android:label="DailyTask"
-            android:launchMode="singleTask">
-
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
         <!-- For debugging -->

@@ -2,11 +2,14 @@ package d3vel0pper.com.timelimiter.activity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +28,17 @@ public class SettingActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        ImageButton resetBtn = (ImageButton)findViewById(R.id.resetImgBtn);
+        resetBtn.setVisibility(View.VISIBLE);
+        ImageButton mvToDailyWork, settingBtn;
+        mvToDailyWork = (ImageButton)findViewById(R.id.mvToDailyWork);
+        mvToDailyWork.setVisibility(View.GONE);
+        settingBtn = (ImageButton)findViewById(R.id.settingBtn);
+        settingBtn.setVisibility(View.GONE);
+        toolbar.setTitle("設定");
+
         TextView textView = (TextView)findViewById(R.id.percentage);
 //        textView.setText(String.valueOf(getSharedPreferences("ConfigData",MODE_PRIVATE).getInt("nowRegistered",0)));
         textView.setText(getSharedPreferences("ConfigData",MODE_PRIVATE).getString("nowRegistered","0"));

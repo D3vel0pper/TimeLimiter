@@ -12,6 +12,25 @@ import io.realm.RealmSchema;
  * Created by D3vel0pper on 2016/10/10.
  */
 public class RealmManager {
+
+
+    /**
+     * SCHEMA_VERSION is int number that showing schema version of Realm
+     */
+    private static final int SCHEMA_VERSION = 1;
+
+    /**
+     * private members
+     */
+//    private Context context;
+    private Realm realm;
+    private RealmMigration migration;
+    private RealmConfiguration configuration;
+//    private RealmQuery<DBData> query;
+//    private RealmResults<DBData> results;
+
+
+
     /**
      * Constructor but this is single instance cuz multi Access  is not allowed
      */
@@ -32,21 +51,6 @@ public class RealmManager {
         }
         return instance;
     }
-
-    /**
-     * private members
-     */
-//    private Context context;
-    private Realm realm;
-    private RealmMigration migration;
-    private RealmConfiguration configuration;
-//    private RealmQuery<DBData> query;
-//    private RealmResults<DBData> results;
-
-    /**
-     * SCHEMA_VERSION is int number that showing schema version of Realm
-     */
-    private static final int SCHEMA_VERSION = 1;
 
     public Realm getRealm(Context context){
         if(realm == null){
@@ -106,15 +110,7 @@ public class RealmManager {
 //                            .addRealmListField("dogs", schema.get("Dog"));
 //                    oldVersion++;
 //                }
-                if(oldVersion == 0){
-                    schema.get("DBData")
-                            .addField("isComplete",boolean.class);
-                    oldVersion++;
-                }
-                if(oldVersion == 1){
-                    schema.get("DBData")
-                            .addField("startDay",String.class);
-                }
+
             }
         };
         return migration;
