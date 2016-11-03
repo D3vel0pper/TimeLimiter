@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
+import d3vel0pper.com.timelimiter.BuildConfig;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
 import d3vel0pper.com.timelimiter.common.DBData;
@@ -62,14 +63,16 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         realmManager = RealmManager.getInstance();
         setContentView(R.layout.activity_main);
 
-        setUpTestButton();
+        if(BuildConfig.DEBUG) {
+            setUpTestButton();
+        }
 
         //Set Register Informer
         registerInformer = RegisterInformer.getInstance();
         registerInformer.setListener(this);
 
-        ImageButton mvToDatePick = (ImageButton)findViewById(R.id.mvToDailyWork);
-        mvToDatePick.setOnClickListener(new View.OnClickListener() {
+        ImageButton mvToDailyWork = (ImageButton)findViewById(R.id.mvToDailyWork);
+        mvToDailyWork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),DailyTaskActivity.class);
@@ -87,17 +90,19 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         });
 
 //        ---------------------------Test Code---------------------------------------------------
-        Button deleteBtn = (Button)findViewById(R.id.deleteBtn);
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //delete Realm
-                deleteRealm();
-            }
-        });
-        //modify here to decide show or not
-        deleteBtn.setVisibility(View.VISIBLE);
-
+        if(BuildConfig.DEBUG) {
+            Button deleteBtn = (Button) findViewById(R.id.deleteBtn);
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //delete Realm
+                    deleteRealm();
+                    Toast.makeText(getApplicationContext(), "deleted DB", Toast.LENGTH_SHORT).show();
+                }
+            });
+            //modify here to decide show or not
+            deleteBtn.setVisibility(View.VISIBLE);
+        }
 //        --------------------------Test Code End-------------------------------------------------
 
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
@@ -190,11 +195,14 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     //Custom Listener of registration
     @Override
     public void onRegistered(String data,boolean isRepeatable){
-        if(isRepeatable){
-            Toast.makeText(this,R.string.registered_data_is + data + "\n" + "isRepeatable = true",Toast.LENGTH_SHORT).show();
+        if(BuildConfig.DEBUG) {
+            if (isRepeatable) {
+                Toast.makeText(this, R.string.registered_data_is + data + "\n" + "isRepeatable = true", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.registered_data_is + data + "\n" + "isRepeatable = false", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this,R.string.registered_data_is + data + "\n" + "isRepeatable = false",Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this,"登録しました!",Toast.LENGTH_SHORT).show();
         }
     }
 
