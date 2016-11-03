@@ -21,14 +21,17 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import d3vel0pper.com.timelimiter.BuildConfig;
 import d3vel0pper.com.timelimiter.R;
 import d3vel0pper.com.timelimiter.adapter.RealmAdapter;
+import d3vel0pper.com.timelimiter.common.Calculator;
 import d3vel0pper.com.timelimiter.common.DBData;
 import d3vel0pper.com.timelimiter.common.FormatWrapper;
+import d3vel0pper.com.timelimiter.common.MyCalendar;
 import d3vel0pper.com.timelimiter.common.listener.RegisterInformer;
 import d3vel0pper.com.timelimiter.common.listener.RegisteredListener;
 import d3vel0pper.com.timelimiter.fragment.CustomDialogFragment;
@@ -38,6 +41,8 @@ import d3vel0pper.com.timelimiter.fragment.TestFragment;
 import d3vel0pper.com.timelimiter.realm.RealmManager;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 
 public class MainActivity extends FragmentActivity implements RegisteredListener, ViewPager.OnPageChangeListener {
@@ -172,6 +177,8 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             }
         });
 
+        reRegisterDailyWork();
+
     }
 
     @Override
@@ -249,6 +256,36 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
     public void reloadViewPager(){
         pagerAdapter.notifyDataSetChanged();
         viewPager.setAdapter(pagerAdapter);
+    }
+
+    public void reRegisterDailyWork(){
+        Realm realm = realmManager.getRealm(this);
+        RealmQuery<DBData> query = realm.where(DBData.class);
+        RealmResults<DBData> results = query.equalTo("isRepeatable",true).findAll();
+        int size = results.size();
+        String startDay;
+        Date date = new Date();
+        FormatWrapper fw = new FormatWrapper();
+        String today = fw.getFormatedStringDateWithTime(date);
+        Calculator calculator = new Calculator();
+        MyCalendar myCalendar = new MyCalendar();
+        for(int i = 0;i < size;i++){
+            startDay = fw.getFormatedStringDateWithTime(results.get(i).getDateStartDate());
+            //calculate gap to know is the target day already past
+            calculator.calcGap(today,startDay);
+            if(calculator.getMinGap() > 0) {
+                myCalendar.setDateFromFormat(startDay);
+                myCalendar.addDays(7);
+                realm.beginTransaction();
+                results.get(i).setDateStartDate(fw.getFormatedDate(myCalendar.getFormatedDate()));
+                myCalendar.setDateFromFormat(
+                        fw.getFormatedStringDateWithTime(results.get(i).getDateEndDate())
+                );
+                myCalendar.addDays(7);
+                results.get(i).setDateEndDate(fw.getFormatedDate(myCalendar.getFormatedDate()));
+                realm.commitTransaction();
+            }
+        }
     }
 
 }

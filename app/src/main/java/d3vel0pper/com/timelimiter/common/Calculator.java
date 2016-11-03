@@ -54,6 +54,10 @@ public class Calculator {
         return this.day;
     }
 
+    public Integer getMinGap(){
+        return this.min;
+    }
+
     /**
      * Return TimeCountGap that u given
      * @param formatedDateStart

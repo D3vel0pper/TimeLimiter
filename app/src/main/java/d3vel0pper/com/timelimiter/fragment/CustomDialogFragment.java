@@ -367,7 +367,7 @@ public class CustomDialogFragment extends DialogFragment {
             }
 
             MyCalendar myCalendar = new MyCalendar();
-            myCalendar.setDateFromFormat(dataMap.get("startDate").split(" ")[0]);
+            myCalendar.setDateFromFormat(dataMap.get("startDate"));
             List<String> daysInWeek = myCalendar.getDaysInWeek();
             results = query.equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.MONDAY)))
                     .or().equalTo("dateStartDay",formatWrapper.getFormatedDate(daysInWeek.get(MyCalendar.TUESDAY)))

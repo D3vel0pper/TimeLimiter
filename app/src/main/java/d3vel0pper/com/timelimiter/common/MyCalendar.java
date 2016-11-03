@@ -3,6 +3,7 @@ package d3vel0pper.com.timelimiter.common;
 //import android.util.Log;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,11 +96,14 @@ public class MyCalendar {
      */
     public boolean setDateFromFormat(String formatedDate){
 
+        String datePart = formatedDate.split(" ")[0];
+        String timePart = formatedDate.split(" ")[1];
+
         boolean flag = true;
         /**
          * set year
          */
-        if(!(setYear(formatedDate))){
+        if(!(setYear(datePart))){
             this.year = 1970;
             flag = false;
         }
@@ -107,7 +111,7 @@ public class MyCalendar {
         /**
          * set month
          */
-        if(!(setMonth(formatedDate))){
+        if(!(setMonth(datePart))){
             this.month = 1;
             flag = false;
         }
@@ -115,8 +119,22 @@ public class MyCalendar {
         /**
          * set day
          */
-        if(!(setDay(formatedDate))){
+        if(!(setDay(datePart))){
             this.day = 1;
+            flag = false;
+        }
+        /**
+         * set hour
+         */
+        if(!(setHour(timePart))){
+            this.hour = 0;
+            flag = false;
+        }
+        /**
+         * set min
+         */
+        if(!(setMin(timePart))){
+            this.min = 0;
             flag = false;
         }
         /**
@@ -233,6 +251,48 @@ public class MyCalendar {
         }
         return true;
 
+    }
+
+    /**
+     * @param formatedTime :hh:MM:ss
+     * @return :
+     */
+    public boolean setHour(String formatedTime){
+        int temp = 0;
+        try{
+            temp = Integer.parseInt(formatedTime.split(":")[0]);
+        } catch (NumberFormatException e){
+            System.out.println("DataFormatError @ hour");
+        }
+        if(temp > 24){
+            System.out.println("DataRangeError @ hour");
+            return false;
+        }
+        if(temp < 0){
+            System.out.println("DataRangeError @ hour");
+            return false;
+        }
+        this.hour = temp;
+        return true;
+    }
+
+    public boolean setMin(String formatedTime){
+        int temp = 0;
+        try{
+            temp = Integer.parseInt(formatedTime.split(":")[1]);
+        } catch (NumberFormatException e){
+            System.out.println("DataFormatError @ min");
+        }
+        if(temp > 60){
+            System.out.println("DataRangeError @ min");
+            return false;
+        }
+        if(temp < 0){
+            System.out.println("DataRangeError @ min");
+            return false;
+        }
+        this.min = temp;
+        return true;
     }
 
     public int getDay(){
