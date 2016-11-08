@@ -70,33 +70,35 @@ public class RealmAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        convertView = layoutInflater.inflate(R.layout.card_layout,parent,false);
+        if(convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.card_layout, parent, false);
 
-        loadRealm();
+            loadRealm();
 //        this.realmResults = query.findAll().sort("startDate", Sort.ASCENDING);
 
-        //Hidden data
-        TextView hiddenId = (TextView)convertView.findViewById(R.id.hiddenData);
+            //Hidden data
+            TextView hiddenId = (TextView) convertView.findViewById(R.id.hiddenData);
 //        hiddenId.setText(String.valueOf(realmResults.get(position).getId()) + " " + realmResults.get(position).getStartDay() + " " + realmResults.get(position).getMonth());
-        hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
-        hiddenId.setVisibility(View.VISIBLE);
-        TextView hiddenComplete = (TextView)convertView.findViewById(R.id.hiddenComplete);
-        if(realmResults.get(position).getIsComplete()) {
-            hiddenComplete.setText("true");
-            convertView.setVisibility(View.GONE);
-        } else {
-            hiddenComplete.setText("false");
-        }
+            hiddenId.setText(String.valueOf(realmResults.get(position).getId()));
+            hiddenId.setVisibility(View.VISIBLE);
+            TextView hiddenComplete = (TextView) convertView.findViewById(R.id.hiddenComplete);
+            if (realmResults.get(position).getIsComplete()) {
+                hiddenComplete.setText("true");
+                convertView.setVisibility(View.GONE);
+            } else {
+                hiddenComplete.setText("false");
+            }
 
-        ((TextView)convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
-        ((TextView)convertView.findViewById(R.id.startDateText)).setText(fw.getFormatedStringDateWithTime(realmResults.get(position).getDateStartDate()));
-        ((TextView)convertView.findViewById(R.id.endDateText)).setText(fw.getFormatedStringDateWithTime(realmResults.get(position).getDateEndDate()));
-        ((TextView)convertView.findViewById(R.id.placeText)).setText(realmResults.get(position).getPlace());
-        if(realmResults.get(position).getDescription().length() > 36){
-            String temp = realmResults.get(position).getDescription().substring(0,35) + "...";
-            ((TextView)convertView.findViewById(R.id.descriptionText)).setText(temp);
-        } else{
-            ((TextView) convertView.findViewById(R.id.descriptionText)).setText(realmResults.get(position).getDescription());
+            ((TextView) convertView.findViewById(R.id.titleText)).setText(realmResults.get(position).getTitle());
+            ((TextView) convertView.findViewById(R.id.startDateText)).setText(fw.getFormatedStringDateWithTime(realmResults.get(position).getDateStartDate()));
+            ((TextView) convertView.findViewById(R.id.endDateText)).setText(fw.getFormatedStringDateWithTime(realmResults.get(position).getDateEndDate()));
+            ((TextView) convertView.findViewById(R.id.placeText)).setText(realmResults.get(position).getPlace());
+            if (realmResults.get(position).getDescription().length() > 36) {
+                String temp = realmResults.get(position).getDescription().substring(0, 35) + "...";
+                ((TextView) convertView.findViewById(R.id.descriptionText)).setText(temp);
+            } else {
+                ((TextView) convertView.findViewById(R.id.descriptionText)).setText(realmResults.get(position).getDescription());
+            }
         }
         return convertView;
     }

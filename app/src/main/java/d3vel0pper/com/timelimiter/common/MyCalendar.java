@@ -276,6 +276,10 @@ public class MyCalendar {
         return true;
     }
 
+    public int getHour(){
+        return this.hour;
+    }
+
     public boolean setMin(String formatedTime){
         int temp = 0;
         try{
@@ -293,6 +297,10 @@ public class MyCalendar {
         }
         this.min = temp;
         return true;
+    }
+
+    public int getMin(){
+        return this.min;
     }
 
     public int getDay(){
@@ -495,6 +503,25 @@ public class MyCalendar {
         } else {
             date += String.valueOf(this.day);
         }
+        return date;
+    }
+
+    public String getFormatedDateWithTime(){
+        String date;
+        date = getFormatedDate();
+
+        if(hour < 10){
+            date = date + " " + "0" + Integer.toString(getHour()) + ":";
+        } else {
+            date = date + " " + Integer.toString(getHour()) + ":";
+        }
+
+        if(min < 10){
+            date = date + "0" + Integer.toString(getMin());
+        } else {
+            date = date + Integer.toString(getMin());
+        }
+
         return date;
     }
 

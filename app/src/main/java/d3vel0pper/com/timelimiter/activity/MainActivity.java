@@ -126,17 +126,17 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
                     case 0:
                         MainFragment fragmentToday;
                         fragmentToday = new MainFragment();
-                        fragmentToday.setTag("today");
+                        fragmentToday.setPageTag("today");
                         return fragmentToday;
                     case 1:
                         MainFragment fragmentTomorrow;
                         fragmentTomorrow = new MainFragment();
-                        fragmentTomorrow.setTag("tomorrow");
+                        fragmentTomorrow.setPageTag("tomorrow");
                         return fragmentTomorrow;
                     case 2:
                         MainFragment fragment;
                         fragment = new MainFragment();
-                        fragment.setTag("list");
+                        fragment.setPageTag("list");
                         return fragment;
                 }
                 return new MainFragment();
@@ -144,16 +144,18 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
 
             @Override
             public CharSequence getPageTitle(int position){
-                switch (position){
-                    case 0:
-                        return "today";
-                    case 1:
-                        return "tomorrow";
-                    case 2:
-                        return "list";
-                    default:
-                        return "default";
-                }
+//                switch (position){
+//                    case 0:
+//                        return "today";
+//                    case 1:
+//                        return "tomorrow";
+//                    case 2:
+//                        return "list";
+//                    default:
+//                        return "default";
+//                }
+                MainFragment fragment = (MainFragment)getItem(position);
+                return fragment.getPageTag();
             }
 
             @Override
@@ -273,17 +275,32 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
             startDay = fw.getFormatedStringDateWithTime(results.get(i).getDateStartDate());
             //calculate gap to know is the target day already past
             calculator.calcGap(today,startDay);
-            if(calculator.getMinGap() > 0) {
-                myCalendar.setDateFromFormat(startDay);
-                myCalendar.addDays(7);
-                realm.beginTransaction();
-                results.get(i).setDateStartDate(fw.getFormatedDate(myCalendar.getFormatedDate()));
-                myCalendar.setDateFromFormat(
-                        fw.getFormatedStringDateWithTime(results.get(i).getDateEndDate())
-                );
-                myCalendar.addDays(7);
-                results.get(i).setDateEndDate(fw.getFormatedDate(myCalendar.getFormatedDate()));
-                realm.commitTransaction();
+            if(BuildConfig.DEBUG) {
+                if (calculator.getMinGap() > 0) {
+                    myCalendar.setDateFromFormat(startDay);
+                    myCalendar.addDays(7);
+                    realm.beginTransaction();
+                    results.get(i).setDateStartDate(fw.getFormatedDate(myCalendar.getFormatedDateWithTime()));
+                    myCalendar.setDateFromFormat(
+                            fw.getFormatedStringDateWithTime(results.get(i).getDateEndDate())
+                    );
+                    myCalendar.addDays(7);
+                    results.get(i).setDateEndDate(fw.getFormatedDate(myCalendar.getFormatedDate()));
+                    realm.commitTransaction();
+                }
+            } else {
+                if(calculator.getDayCountGap() > 0) {
+                    myCalendar.setDateFromFormat(startDay);
+                    myCalendar.addDays(7);
+                    realm.beginTransaction();
+                    results.get(i).setDateStartDate(fw.getFormatedDate(myCalendar.getFormatedDateWithTime()));
+                    myCalendar.setDateFromFormat(
+                            fw.getFormatedStringDateWithTime(results.get(i).getDateEndDate())
+                    );
+                    myCalendar.addDays(7);
+                    results.get(i).setDateEndDate(fw.getFormatedDate(myCalendar.getFormatedDate()));
+                    realm.commitTransaction();
+                }
             }
         }
     }

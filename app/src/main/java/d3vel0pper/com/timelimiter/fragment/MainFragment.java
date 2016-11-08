@@ -37,10 +37,10 @@ public class MainFragment extends Fragment {
     public RealmAdapter realmAdapter;
     private RealmManager realmManager;
 
-    private String TAG;
+    private String pageTag;
 
     public MainFragment(){
-        TAG = "default";
+        pageTag = "default";
     }
 
     @Override
@@ -72,7 +72,7 @@ public class MainFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                realmAdapter = new RealmAdapter(context,TAG);
+                realmAdapter = new RealmAdapter(context,pageTag);
                 listView.setAdapter(realmAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -114,8 +114,12 @@ public class MainFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setTag(String tag){
-        TAG = tag;
+    public void setPageTag(String tag){
+        pageTag = tag;
+    }
+
+    public String getPageTag(){
+        return this.pageTag;
     }
 
 }
