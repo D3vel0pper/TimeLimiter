@@ -21,6 +21,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +69,11 @@ public class MainActivity extends FragmentActivity implements RegisteredListener
         if(BuildConfig.DEBUG) {
             setUpTestButton();
         }
+
+        //loading ad
+        AdView adView = (AdView)findViewById(R.id.adview);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         //Set Register Informer
         registerInformer = RegisterInformer.getInstance();

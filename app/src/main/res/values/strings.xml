@@ -66,4 +66,9 @@
     <string name="default_description">defaultDescription</string>
     <string name="default_text">defaultText</string>
 
+    <!-- for Admob -->
+    <!-- this is for sample ad -->
+    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4383181218497316/1000022388</string>
+
 </resources>
