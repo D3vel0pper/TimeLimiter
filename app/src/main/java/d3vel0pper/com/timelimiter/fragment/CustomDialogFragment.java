@@ -55,11 +55,11 @@ import io.realm.Sort;
  */
 public class CustomDialogFragment extends DialogFragment {
     public CustomDialogFragment(){}
-    static private String dataString;
-    private Realm realm;
-    private FormatWrapper formatWrapper;
-    private RealmManager realmManager;
-    private boolean isRepeatable;
+    static protected String dataString;
+    protected Realm realm;
+    protected FormatWrapper formatWrapper;
+    protected RealmManager realmManager;
+    protected boolean isRepeatable;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -186,7 +186,7 @@ public class CustomDialogFragment extends DialogFragment {
         return view;
     }
 
-    private View editCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, DatePickActivity parent){
+    private View editCase(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState, EditActivity parent){
         View view = inflater.inflate(R.layout.fragment_register_dialog,container,false);
         TextView confirmText = (TextView)view.findViewById(R.id.confirmText);
         if(dataString == null){

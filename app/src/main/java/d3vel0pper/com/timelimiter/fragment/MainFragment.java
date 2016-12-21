@@ -30,10 +30,9 @@ import io.realm.RealmConfiguration;
  */
 public class MainFragment extends Fragment {
 
-    private MainActivity parent;
+    private MainActivity parentActivity;
     private Context context;
     public ListView listView;
-    public int itemPosition;
     public RealmAdapter realmAdapter;
     private RealmManager realmManager;
 
@@ -46,12 +45,12 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        parent = (MainActivity)getActivity();
+        parentActivity = (MainActivity)getActivity();
 
         context = getActivity().getBaseContext();
-        realmManager = parent.realmManager;
+        realmManager = parentActivity.realmManager;
 
-        final RealmConfiguration realmConfiguration = realmManager.getConfiguration(parent);
+        final RealmConfiguration realmConfiguration = realmManager.getConfiguration(parentActivity);
         Realm.setDefaultConfiguration(realmConfiguration);
 
     }
@@ -61,7 +60,7 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main,container,false);
         listView = (ListView)v.findViewById(R.id.itemList);
         setUpListView();
-        parent.listView = listView;
+        parentActivity.listView = listView;
         return v;
     }
 
@@ -99,7 +98,7 @@ public class MainFragment extends Fragment {
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //                        View rtnView = realmAdapter.getView(position,null,null);
 //                        itemId = Integer.parseInt(((TextView)rtnView.findViewById(R.id.hiddenData)).getText().toString());
-                        itemPosition = position;
+                        parentActivity.itemPosition = position;
                         CustomDialogFragment cdf = new CustomDialogFragment();
                         cdf.show(getActivity().getSupportFragmentManager(),"list");
                         return true;
